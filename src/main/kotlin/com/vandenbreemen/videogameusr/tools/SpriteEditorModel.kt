@@ -12,6 +12,12 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
     val spriteWidth = requirements.spriteWidth
     val spriteHeight = requirements.spriteHeight
 
+    /**
+     * Color of the paint brush for coloring pixels
+     */
+    var paintColor: Byte = 0
+
+
     init {
 
         //  Generate the
@@ -66,5 +72,6 @@ requirement.setData($spriteIndex, byteArrayOf(""")
         return stringBld.toString()
 
     }
+
 
 }

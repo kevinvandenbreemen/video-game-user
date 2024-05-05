@@ -4,34 +4,35 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
+import kotlin.random.Random
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SpriteEditorUI(model: SpriteEditorModel) {
 
-    //  Draw a compose UI with a top panel for the pixels and a bottom panel for the color selector
-    //  The top panel will be a grid of pixels
-    //  The bottom panel will be a grid of colors
-    //  The user can click on a pixel to change its color
-
-    //  Byte state
-    val spriteByteArray = remember { model.getSpriteByteArray() }
+    val viewModel by remember { mutableStateOf(SpriteEditorComposeViewModel(model)) }
+    val spriteArray by viewModel.spriteArray
+    //val viewModel = SpriteEditorComposeViewModel(model)
 
     Row(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -41,9 +42,22 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
         ) {
 
             Column(modifier = Modifier.weight(0.8f)) {
-                Text("Sprite Data")
+                Text("Sprite Data ${Random(System.nanoTime()).nextInt()}")
                 //  Top panel
-                Canvas(modifier = Modifier.fillMaxSize()) {
+                Canvas(modifier = Modifier.fillMaxSize().pointerInput(Unit) {
+                    detectTapGestures { offset ->
+                        val width = size.width
+                        val height = size.height
+
+                        val pixelWidthInCanvas = width / model.spriteWidth
+                        val pixelHeightInCanvas = height / model.spriteHeight
+
+                        val x = (offset.x / pixelWidthInCanvas).toInt()
+                        val y = (offset.y / pixelHeightInCanvas).toInt()
+
+                        viewModel.setPixel(x, y, model.paintColor)
+                    }
+                }) {
                     //  Draw the sprite
                     val width = size.width
                     val height = size.height
@@ -56,7 +70,7 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
                             val left = x * pixelWidthInCanvas
                             val top = y * pixelHeightInCanvas
                             val color =
-                                if (spriteByteArray[y * model.spriteWidth + x] > 0) Color.White else Color.Black
+                                if (spriteArray[y * model.spriteWidth + x] > 0) Color.White else Color.Black
                             drawRect(
                                 color,
                                 topLeft = Offset(left, top),
