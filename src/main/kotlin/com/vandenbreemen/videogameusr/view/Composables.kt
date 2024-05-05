@@ -20,8 +20,12 @@ fun RasterDisplay(raster: DisplayRaster) {
         Canvas(modifier=Modifier.fillMaxSize()) {
 
             //  Display all the pixels:
-            val pixelWidthInCanvas = size.width / raster.xDim
-            val pixelHeightInCanvas = size.height / raster.yDim
+
+            val width = size.width
+            val height = size.height
+
+            val pixelWidthInCanvas = width / raster.xDim
+            val pixelHeightInCanvas = height / raster.yDim
 
             for (y in 0 until raster.yDim) {
                 for (x in 0 until raster.xDim) {
