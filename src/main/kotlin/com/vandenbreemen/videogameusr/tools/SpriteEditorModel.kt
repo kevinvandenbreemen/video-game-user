@@ -2,7 +2,6 @@ package com.vandenbreemen.com.vandenbreemen.videogameusr.tools
 
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
-import com.vandenbreemen.viddisplayrast.view.TextRender
 
 class SpriteEditorModel(private val requirements: GameDataRequirements, private val spriteIndex: Int) {
 
@@ -35,8 +34,6 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
                 spriteByteArray[y * requirements.spriteWidth + x] = raster.getPixel(x, y)
             }
         }
-
-        TextRender().renderRaster(raster)
     }
 
     fun setPixel(x: Int, y: Int, value: Byte){
