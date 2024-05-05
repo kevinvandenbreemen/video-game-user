@@ -28,6 +28,7 @@ import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 fun SpriteEditorUI(model: SpriteEditorModel) {
 
     val spriteArray = remember { mutableStateOf(model.getSpriteByteArray()) }
+    val paintColorByte = remember { mutableStateOf(model.paintColor) }
 
     Row(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -102,17 +103,25 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
 
                     val colorCount = 16
                     val colorStep = 128 / colorCount
+
+                    LaunchedEffect(paintColorByte.value) {  //  Force a redraw if the user picks a color
+                        model.paintColor = paintColorByte.value
+                    }
                     
                     //  Draw the color selector
-                    Canvas(modifier = Modifier.fillMaxSize()) {
+                    Canvas(modifier = Modifier.fillMaxSize().pointerInput(Unit){
+                        detectTapGestures { offset ->
+                            val x = offset.x
+                            val colorIndex = (x / size.width * colorCount).toInt()
+                            paintColorByte.value = (colorIndex * colorStep).toByte()
+                        }
+
+                    }) {
 
                         val width = size.width / colorCount
-                        val height = size.height * 0.2f
 
                         for (i in 0 until colorCount) {
                             val colorVal = i * colorStep
-
-
 
                             val color = Color(colorVal, colorVal, colorVal)
                             drawRect(
@@ -120,6 +129,15 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
                                 topLeft = Offset(i * width, 0f),
                                 size = Size(width, size.height)
                             )
+
+                            //  If the color is selected draw a small circle in the middle of it
+                            if(colorVal == paintColorByte.value.toInt()){
+                                drawCircle(
+                                    Color.Green,
+                                    center = Offset(i * width + width / 2, size.height / 2),
+                                    radius = 5f
+                                )
+                            }
                         }
                     }
                 }
