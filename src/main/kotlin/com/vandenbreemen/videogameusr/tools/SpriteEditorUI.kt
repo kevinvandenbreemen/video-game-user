@@ -29,6 +29,7 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
 
     val spriteArray = remember { mutableStateOf(model.getSpriteByteArray()) }
     val paintColorByte = remember { mutableStateOf(model.paintColor) }
+    val spriteCode = remember { mutableStateOf(model.generateSpriteSourceCode()) }
 
     Row(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -57,6 +58,7 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
 
                     model.setPixel(x, y, model.paintColor)
                     spriteArray.value = model.getSpriteByteArray()
+                    spriteCode.value = model.generateSpriteSourceCode()
                 }
 
                 //  Top panel
@@ -147,7 +149,7 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
             //  Show the sourcecode for creating the sprite
             Text("Source Code", style = androidx.compose.ui.text.TextStyle(fontSize = 14.sp, color = Color.Green
                 , fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center))
-            Text(model.generateSpriteSourceCode(), style = androidx.compose.ui.text.TextStyle(fontSize = 8.sp, color = Color.Green
+            Text(spriteCode.value, style = androidx.compose.ui.text.TextStyle(fontSize = 8.sp, color = Color.Green
                 , fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace))
         }
     }
