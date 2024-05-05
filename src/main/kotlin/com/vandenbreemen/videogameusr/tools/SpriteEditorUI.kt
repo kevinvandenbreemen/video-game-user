@@ -2,7 +2,6 @@ package com.vandenbreemen.com.vandenbreemen.videogameusr.tools
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
@@ -10,7 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -26,38 +25,48 @@ import androidx.compose.ui.window.application
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import kotlin.random.Random
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SpriteEditorUI(model: SpriteEditorModel) {
 
-    val viewModel by remember { mutableStateOf(SpriteEditorComposeViewModel(model)) }
-    val spriteArray by viewModel.spriteArray
-    //val viewModel = SpriteEditorComposeViewModel(model)
+    val spriteArray = remember { mutableStateOf(model.getSpriteByteArray()) }
 
     Row(modifier = Modifier.fillMaxSize()) {
         Column(
-            modifier = androidx.compose.ui.Modifier.weight(0.66f).fillMaxSize().background(
-                androidx.compose.ui.graphics.Color.Gray
+            modifier = Modifier.weight(0.66f).fillMaxSize().background(
+                Color.Gray
             )
         ) {
 
             Column(modifier = Modifier.weight(0.8f)) {
+
+                val sizeWidthHeight = remember { mutableStateOf(Pair(0, 0)) }
+                val tapState = remember { mutableStateOf(Offset.Zero) }
+
                 Text("Sprite Data ${Random(System.nanoTime()).nextInt()}")
+
+                //  Handle updates to the sprite here
+                LaunchedEffect(tapState.value, sizeWidthHeight.value) {
+                    val width = sizeWidthHeight.value.first
+                    val height = sizeWidthHeight.value.second
+
+                    val pixelWidthInCanvas = width / model.spriteWidth
+                    val pixelHeightInCanvas = height / model.spriteHeight
+
+                    val x = (tapState.value.x / pixelWidthInCanvas).toInt()
+                    val y = (tapState.value.y / pixelHeightInCanvas).toInt()
+
+                    model.setPixel(x, y, model.paintColor)
+                    spriteArray.value = model.getSpriteByteArray()
+                }
+
                 //  Top panel
                 Canvas(modifier = Modifier.fillMaxSize().pointerInput(Unit) {
                     detectTapGestures { offset ->
-                        val width = size.width
-                        val height = size.height
-
-                        val pixelWidthInCanvas = width / model.spriteWidth
-                        val pixelHeightInCanvas = height / model.spriteHeight
-
-                        val x = (offset.x / pixelWidthInCanvas).toInt()
-                        val y = (offset.y / pixelHeightInCanvas).toInt()
-
-                        viewModel.setPixel(x, y, model.paintColor)
+                        tapState.value = offset
+                        sizeWidthHeight.value = Pair(size.width, size.height)
                     }
                 }) {
+
                     //  Draw the sprite
                     val width = size.width
                     val height = size.height
@@ -70,7 +79,7 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
                             val left = x * pixelWidthInCanvas
                             val top = y * pixelHeightInCanvas
                             val color =
-                                if (spriteArray[y * model.spriteWidth + x] > 0) Color.White else Color.Black
+                                if (spriteArray.value[y * model.spriteWidth + x] > 0) Color.White else Color.Black
                             drawRect(
                                 color,
                                 topLeft = Offset(left, top),
@@ -82,16 +91,16 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
             }
 
 
-            //  Bottom panel
+            //  Bottom panel - color picker
             Column(modifier = Modifier.weight(0.2f)) {
                 Text("Color Picker")
                 Row {
                     //  Draw the color selector
                     for (i in 0 until 16) {
-                        Canvas(modifier = androidx.compose.ui.Modifier.fillMaxSize()) {
+                        Canvas(modifier = Modifier.fillMaxSize()) {
                             val width = size.width
                             val height = size.height
-                            val color = androidx.compose.ui.graphics.Color(i, i, i)
+                            val color = Color(i, i, i)
                             drawRect(color, topLeft = Offset(0f, 0f), size = Size(width, height))
                         }
                     }
@@ -100,9 +109,9 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
         }
         Column(modifier = Modifier.weight(0.33f).fillMaxSize().background(Color.Black)) {
             //  Show the sourcecode for creating the sprite
-            Text("Source Code", style = androidx.compose.ui.text.TextStyle(fontSize = 14.sp, color = androidx.compose.ui.graphics.Color.Green
+            Text("Source Code", style = androidx.compose.ui.text.TextStyle(fontSize = 14.sp, color = Color.Green
                 , fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center))
-            Text(model.generateSpriteSourceCode(), style = androidx.compose.ui.text.TextStyle(fontSize = 8.sp, color = androidx.compose.ui.graphics.Color.Green
+            Text(model.generateSpriteSourceCode(), style = androidx.compose.ui.text.TextStyle(fontSize = 8.sp, color = Color.Green
                 , fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace))
         }
     }
