@@ -23,7 +23,6 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
-import kotlin.random.Random
 
 @Composable
 fun SpriteEditorUI(model: SpriteEditorModel) {
@@ -42,7 +41,7 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
                 val sizeWidthHeight = remember { mutableStateOf(Pair(0, 0)) }
                 val tapState = remember { mutableStateOf(Offset.Zero) }
 
-                Text("Sprite Data ${Random(System.nanoTime()).nextInt()}")
+                Text("Sprite Data Editor")
 
                 //  Handle updates to the sprite here
                 LaunchedEffect(tapState.value, sizeWidthHeight.value) {
@@ -78,8 +77,10 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
                         for (x in 0 until model.spriteWidth) {
                             val left = x * pixelWidthInCanvas
                             val top = y * pixelHeightInCanvas
-                            val color =
-                                if (spriteArray.value[y * model.spriteWidth + x] > 0) Color.White else Color.Black
+
+                            //  Draw grayscale color based on pixel byte value
+                            val pixelColor = spriteArray.value[y * model.spriteWidth + x].toInt()
+                            val color = Color(pixelColor, pixelColor, pixelColor)
                             drawRect(
                                 color,
                                 topLeft = Offset(left, top),
@@ -92,16 +93,33 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
 
 
             //  Bottom panel - color picker
+
+            //  Determine the available colors -- for now 16 colors out of the 128 possible byte values evenly spaced
+            
             Column(modifier = Modifier.weight(0.2f)) {
                 Text("Color Picker")
                 Row {
+
+                    val colorCount = 16
+                    val colorStep = 128 / colorCount
+                    
                     //  Draw the color selector
-                    for (i in 0 until 16) {
-                        Canvas(modifier = Modifier.fillMaxSize()) {
-                            val width = size.width
-                            val height = size.height
-                            val color = Color(i, i, i)
-                            drawRect(color, topLeft = Offset(0f, 0f), size = Size(width, height))
+                    Canvas(modifier = Modifier.fillMaxSize()) {
+
+                        val width = size.width / colorCount
+                        val height = size.height * 0.2f
+
+                        for (i in 0 until colorCount) {
+                            val colorVal = i * colorStep
+
+
+
+                            val color = Color(colorVal, colorVal, colorVal)
+                            drawRect(
+                                color,
+                                topLeft = Offset(i * width, 0f),
+                                size = Size(width, size.height)
+                            )
                         }
                     }
                 }
