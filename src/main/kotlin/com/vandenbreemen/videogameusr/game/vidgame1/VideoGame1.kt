@@ -57,25 +57,22 @@ fun main() {
         0, 100, 0, 0, 0, 0, 100, 0
     ))
 
-    spriteEditor(requirements, 2, "requirements")
+
 
     //  Define the alien bullet
     //  Basic array of 8x8 0s
     requirements.setData(3, byteArrayOf(
-        //  Just 0s
         1, 0, 0, 1, 1, 0, 0, 1,
-        0, 1, 0, 1, 1, 0, 1, 0,
-        0, 0, 0, 1, 1, 0, 0, 0,
-        0, 1, 1, 0, 0, 1, 1, 0,
-        0, 1, 1, 0, 0, 1, 1, 0,
-        0, 0, 0, 1, 1, 0, 0, 0,
-        0, 1, 0, 1, 1, 0, 1, 0,
-        1, 0, 0, 1, 1, 0, 0, 1,
-    ).also { // Multiply all values  by 100
-        for(i in it.indices){
-            it[i] = (it[i] * 200).toByte()
-        }
-    })
+        0, 1, 0, 1, 1, 120, 1, 0,
+        0, 0, 0, 1, 1, 120, 0, 0,
+        0, 1, 120, 120, 120, 1, 48, 48,
+        0, 1, 120, 120, 120, 1, 48, 48,
+        0, 0, 0, 1, 1, 120, 0, 0,
+        0, 1, 0, 1, 1, 120, 1, 0,
+        1, 0, 0, 1, 1, 0, 0, 1
+    ))
+
+    spriteEditor(requirements, 3, "requirements")
 
     //  Now set up a screen
     val runner = Runner(requirements)
