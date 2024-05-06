@@ -5,6 +5,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
 import com.vandenbreemen.viddisplayrast.data.DisplayRaster
+import com.vandenbreemen.viddisplayrast.game.Runner
 
 
 class ComposeRasterRender {
@@ -23,6 +24,21 @@ class ComposeRasterRender {
                 state = WindowState(width = maxWidth.dp, height = height.dp)
             ) {
                 RasterDisplay(raster)
+            }
+        }
+
+        fun showTestConsoleWindow(runner: Runner, maxWidth: Int = 800) = application {
+
+            //  Step 1:  Work out the height as a ratio of the width
+            val height = (maxWidth * 0.75).toInt()
+
+            Window(
+                onCloseRequest = {  },
+                visible = true,
+                title = "Raster Render Test",
+                state = WindowState(width = maxWidth.dp, height = height.dp)
+            ) {
+                GameConsole(runner)
             }
         }
     }
