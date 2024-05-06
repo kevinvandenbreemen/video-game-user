@@ -66,72 +66,95 @@ fun GameConsole(runner: Runner) {
 
             Text("Controls", Modifier.padding(2.dp).background(Color.White))
 
-            Row {
-                //  Buttons
-                Column(Modifier.weight(0.5f)) {
-                    Spacer(Modifier.weight(0.5f))
-                    Row {
-                        Spacer(Modifier.weight(0.5f))
-                        Button(onClick = {
-                            //  TODO    Up button press!
-                        }) {
-                            Text("\uD83D\uDD3C\uFE0F")
-                        }
-                        Spacer(Modifier.weight(0.5f))
-                    }
-                    Row {
-                        Button(onClick = {
-                            //  TODO    Left button press!
-                        }) {
-                            Text("◀\uFE0F")
-                        }
-                        Spacer(Modifier.weight(0.5f))
-                        Button(onClick = {
-                            //  TODO    Right button press!
-                        }) {
-                            Text("\u25B6\uFE0F")
-                        }
-                    }
-                    Row {
-                        Spacer(Modifier.weight(0.5f))
-                        Button(onClick = {
-                            //  TODO    Down button press!
-                        }) {
-                            Text("\uD83D\uDD3D\uFE0F")
-                        }
-                        Spacer(Modifier.weight(0.5f))
-                    }
-                    Spacer(Modifier.weight(0.5f))
+            ControlDeck(
+                onUp = {
+
+                },
+                onDown = {
+
+                },
+                onLeft = {
+
+                },
+                onRight = {
+
+                },
+                onA = {
+
+                },
+                onB = {
+
                 }
-
-                Spacer(Modifier.weight(0.3f))
-                Text("Score: 0", Modifier.weight(0.2f).background(Color.White))
-                Spacer(Modifier.weight(0.3f))
-
-                Column(Modifier.weight(0.5f)) {
-                    Spacer(Modifier.weight(0.5f))
-                    Row {
-                        Button(onClick = {
-                            //  TODO    A button press!
-                        }) {
-                            Text("A")
-                        }
-
-                        Spacer(Modifier.weight(0.2f))
-
-                        Button(onClick = {
-                            //  TODO    B button press!
-                        }) {
-                            Text("B")
-                        }
-                    }
-                    Spacer(Modifier.weight(0.5f))
-                }
-            }
+            )
 
         }
 
 
+    }
+}
+
+private fun ControlDeck(onUp: ()->Unit, onDown: ()->Unit, onLeft: ()->Unit, onRight: ()->Unit, onA: ()->Unit, onB: ()->Unit) {
+    Row {
+        //  Buttons
+        Column(Modifier.weight(0.5f)) {
+            Spacer(Modifier.weight(0.5f))
+            Row {
+                Spacer(Modifier.weight(0.5f))
+                Button(onClick = {
+                    onUp()
+                }) {
+                    Text("\uD83D\uDD3C\uFE0F")
+                }
+                Spacer(Modifier.weight(0.5f))
+            }
+            Row {
+                Button(onClick = {
+                    onLeft()
+                }) {
+                    Text("◀\uFE0F")
+                }
+                Spacer(Modifier.weight(0.5f))
+                Button(onClick = {
+                    onRight()
+                }) {
+                    Text("\u25B6\uFE0F")
+                }
+            }
+            Row {
+                Spacer(Modifier.weight(0.5f))
+                Button(onClick = {
+                    onDown()
+                }) {
+                    Text("\uD83D\uDD3D\uFE0F")
+                }
+                Spacer(Modifier.weight(0.5f))
+            }
+            Spacer(Modifier.weight(0.5f))
+        }
+
+        Spacer(Modifier.weight(0.3f))
+        Text("Score: 0", Modifier.weight(0.2f).background(Color.White))
+        Spacer(Modifier.weight(0.3f))
+
+        Column(Modifier.weight(0.5f)) {
+            Spacer(Modifier.weight(0.5f))
+            Row {
+                Button(onClick = {
+                    onA()
+                }) {
+                    Text("A")
+                }
+
+                Spacer(Modifier.weight(0.2f))
+
+                Button(onClick = {
+                    onB()
+                }) {
+                    Text("B")
+                }
+            }
+            Spacer(Modifier.weight(0.5f))
+        }
     }
 }
 
