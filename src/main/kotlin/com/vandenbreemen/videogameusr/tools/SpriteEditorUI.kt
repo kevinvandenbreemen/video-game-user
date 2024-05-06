@@ -162,12 +162,12 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
     }
 }
 
-fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, maxWidth: Int = 800) = application {
+fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requirementsVariableName: String = "requirement", maxWidth: Int = 800) = application {
 
     //  Step 1:  Work out the height as a ratio of the width
     val height = (maxWidth * 0.75).toInt()
 
-    val model = SpriteEditorModel(requirements, spriteIndex)
+    val model = SpriteEditorModel(requirements, spriteIndex=spriteIndex, requirementsVariableName = requirementsVariableName)
     Window(
         onCloseRequest = {  },
         visible = true,
@@ -200,7 +200,7 @@ fun PreviewSpriteEditorUI() {
         }
     })
 
-    val model = SpriteEditorModel(requirements, 0)
+    val model = SpriteEditorModel(requirements, 0, "requirementInPreview")
 
     SpriteEditorUI(model)
 

@@ -3,7 +3,7 @@ package com.vandenbreemen.com.vandenbreemen.videogameusr.tools
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
 
-class SpriteEditorModel(private val requirements: GameDataRequirements, private val spriteIndex: Int) {
+class SpriteEditorModel(private val requirements: GameDataRequirements, private val spriteIndex: Int, private val requirementsVariableName: String) {
 
     private val runner = Runner(requirements)
     private val spriteByteArray = ByteArray(requirements.spriteWidth * requirements.spriteHeight)
@@ -52,7 +52,7 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
     fun generateSpriteSourceCode(): String {
 
         val stringBld = StringBuilder("""
-requirement.setData($spriteIndex, byteArrayOf(""")
+$requirementsVariableName.setData($spriteIndex, byteArrayOf(""")
         spriteByteArray.forEachIndexed { index, byte ->
             if(index % requirements.spriteWidth == 0){
                 stringBld.append("\n       ")

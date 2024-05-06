@@ -10,3 +10,9 @@ spriteEditor(requirements, 0)
 ```
 
 The tool will allow you to edit the pixels of your sprite, providing code to encode the data for the pixels on the right hand side.
+
+Note that you can also specify the name of the requirements variable, for example:
+
+```
+spriteEditor(requirements, 0, "myRequirements")
+```
