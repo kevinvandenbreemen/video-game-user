@@ -51,8 +51,6 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
      */
     fun generateSpriteSourceCode(): String {
 
-        //  TODO    This should probably get made into a pluggable interactor since the library is written in java....  For now
-        //  we'll just generate the code in kotlin but someday it might be necessary to write a java code generator....
         val stringBld = StringBuilder("""
 requirement.setData($spriteIndex, byteArrayOf(""")
         spriteByteArray.forEachIndexed { index, byte ->

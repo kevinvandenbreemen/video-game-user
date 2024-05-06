@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -17,6 +18,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
@@ -147,10 +151,13 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
         }
         Column(modifier = Modifier.weight(0.33f).fillMaxSize().background(Color.Black)) {
             //  Show the sourcecode for creating the sprite
-            Text("Source Code", style = androidx.compose.ui.text.TextStyle(fontSize = 14.sp, color = Color.Green
-                , fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace, textAlign = androidx.compose.ui.text.style.TextAlign.Center))
-            Text(spriteCode.value, style = androidx.compose.ui.text.TextStyle(fontSize = 8.sp, color = Color.Green
-                , fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace))
+            Text("Source Code", style = TextStyle(fontSize = 14.sp, color = Color.Green
+                , fontFamily = FontFamily.Monospace, textAlign = TextAlign.Center))
+
+            TextField(value = spriteCode.value, onValueChange = {  }, readOnly = true,
+                textStyle = TextStyle(fontSize = 8.sp, color = Color.Green, fontFamily = FontFamily.Monospace),
+                modifier = Modifier.fillMaxSize())
+
         }
     }
 }
