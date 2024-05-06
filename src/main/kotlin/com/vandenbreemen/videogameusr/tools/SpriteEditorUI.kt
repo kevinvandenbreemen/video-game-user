@@ -27,6 +27,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
+import kotlin.math.ceil
 
 @Composable
 fun SpriteEditorUI(model: SpriteEditorModel) {
@@ -82,8 +83,8 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
                     val width = size.width
                     val height = size.height
 
-                    val pixelWidthInCanvas = width / model.spriteWidth
-                    val pixelHeightInCanvas = height / model.spriteHeight
+                    val pixelWidthInCanvas = ceil((width / model.spriteWidth).toDouble()).toFloat()
+                    val pixelHeightInCanvas = ceil((height / model.spriteHeight).toDouble()).toFloat()
 
                     for (y in 0 until model.spriteHeight) {
                         for (x in 0 until model.spriteWidth) {

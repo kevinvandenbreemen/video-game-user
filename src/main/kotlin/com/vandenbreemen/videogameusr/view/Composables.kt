@@ -10,10 +10,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import com.vandenbreemen.viddisplayrast.data.DisplayRaster
+import kotlin.math.ceil
 
 @Composable
 fun RasterDisplay(raster: DisplayRaster) {
-
 
     Column {
 
@@ -25,8 +25,8 @@ fun RasterDisplay(raster: DisplayRaster) {
             val width = size.width
             val height = size.height
 
-            val pixelWidthInCanvas = width / raster.xDim
-            val pixelHeightInCanvas = height / raster.yDim
+            val pixelWidthInCanvas = ceil((width / raster.xDim).toDouble()).toFloat()
+            val pixelHeightInCanvas = ceil((height / raster.yDim).toDouble()).toFloat()
 
             for (y in 0 until raster.yDim) {
                 for (x in 0 until raster.xDim) {
@@ -52,6 +52,7 @@ fun RasterDisplay(raster: DisplayRaster) {
 @Preview
 fun PreviewRasterDisplay() {
     val raster = DisplayRaster(16, 16)
-    raster.setPixel(8, 8, 1)
+    raster.setPixel(8, 8, 100)
+    raster.setPixel(9, 8, 100)
     RasterDisplay(raster)
 }
