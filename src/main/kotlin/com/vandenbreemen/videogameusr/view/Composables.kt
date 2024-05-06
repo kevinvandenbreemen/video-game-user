@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import com.vandenbreemen.viddisplayrast.data.DisplayRaster
 
 @Composable
@@ -31,11 +32,13 @@ fun RasterDisplay(raster: DisplayRaster) {
                 for (x in 0 until raster.xDim) {
                     val left = x * pixelWidthInCanvas
                     val top = y * pixelHeightInCanvas
-                    val color = if (raster.getPixel(
-                            x,
-                            y
-                        ) > 0
-                    ) androidx.compose.ui.graphics.Color.White else androidx.compose.ui.graphics.Color.Black
+
+                    val pixelColor = raster.getPixel(
+                        x,
+                        y
+                    ).toInt()
+                    val color = Color(pixelColor, pixelColor, pixelColor)
+
                     drawRect(color, topLeft = Offset(left, top), size = Size(pixelWidthInCanvas, pixelHeightInCanvas))
                 }
             }
