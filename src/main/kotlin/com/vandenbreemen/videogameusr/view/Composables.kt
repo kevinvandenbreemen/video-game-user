@@ -7,10 +7,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.*
 import androidx.compose.ui.unit.dp
 import com.vandenbreemen.viddisplayrast.data.DisplayRaster
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
@@ -93,8 +98,45 @@ fun GameConsole(runner: Runner) {
     }
 }
 
+@Composable
 private fun ControlDeck(onUp: ()->Unit, onDown: ()->Unit, onLeft: ()->Unit, onRight: ()->Unit, onA: ()->Unit, onB: ()->Unit) {
-    Row {
+
+    val focusRequester = remember { FocusRequester() }
+
+    Row(modifier=Modifier
+        .focusRequester(focusRequester)
+        .onKeyEvent { keyEvent ->
+            if(keyEvent.type != KeyEventType.KeyDown) { //  Don't handle the event if the user is just releasing the key
+                return@onKeyEvent false
+            }
+        when(keyEvent.key) {
+            Key.W -> {
+                onUp()
+                return@onKeyEvent true
+            }
+            Key.S -> {
+                onDown()
+                return@onKeyEvent true
+            }
+            Key.A -> {
+                onLeft()
+                return@onKeyEvent true
+            }
+            Key.D -> {
+                onRight()
+                return@onKeyEvent true
+            }
+            Key.Spacebar -> {
+                onA()
+                return@onKeyEvent true
+            }
+            Key.ShiftLeft -> {
+                onB()
+                return@onKeyEvent true
+            }
+        }
+        false
+    }) {
         //  Buttons
         Column(Modifier.weight(0.5f)) {
             Spacer(Modifier.weight(0.5f))
@@ -155,6 +197,10 @@ private fun ControlDeck(onUp: ()->Unit, onDown: ()->Unit, onLeft: ()->Unit, onRi
             }
             Spacer(Modifier.weight(0.5f))
         }
+    }
+
+    LaunchedEffect(focusRequester) {
+        focusRequester.requestFocus()
     }
 }
 
