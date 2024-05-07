@@ -46,14 +46,11 @@ class VideoGame1Model(screenWidth: Int, screenHeight: Int) {
      */
     fun playGamesTurn() {
 
-        klog("Taking players turn - enemy location is $enemyLocation, player location is $playerLocation")
-
         //  Move the enemy toward the player
         enemyLocation = Pair(
             if (enemyLocation.first > playerLocation.first) enemyLocation.first - motionIncrement else enemyLocation.first + motionIncrement,
             if (enemyLocation.second > playerLocation.second) enemyLocation.second - motionIncrement else enemyLocation.second + motionIncrement
         )
-        klog("Updated enemy location to $enemyLocation")
 
     }
 

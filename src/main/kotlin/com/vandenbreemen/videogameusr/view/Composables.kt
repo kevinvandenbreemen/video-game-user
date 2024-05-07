@@ -8,6 +8,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -17,9 +18,12 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.unit.dp
+import com.vandenbreemen.com.vandenbreemen.videogameusr.controller.VideoGameController
+import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.viddisplayrast.data.DisplayRaster
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
+import kotlinx.coroutines.delay
 import kotlin.math.ceil
 
 @Composable
@@ -54,15 +58,51 @@ fun RasterDisplay(raster: DisplayRaster) {
 
 }
 
+//  Do a simple default implementation of VideoGameController that just shows toasts or something
+class DummyVideoGameController : VideoGameController {
+    override fun moveRight() {
+        klog("Move Right")
+    }
+
+    override fun moveLeft() {
+        klog("Move Left")
+    }
+
+    override fun moveUp() {
+        klog("Move Up")
+    }
+
+    override fun moveDown() {
+        klog("Move Down")
+    }
+
+    override fun pressA() {
+        klog("Press A")
+    }
+
+    override fun pressB() {
+        klog("Press B")
+    }
+
+    override fun playTurn() {
+        klog("Play Turn")
+    }
+
+    override fun drawFrame() {
+        klog("Draw Frame")
+    }
+}
+
 @Composable
-fun GameConsole(runner: Runner) {
-    val raster = runner.newFrame()
+fun GameConsole(runner: Runner, framesPerSecond: Int = 60, controller: VideoGameController) {
+
+    var raster = remember { mutableStateOf(runner.newFrame()) }
 
     Column(Modifier.background(Color.Gray).fillMaxSize().padding(10.dp)) {
 
         //  The "screen"
         Column(Modifier.weight(0.6f).padding(5.dp)) {
-            RasterDisplay(raster)
+            RasterDisplay(raster.value)
             //Text("The Screen", Modifier.padding(2.dp).background(Color.White))
         }
 
@@ -73,27 +113,38 @@ fun GameConsole(runner: Runner) {
 
             ControlDeck(
                 onUp = {
-
+                    controller.moveUp()
                 },
                 onDown = {
-
+                    controller.moveDown()
                 },
                 onLeft = {
-
+                    controller.moveLeft()
                 },
                 onRight = {
-
+                    controller.moveRight()
                 },
                 onA = {
-
+                    controller.pressA()
                 },
                 onB = {
-
+                    controller.pressB()
                 }
             )
 
         }
 
+
+    }
+
+    //  Now start the game loop
+    LaunchedEffect(Unit) {
+        while(true) {
+            delay(1000 / framesPerSecond.toLong())
+            controller.playTurn()
+            controller.drawFrame()
+            raster.value = runner.newFrame()
+        }
 
     }
 }
@@ -235,7 +286,7 @@ fun PreviewGameConsole() {
     val runner = Runner(requirements)
     runner.drawSpriteAt(0, 50, 60)
     //runner.drawSpriteAt(1, 100, 100)
-    GameConsole(runner)
+    GameConsole(runner, 60, DummyVideoGameController())
 }
 
 @Composable

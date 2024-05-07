@@ -1,9 +1,9 @@
-package com.vandenbreemen.com.vandenbreemen.videogameusr.game.vidgame1
+package com.vandenbreemen.com.vandenbreemen.videogameusr.game.controller
 
-import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.spriteEditor
+import com.vandenbreemen.com.vandenbreemen.videogameusr.game.vidgame1.VideoGame1Controller
+import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ComposeRasterRender
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
-import com.vandenbreemen.viddisplayrast.view.swing.SwingRasterRender
 
 fun main() {
 
@@ -72,19 +72,27 @@ fun main() {
         1, 0, 0, 1, 1, 0, 0, 1
     ))
 
-    spriteEditor(requirements, 3, "requirements")
+    //spriteEditor(requirements, 0, "requirement", 800)
+
 
     //  Now set up a screen
     val runner = Runner(requirements)
 
     //  Test out the sprites
-    runner.drawSpriteAt(0, 50, 60)
-    runner.drawSpriteAt(1, 80, 60)
-    runner.drawSpriteAt(2, 100, 60)
-    runner.drawSpriteAt(3, 120, 60)
+//    runner.drawSpriteAt(0, 50, 60)
+//    runner.drawSpriteAt(1, 80, 60)
+//    runner.drawSpriteAt(2, 100, 60)
+//    runner.drawSpriteAt(3, 120, 60)
 
     //  Show the screen
-    SwingRasterRender.showTestRenderWindow(runner.newFrame())
+    //SwingRasterRender.showTestRenderWindow(runner.newFrame())
+    //ComposeRasterRender.showTestRenderWindow(runner.newFrame())
+
+    //  Now set up a game
+    val controller = VideoGame1Controller(runner, requirements)
+    ComposeRasterRender.playGameInWindow(runner, controller, 10, 800)
+    //  Draw the screen
+
 
 
 }
