@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
 /**
  * State information about the game
  */
-class VideoGame1Model(private val screenWidth: Int, private val screenHeight: Int, private val spriteWidth: Int, private val spriteHeight: Int) {
+class VideoGame1Model(private val screenWidth: Int, private val screenHeight: Int, private val spriteWidth: Int, private val spriteHeight: Int, private val enemyHitPoints: Int = 3) {
 
     private val motionIncrement = 1
 
@@ -17,6 +17,11 @@ class VideoGame1Model(private val screenWidth: Int, private val screenHeight: In
 
     private var playerLocation: Pair<Int, Int> = Pair((screenWidth * 0.1).toInt(), screenHeight / 2)
     private var enemyLocation: Pair<Int, Int> = Pair((screenWidth * 0.9).toInt(), screenHeight / 2)
+
+    /**
+     *
+     */
+    private var enemyDamage = 0
 
     /**
      * List of positions of bullets in flight
@@ -88,6 +93,11 @@ class VideoGame1Model(private val screenWidth: Int, private val screenHeight: In
 
     }
 
+
+    private fun isHitboxIntersecting(location1: Pair<Int, Int>, location2: Pair<Int, Int>): Boolean {
+        return location1.first < location2.first + spriteWidth && location1.first + spriteWidth > location2.first && location1.second < location2.second + spriteHeight && location1.second + spriteHeight > location2.second
+    }
+
     /**
      * Once the player has moved, the game will play its turn
      */
@@ -110,7 +120,15 @@ class VideoGame1Model(private val screenWidth: Int, private val screenHeight: In
 
             Pair(bulletLocation.first + motionIncrement, bulletLocation.second).also {
                 if(isInBounds(it)) {
-                    finalBulletList.add(it)
+
+                    //  Check if it hit the alien
+                    if(isHitboxIntersecting(it, enemyLocation)) {
+                        klog("Hit the alien!")
+                        enemyDamage++
+                    }
+                    else {
+                        finalBulletList.add(it)
+                    }
                 }
             }
 
