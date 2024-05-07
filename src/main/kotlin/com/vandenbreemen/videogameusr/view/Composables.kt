@@ -154,39 +154,30 @@ private fun ControlDeck(onUp: ()->Unit, onDown: ()->Unit, onLeft: ()->Unit, onRi
 
     val focusRequester = remember { FocusRequester() }
 
+    val pressedKeys = remember { mutableStateOf(mutableSetOf<Key>()) }
+
     Row(modifier=Modifier
         .focusRequester(focusRequester)
         .onKeyEvent { keyEvent ->
-            if(keyEvent.type != KeyEventType.KeyDown) { //  Don't handle the event if the user is just releasing the key
-                return@onKeyEvent false
+
+            when(keyEvent.type) {
+                KeyEventType.KeyDown -> {
+                    pressedKeys.value.add(keyEvent.key)
+                }
+                KeyEventType.KeyUp -> {
+                    pressedKeys.value.remove(keyEvent.key)
+                }
             }
-        when(keyEvent.key) {
-            Key.W -> {
-                onUp()
-                return@onKeyEvent true
-            }
-            Key.S -> {
-                onDown()
-                return@onKeyEvent true
-            }
-            Key.A -> {
-                onLeft()
-                return@onKeyEvent true
-            }
-            Key.D -> {
-                onRight()
-                return@onKeyEvent true
-            }
-            Key.Spacebar -> {
-                onA()
-                return@onKeyEvent true
-            }
-            Key.ShiftLeft -> {
-                onB()
-                return@onKeyEvent true
-            }
-        }
-        false
+
+            if (Key.W in pressedKeys.value) onUp()
+            if (Key.S in pressedKeys.value) onDown()
+            if (Key.A in pressedKeys.value) onLeft()
+            if (Key.D in pressedKeys.value) onRight()
+            if (Key.Spacebar in pressedKeys.value) onA()
+            if (Key.ShiftLeft in pressedKeys.value) onB()
+
+            //  If we got in here we handled it
+            true
     }) {
         //  Buttons
         Column(Modifier.weight(0.5f)) {
