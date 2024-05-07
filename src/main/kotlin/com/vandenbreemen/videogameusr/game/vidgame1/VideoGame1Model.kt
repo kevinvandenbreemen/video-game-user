@@ -12,8 +12,8 @@ class VideoGame1Model(private val screenWidth: Int, private val screenHeight: In
 
     private val motionIncrement = 1
 
-    private val enemyTurnDelayFractionOfSecond = 4  //  As this increases it makes the game harder!
-    private val enemyTurnDelay: Long = 1000 / enemyTurnDelayFractionOfSecond.toLong()
+    private var enemyTurnDelayFractionOfSecond = 4  //  As this increases it makes the game harder!
+    private val enemyTurnDelay: Long get() = 1000 / enemyTurnDelayFractionOfSecond.toLong()
     private var lastTurnTime: Long = System.currentTimeMillis()
 
 
@@ -161,6 +161,10 @@ class VideoGame1Model(private val screenWidth: Int, private val screenHeight: In
             explosionLocations[enemyLocation] = -1   //  Start a new explosion at this location
             enemyDamage = 0
             enemyLocation = Pair((screenWidth * 0.9).toInt(), screenHeight / 2)
+
+            //  Now increase the difficulty
+            enemyTurnDelayFractionOfSecond += 1
+            klog("Enemy delay is now $enemyTurnDelay")
         }
 
         //  Finally compute the explosion frames
