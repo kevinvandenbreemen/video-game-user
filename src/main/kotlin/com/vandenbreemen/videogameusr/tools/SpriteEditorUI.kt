@@ -40,7 +40,7 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
             )
         ) {
 
-            Column(modifier = Modifier.weight(0.8f)) {
+            Column(modifier = Modifier.weight(0.6f)) {
 
                 val sizeWidthHeight = remember { mutableStateOf(Pair(0, 0)) }
                 val tapState = remember { mutableStateOf(Offset.Zero) }
@@ -107,7 +107,7 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
 
             //  Determine the available colors -- for now 16 colors out of the 128 possible byte values evenly spaced
             
-            Column(modifier = Modifier.weight(0.2f)) {
+            Column(modifier = Modifier.weight(0.4f)) {
                 Text("Color Picker")
                 ColorPickerUI(paintColorByte, model)
             }
@@ -135,7 +135,7 @@ private fun ColorPickerUI(
         model.paintColor = paintColorByte.value
     }
 
-    val numColorChannelSteps = 3
+    val numColorChannelSteps = 4
 
     Column {
         Row {
@@ -225,7 +225,7 @@ private fun ColorPickerUI(
 fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requirementsVariableName: String = "requirement", maxWidth: Int = 800) = application {
 
     //  Step 1:  Work out the height as a ratio of the width
-    val height = (maxWidth * 0.75).toInt()
+    val height = (maxWidth * 0.8).toInt()
 
     val model = SpriteEditorModel(requirements, spriteIndex=spriteIndex, requirementsVariableName = requirementsVariableName)
     Window(
