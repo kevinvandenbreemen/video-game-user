@@ -97,6 +97,7 @@ class DummyVideoGameController : VideoGameController {
 fun GameConsole(runner: Runner, framesPerSecond: Int = 60, controller: VideoGameController) {
 
     var raster = remember { mutableStateOf(runner.newFrame()) }
+    val controlsModel = remember { ControlsModel() }
 
     Column(Modifier.background(Color.Gray).fillMaxSize().padding(10.dp)) {
 
@@ -112,6 +113,7 @@ fun GameConsole(runner: Runner, framesPerSecond: Int = 60, controller: VideoGame
             Text("Controls", Modifier.padding(2.dp).background(Color.White))
 
             ControlDeck(
+                controlsModel,
                 onUp = {
                     controller.moveUp()
                 },
@@ -141,6 +143,16 @@ fun GameConsole(runner: Runner, framesPerSecond: Int = 60, controller: VideoGame
     LaunchedEffect(Unit) {
         while(true) {
             delay(1000 / framesPerSecond.toLong())
+
+            //  Handle user input based on what keys are pressed
+            if(controlsModel.isButtonPressed(Button.UP)) controller.moveUp()
+            if(controlsModel.isButtonPressed(Button.DOWN)) controller.moveDown()
+            if(controlsModel.isButtonPressed(Button.LEFT)) controller.moveLeft()
+            if(controlsModel.isButtonPressed(Button.RIGHT)) controller.moveRight()
+            if(controlsModel.isButtonPressed(Button.A)) controller.pressA()
+            if(controlsModel.isButtonPressed(Button.B)) controller.pressB()
+
+
             controller.playTurn()
             controller.drawFrame()
             raster.value = runner.newFrame()
@@ -150,11 +162,12 @@ fun GameConsole(runner: Runner, framesPerSecond: Int = 60, controller: VideoGame
 }
 
 @Composable
-private fun ControlDeck(onUp: ()->Unit, onDown: ()->Unit, onLeft: ()->Unit, onRight: ()->Unit, onA: ()->Unit, onB: ()->Unit) {
+private fun ControlDeck(
+    controlsModel: ControlsModel,
+    onUp: ()->Unit, onDown: ()->Unit, onLeft: ()->Unit, onRight: ()->Unit, onA: ()->Unit, onB: ()->Unit) {
 
     val focusRequester = remember { FocusRequester() }
 
-    val pressedKeys = remember { mutableStateOf(mutableSetOf<Key>()) }
 
     Row(modifier=Modifier
         .focusRequester(focusRequester)
@@ -162,19 +175,22 @@ private fun ControlDeck(onUp: ()->Unit, onDown: ()->Unit, onLeft: ()->Unit, onRi
 
             when(keyEvent.type) {
                 KeyEventType.KeyDown -> {
-                    pressedKeys.value.add(keyEvent.key)
+                    if (keyEvent.key == Key.W) controlsModel.pressButton(Button.UP)
+                    if (keyEvent.key ==  Key.S) controlsModel.pressButton(Button.DOWN)
+                    if (keyEvent.key == Key.A) controlsModel.pressButton(Button.LEFT)
+                    if (keyEvent.key ==  Key.D) controlsModel.pressButton(Button.RIGHT)
+                    if (keyEvent.key ==  Key.Spacebar) controlsModel.pressButton(Button.A)
+                    if (keyEvent.key ==  Key.ShiftLeft) controlsModel.pressButton(Button.B)
                 }
                 KeyEventType.KeyUp -> {
-                    pressedKeys.value.remove(keyEvent.key)
+                    if (keyEvent.key == Key.W) controlsModel.releaseButton(Button.UP)
+                    if (keyEvent.key ==  Key.S) controlsModel.releaseButton(Button.DOWN)
+                    if (keyEvent.key == Key.A) controlsModel.releaseButton(Button.LEFT)
+                    if (keyEvent.key ==  Key.D) controlsModel.releaseButton(Button.RIGHT)
+                    if (keyEvent.key ==  Key.Spacebar) controlsModel.releaseButton(Button.A)
+                    if (keyEvent.key ==  Key.ShiftLeft) controlsModel.releaseButton(Button.B)
                 }
             }
-
-            if (Key.W in pressedKeys.value) onUp()
-            if (Key.S in pressedKeys.value) onDown()
-            if (Key.A in pressedKeys.value) onLeft()
-            if (Key.D in pressedKeys.value) onRight()
-            if (Key.Spacebar in pressedKeys.value) onA()
-            if (Key.ShiftLeft in pressedKeys.value) onB()
 
             //  If we got in here we handled it
             true
