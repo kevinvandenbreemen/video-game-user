@@ -5,7 +5,7 @@ import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 /**
  * State information about the game
  */
-class VideoGame1Model(screenWidth: Int, screenHeight: Int) {
+class VideoGame1Model(private val screenWidth: Int, private val screenHeight: Int, private val spriteWidth: Int, private val spriteHeight: Int) {
 
     private val motionIncrement = 1
 
@@ -22,6 +22,12 @@ class VideoGame1Model(screenWidth: Int, screenHeight: Int) {
         klog("screenWidth=$screenWidth, screenHeight=$screenHeight")
     }
 
+    private fun isInBounds(location: Pair<Int, Int>): Boolean {
+
+        //  Since locations will always have origin at top left
+        return location.first in 0..<screenWidth-spriteWidth && location.second in 0..<screenHeight-spriteHeight
+    }
+
     fun getPlayerLocation(): Pair<Int, Int> {
         return playerLocation
     }
@@ -31,19 +37,35 @@ class VideoGame1Model(screenWidth: Int, screenHeight: Int) {
     }
 
     fun movePlayerRight() {
-        playerLocation = Pair(playerLocation.first + motionIncrement, playerLocation.second)
+        Pair(playerLocation.first + motionIncrement, playerLocation.second).also {
+            if(isInBounds(it)) {
+                playerLocation = it
+            }
+        }
     }
 
     fun movePlayerLeft() {
-        playerLocation = Pair(playerLocation.first - motionIncrement, playerLocation.second)
+        Pair(playerLocation.first - motionIncrement, playerLocation.second).also {
+            if(isInBounds(it)) {
+                playerLocation = it
+            }
+        }
     }
 
     fun movePlayerUp() {
-        playerLocation = Pair(playerLocation.first, playerLocation.second - motionIncrement)
+        Pair(playerLocation.first, playerLocation.second - motionIncrement).also {
+            if(isInBounds(it)) {
+                playerLocation = it
+            }
+        }
     }
 
     fun movePlayerDown() {
-        playerLocation = Pair(playerLocation.first, playerLocation.second + motionIncrement)
+        Pair(playerLocation.first, playerLocation.second + motionIncrement).also {
+            if(isInBounds(it)) {
+                playerLocation = it
+            }
+        }
     }
 
     /**

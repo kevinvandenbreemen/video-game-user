@@ -6,7 +6,7 @@ import com.vandenbreemen.viddisplayrast.game.Runner
 
 class VideoGame1Controller(private val runner: Runner, requirements: GameDataRequirements) : VideoGameController {
 
-    private val model = VideoGame1Model(requirements.screenWidth, requirements.screenHeight)
+    private val model = VideoGame1Model(requirements.screenWidth, requirements.screenHeight, requirements.spriteWidth, requirements.spriteHeight)
 
     override fun drawFrame() {
 
