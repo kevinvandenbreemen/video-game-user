@@ -2,6 +2,7 @@ package com.vandenbreemen.com.vandenbreemen.videogameusr.game.vidgame1
 
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.com.vandenbreemen.videogameusr.model.DelayedSwitch
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
 /**
@@ -20,6 +21,14 @@ class VideoGame1Model(private val screenWidth: Int, private val screenHeight: In
     private var enemyLocation: Pair<Int, Int> = Pair((screenWidth * 0.9).toInt(), screenHeight / 2)
 
     private val gunFiringSwitch = DelayedSwitch(1000L)
+
+    /**
+     * Mapping from location to explosion frame
+     */
+    private val explosionLocations = ConcurrentHashMap<Pair<Int, Int>, Int>()
+    fun getExplosions(): Map<Pair<Int, Int>, Int> {
+        return explosionLocations.toMap()
+    }
 
     /**
      *
@@ -149,8 +158,19 @@ class VideoGame1Model(private val screenWidth: Int, private val screenHeight: In
         //  Now figure out if the alien has died
         if(enemyDamage >= enemyHitPoints) {
             klog("Alien has died!")
+            explosionLocations[enemyLocation] = -1   //  Start a new explosion at this location
             enemyDamage = 0
             enemyLocation = Pair((screenWidth * 0.9).toInt(), screenHeight / 2)
+        }
+
+        //  Finally compute the explosion frames
+        explosionLocations.forEach { (location, frame) ->
+            if(frame < 3) {
+                explosionLocations[location] = frame + 1
+            }
+            else {
+                explosionLocations.remove(location)
+            }
         }
 
     }

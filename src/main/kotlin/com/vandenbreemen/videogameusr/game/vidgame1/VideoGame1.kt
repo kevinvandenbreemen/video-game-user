@@ -72,7 +72,47 @@ fun main() {
         1, 0, 0, 1, 1, 0, 0, 1
     ))
 
-    //spriteEditor(requirements, 0, "requirement", 800)
+    //  Define an explosion
+    //  Basic array of 8x8 0s
+
+    requirements.setData(4, byteArrayOf(
+        0, 0, 0, 24, 0, 0, 0, 0,
+        0, 40, 0, 0, 0, 72, 16, 0,
+        0, 0, 120, 72, 120, 0, 104, 0,
+        0, 0, 0, 120, 0, 0, 0, 0,
+        40, 0, 112, 120, 96, 0, 112, 0,
+        0, 0, 0, 0, 112, 0, 0, 0,
+        0, 0, 40, 72, 0, 96, 0, 0,
+        0, 72, 0, 0, 104, 0, 0, 72
+    ))
+
+    //  Explosion 2
+
+    requirements.setData(5, byteArrayOf(
+        0, 0, 0, 24, 0, 0, 0, 0,
+        0, 40, 0, 0, 0, 72, 32, 0,
+        32, 0, 120, 72, 120, 0, 32, 0,
+        0, 32, 0, 48, 48, 0, 0, 0,
+        40, 0, 64, 48, 48, 0, 112, 0,
+        0, 0, 0, 48, 112, 0, 0, 0,
+        0, 0, 40, 72, 0, 96, 32, 0,
+        0, 72, 0, 0, 104, 0, 0, 32
+    ))
+
+    //  Explosion frame 3
+
+    requirements.setData(6, byteArrayOf(
+        0, 0, 64, 24, 0, 0, 0, 80,
+        64, 40, 0, 0, 64, 72, 32, 0,
+        32, 0, 0, 40, 0, 0, 0, 0,
+        0, 32, 0, 16, 16, 0, 0, 0,
+        40, 0, 0, 16, 16, 0, 112, 0,
+        64, 0, 0, 16, 0, 0, 0, 80,
+        0, 0, 40, 0, 0, 0, 32, 80,
+        80, 72, 0, 0, 0, 0, 80, 32
+    ))
+
+    //spriteEditor(requirements, 6, "requirements", 800)
 
 
     //  Now set up a screen
@@ -90,7 +130,7 @@ fun main() {
 
     //  Now set up a game
     val controller = VideoGame1Controller(runner, requirements)
-    ComposeRasterRender.playGameInWindow(runner, controller, 10, 800)
+    ComposeRasterRender.playGameInWindow(runner, controller, 60, 800)
     //  Draw the screen
 
 

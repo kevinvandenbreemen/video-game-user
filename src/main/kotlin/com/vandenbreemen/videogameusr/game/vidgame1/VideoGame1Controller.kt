@@ -16,6 +16,11 @@ class VideoGame1Controller(private val runner: Runner, requirements: GameDataReq
             runner.drawSpriteAt(1, it.first, it.second)
         }
 
+        model.getExplosions().forEach {
+            val spriteIndex = it.value + 4
+            runner.drawSpriteAt(spriteIndex, it.key.first, it.key.second)
+        }
+
     }
 
     override fun moveRight() {
