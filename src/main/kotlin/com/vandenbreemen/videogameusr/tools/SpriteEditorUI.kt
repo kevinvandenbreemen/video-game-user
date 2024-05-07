@@ -9,10 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -111,48 +108,7 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
             
             Column(modifier = Modifier.weight(0.2f)) {
                 Text("Color Picker")
-                Row {
-
-                    val colorCount = 16
-                    val colorStep = 128 / colorCount
-
-                    LaunchedEffect(paintColorByte.value) {  //  Force a redraw if the user picks a color
-                        model.paintColor = paintColorByte.value
-                    }
-                    
-                    //  Draw the color selector
-                    Canvas(modifier = Modifier.fillMaxSize().pointerInput(Unit){
-                        detectTapGestures { offset ->
-                            val x = offset.x
-                            val colorIndex = (x / size.width * colorCount).toInt()
-                            paintColorByte.value = (colorIndex * colorStep).toByte()
-                        }
-
-                    }) {
-
-                        val width = size.width / colorCount
-
-                        for (i in 0 until colorCount) {
-                            val colorVal = i * colorStep
-
-                            val color = Color(colorVal, colorVal, colorVal)
-                            drawRect(
-                                color,
-                                topLeft = Offset(i * width, 0f),
-                                size = Size(width, size.height)
-                            )
-
-                            //  If the color is selected draw a small circle in the middle of it
-                            if(colorVal == paintColorByte.value.toInt()){
-                                drawCircle(
-                                    Color.Green,
-                                    center = Offset(i * width + width / 2, size.height / 2),
-                                    radius = 5f
-                                )
-                            }
-                        }
-                    }
-                }
+                ColorPickerUI(paintColorByte, model)
             }
         }
         Column(modifier = Modifier.weight(0.33f).fillMaxSize().background(Color.Black)) {
@@ -164,6 +120,55 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
                 textStyle = TextStyle(fontSize = 8.sp, color = Color.Green, fontFamily = FontFamily.Monospace),
                 modifier = Modifier.fillMaxSize())
 
+        }
+    }
+}
+
+@Composable
+private fun ColorPickerUI(
+    paintColorByte: MutableState<Byte>,
+    model: SpriteEditorModel
+) {
+    Row {
+
+        val colorCount = 16
+        val colorStep = 128 / colorCount
+
+        LaunchedEffect(paintColorByte.value) {  //  Force a redraw if the user picks a color
+            model.paintColor = paintColorByte.value
+        }
+
+        //  Draw the color selector
+        Canvas(modifier = Modifier.fillMaxSize().pointerInput(Unit) {
+            detectTapGestures { offset ->
+                val x = offset.x
+                val colorIndex = (x / size.width * colorCount).toInt()
+                paintColorByte.value = (colorIndex * colorStep).toByte()
+            }
+
+        }) {
+
+            val width = size.width / colorCount
+
+            for (i in 0 until colorCount) {
+                val colorVal = i * colorStep
+
+                val color = Color(colorVal, colorVal, colorVal)
+                drawRect(
+                    color,
+                    topLeft = Offset(i * width, 0f),
+                    size = Size(width, size.height)
+                )
+
+                //  If the color is selected draw a small circle in the middle of it
+                if (colorVal == paintColorByte.value.toInt()) {
+                    drawCircle(
+                        Color.Green,
+                        center = Offset(i * width + width / 2, size.height / 2),
+                        radius = 5f
+                    )
+                }
+            }
         }
     }
 }
