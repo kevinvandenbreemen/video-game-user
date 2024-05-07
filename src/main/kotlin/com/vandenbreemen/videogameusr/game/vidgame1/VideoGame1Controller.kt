@@ -12,6 +12,9 @@ class VideoGame1Controller(private val runner: Runner, requirements: GameDataReq
 
         runner.drawSpriteAt(0, model.getPlayerLocation().first, model.getPlayerLocation().second)
         runner.drawSpriteAt(2, model.getEnemyLocation().first, model.getEnemyLocation().second)
+        model.getBulletsInFlight().forEach {
+            runner.drawSpriteAt(1, it.first, it.second)
+        }
 
     }
 
@@ -33,7 +36,7 @@ class VideoGame1Controller(private val runner: Runner, requirements: GameDataReq
     }
 
     override fun pressA() {
-        //  For now do nothing
+        model.fireWeapon()
     }
 
     override fun pressB() {

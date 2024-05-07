@@ -1,6 +1,7 @@
 package com.vandenbreemen.com.vandenbreemen.videogameusr.game.vidgame1
 
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
+import java.util.concurrent.ConcurrentLinkedQueue
 
 /**
  * State information about the game
@@ -16,6 +17,15 @@ class VideoGame1Model(private val screenWidth: Int, private val screenHeight: In
 
     private var playerLocation: Pair<Int, Int> = Pair((screenWidth * 0.1).toInt(), screenHeight / 2)
     private var enemyLocation: Pair<Int, Int> = Pair((screenWidth * 0.9).toInt(), screenHeight / 2)
+
+    /**
+     * List of positions of bullets in flight
+     */
+    //  Concurrent mutable list of pairs of ints
+    private val bulletsInFlight = ConcurrentLinkedQueue<Pair<Int, Int>>()
+    fun getBulletsInFlight(): List<Pair<Int, Int>> {
+        return bulletsInFlight.toList()
+    }
 
     init {
 
@@ -69,23 +79,46 @@ class VideoGame1Model(private val screenWidth: Int, private val screenHeight: In
     }
 
     /**
+     * Shoot your weapon
+     */
+    fun fireWeapon() {
+
+        klog("Fire Weapon")
+        bulletsInFlight.add(Pair(playerLocation.first + spriteWidth, playerLocation.second + spriteHeight / 2))
+
+    }
+
+    /**
      * Once the player has moved, the game will play its turn
      */
     fun playGamesTurn() {
 
         val currentTime = System.currentTimeMillis()
-        if(currentTime - lastTurnTime < enemyTurnDelay) {
-            return
+        if(currentTime - lastTurnTime >= enemyTurnDelay) {
+            //  Move the enemy toward the player
+            enemyLocation = Pair(
+                if (enemyLocation.first > playerLocation.first) enemyLocation.first - motionIncrement else enemyLocation.first + motionIncrement,
+                if (enemyLocation.second > playerLocation.second) enemyLocation.second - motionIncrement else enemyLocation.second + motionIncrement
+            )
+            lastTurnTime = currentTime
         }
 
-        //  Move the enemy toward the player
-        enemyLocation = Pair(
-            if (enemyLocation.first > playerLocation.first) enemyLocation.first - motionIncrement else enemyLocation.first + motionIncrement,
-            if (enemyLocation.second > playerLocation.second) enemyLocation.second - motionIncrement else enemyLocation.second + motionIncrement
-        )
-        lastTurnTime = currentTime
+        //  Move the bullets
+        val newBullets = ArrayList(bulletsInFlight)
+        val finalBulletList = ArrayList<Pair<Int, Int>>()
+        newBullets.forEach { bulletLocation ->
 
-        //  TODO    Figure out when we want to increase the enemy speed!
+            Pair(bulletLocation.first + motionIncrement, bulletLocation.second).also {
+                if(isInBounds(it)) {
+                    finalBulletList.add(it)
+                }
+            }
+
+        }
+        bulletsInFlight.apply {
+            clear()
+            addAll(finalBulletList)
+        }
 
     }
 
