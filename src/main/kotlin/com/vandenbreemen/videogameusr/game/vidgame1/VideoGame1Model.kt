@@ -1,6 +1,7 @@
 package com.vandenbreemen.com.vandenbreemen.videogameusr.game.vidgame1
 
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
+import com.vandenbreemen.com.vandenbreemen.videogameusr.model.DelayedSwitch
 import java.util.concurrent.ConcurrentLinkedQueue
 
 /**
@@ -10,13 +11,15 @@ class VideoGame1Model(private val screenWidth: Int, private val screenHeight: In
 
     private val motionIncrement = 1
 
-    private val enemyTurnDelayFractionOfSecond = 2  //  As this increases it makes the game harder!
+    private val enemyTurnDelayFractionOfSecond = 4  //  As this increases it makes the game harder!
     private val enemyTurnDelay: Long = 1000 / enemyTurnDelayFractionOfSecond.toLong()
     private var lastTurnTime: Long = System.currentTimeMillis()
 
 
     private var playerLocation: Pair<Int, Int> = Pair((screenWidth * 0.1).toInt(), screenHeight / 2)
     private var enemyLocation: Pair<Int, Int> = Pair((screenWidth * 0.9).toInt(), screenHeight / 2)
+
+    private val gunFiringSwitch = DelayedSwitch(1000L)
 
     /**
      *
@@ -88,7 +91,12 @@ class VideoGame1Model(private val screenWidth: Int, private val screenHeight: In
      */
     fun fireWeapon() {
 
-        klog("Fire Weapon")
+        if(!gunFiringSwitch.trigger()) {
+            return
+        }
+
+        klog("Firing weapon!")
+
         bulletsInFlight.add(Pair(playerLocation.first + spriteWidth, playerLocation.second + spriteHeight / 2))
 
     }
@@ -114,7 +122,7 @@ class VideoGame1Model(private val screenWidth: Int, private val screenHeight: In
         }
 
         //  Move the bullets
-        val newBullets = ArrayList(bulletsInFlight)
+        val newBullets = bulletsInFlight.toList()
         val finalBulletList = ArrayList<Pair<Int, Int>>()
         newBullets.forEach { bulletLocation ->
 
@@ -136,6 +144,13 @@ class VideoGame1Model(private val screenWidth: Int, private val screenHeight: In
         bulletsInFlight.apply {
             clear()
             addAll(finalBulletList)
+        }
+
+        //  Now figure out if the alien has died
+        if(enemyDamage >= enemyHitPoints) {
+            klog("Alien has died!")
+            enemyDamage = 0
+            enemyLocation = Pair((screenWidth * 0.9).toInt(), screenHeight / 2)
         }
 
     }
