@@ -4,9 +4,9 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
@@ -89,8 +89,9 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
                             val top = y * pixelHeightInCanvas
 
                             //  Draw grayscale color based on pixel byte value
-                            val pixelColor = spriteArray.value[y * model.spriteWidth + x].toInt()
-                            val color = Color(pixelColor, pixelColor, pixelColor)
+                            val pixelColor = spriteArray.value[y * model.spriteWidth + x]
+
+                            val color = model.getComposeColor(pixelColor)
                             drawRect(
                                 color,
                                 topLeft = Offset(left, top),
@@ -129,46 +130,94 @@ private fun ColorPickerUI(
     paintColorByte: MutableState<Byte>,
     model: SpriteEditorModel
 ) {
-    Row {
 
-        val colorCount = 16
-        val colorStep = 128 / colorCount
+    LaunchedEffect(paintColorByte.value) {  //  Force a redraw if the user picks a color
+        model.paintColor = paintColorByte.value
+    }
 
-        LaunchedEffect(paintColorByte.value) {  //  Force a redraw if the user picks a color
-            model.paintColor = paintColorByte.value
+    val numColorChannelSteps = 3
+
+    Column {
+        Row {
+            Text("Selected Color:")
+            //  Draw a box with the selected color
+            val color = model.getComposeColor(paintColorByte.value)
+            Box(modifier = Modifier.height(10.dp).width(20.dp).background(color))
+
+            Button(onClick = {
+                paintColorByte.value = 0
+            }) {
+                Text("Reset Color",  style = TextStyle(color = Color.White, fontSize = 8.sp))
+            }
         }
 
-        //  Draw the color selector
-        Canvas(modifier = Modifier.fillMaxSize().pointerInput(Unit) {
-            detectTapGestures { offset ->
-                val x = offset.x
-                val colorIndex = (x / size.width * colorCount).toInt()
-                paintColorByte.value = (colorIndex * colorStep).toByte()
-            }
+        Row {
 
-        }) {
+            //  First the brightness column:
+            Column(Modifier.weight(0.25f)) {
+                Text("Brightness")
+                for (i in 0 until numColorChannelSteps) {
 
-            val width = size.width / colorCount
+                    //  Grayscale color to signify a brightness
+                    val colorByte = model.byteColorDataInteractor.getColorByte(i, i, i, i)
+                    val color = model.getComposeColor(colorByte)
+                    Button(
+                        colors = ButtonDefaults.buttonColors(backgroundColor = color, contentColor = Color.White),
+                        onClick = {
+                            paintColorByte.value = model.setBrightness(paintColorByte.value, i)
+                        }, modifier = Modifier.fillMaxWidth().background(color)
+                    ) {
+                        Text("$i", style = TextStyle(color = Color.White, fontSize = 8.sp))
+                    }
 
-            for (i in 0 until colorCount) {
-                val colorVal = i * colorStep
-
-                val color = Color(colorVal, colorVal, colorVal)
-                drawRect(
-                    color,
-                    topLeft = Offset(i * width, 0f),
-                    size = Size(width, size.height)
-                )
-
-                //  If the color is selected draw a small circle in the middle of it
-                if (colorVal == paintColorByte.value.toInt()) {
-                    drawCircle(
-                        Color.Green,
-                        center = Offset(i * width + width / 2, size.height / 2),
-                        radius = 5f
-                    )
                 }
             }
+            Column(Modifier.weight(0.25f)) {
+                Text("Red")
+                for (i in 0 until numColorChannelSteps) {
+                    val colorByte = model.byteColorDataInteractor.getColorByte(0, i, 0, 0)
+                    val color = model.getComposeColor(colorByte)
+                    Button(
+                        colors = ButtonDefaults.buttonColors(backgroundColor = color, contentColor = Color.White),
+                        onClick = {
+                            paintColorByte.value = model.setRed(paintColorByte.value, i)
+                        }, modifier = Modifier.fillMaxWidth().background(color)
+                    ) {
+                        Text("$i", style = TextStyle(color = Color.White, fontSize = 8.sp))
+                    }
+                }
+            }
+            Column(Modifier.weight(0.25f)) {
+                Text("Green")
+                for (i in 0 until numColorChannelSteps) {
+                    val colorByte = model.byteColorDataInteractor.getColorByte(0, 0, i, 0)
+                    val color = model.getComposeColor(colorByte)
+                    Button(
+                        colors = ButtonDefaults.buttonColors(backgroundColor = color, contentColor = Color.White),
+                        onClick = {
+                            paintColorByte.value = model.setGreen(paintColorByte.value, i)
+                        }, modifier = Modifier.fillMaxWidth().background(color)
+                    ) {
+                        Text("$i", style = TextStyle(color = Color.White, fontSize = 8.sp))
+                    }
+                }
+            }
+            Column(Modifier.weight(0.25f)) {
+                Text("Blue")
+                for (i in 0 until numColorChannelSteps) {
+                    val colorByte = model.byteColorDataInteractor.getColorByte(0, 0, 0, i)
+                    val color = model.getComposeColor(colorByte)
+                    Button(
+                        colors = ButtonDefaults.buttonColors(backgroundColor = color, contentColor = Color.White),
+                        onClick = {
+                            paintColorByte.value = model.setBlue(paintColorByte.value, i)
+                        }, modifier = Modifier.fillMaxWidth().background(color)
+                    ) {
+                        Text("$i", style = TextStyle(color = Color.White, fontSize = 8.sp))
+                    }
+                }
+            }
+
         }
     }
 }

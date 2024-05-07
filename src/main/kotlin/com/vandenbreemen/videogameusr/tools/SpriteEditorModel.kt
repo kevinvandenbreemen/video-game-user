@@ -1,5 +1,7 @@
 package com.vandenbreemen.com.vandenbreemen.videogameusr.tools
 
+import androidx.compose.ui.graphics.Color
+import com.vandenbreemen.viddisplayrast.data.ByteColorDataInteractor
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
 
@@ -10,6 +12,11 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
 
     val spriteWidth = requirements.spriteWidth
     val spriteHeight = requirements.spriteHeight
+
+    /**
+     * Computation of color values etc
+     */
+    val byteColorDataInteractor = ByteColorDataInteractor()
 
     /**
      * Color of the paint brush for coloring pixels
@@ -44,6 +51,51 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
 
     fun getSpriteByteArray(): ByteArray {
         return spriteByteArray
+    }
+
+    fun setBrightness(colorByte: Byte, brightness: Int): Byte {
+        val red = byteColorDataInteractor.getRedChannel(colorByte)
+        val green = byteColorDataInteractor.getGreenChannel(colorByte)
+        val blue = byteColorDataInteractor.getBlueChannel(colorByte)
+        return byteColorDataInteractor.getColorByte(brightness, red, green, blue)
+    }
+
+    fun setRed(colorByte: Byte, red: Int): Byte {
+        val brightness = byteColorDataInteractor.getBrightness(colorByte)
+        val green = byteColorDataInteractor.getGreenChannel(colorByte)
+        val blue = byteColorDataInteractor.getBlueChannel(colorByte)
+        return  byteColorDataInteractor.getColorByte(brightness, red, green, blue)
+    }
+
+    fun setGreen(colorByte: Byte, green: Int): Byte {
+        val brightness = byteColorDataInteractor.getBrightness(colorByte)
+        val red = byteColorDataInteractor.getRedChannel(colorByte)
+        val blue = byteColorDataInteractor.getBlueChannel(colorByte)
+        return  byteColorDataInteractor.getColorByte(brightness, red, green, blue)
+    }
+
+    fun setBlue(colorByte: Byte, blue: Int): Byte {
+        val brightness = byteColorDataInteractor.getBrightness(colorByte)
+        val red = byteColorDataInteractor.getRedChannel(colorByte)
+        val green = byteColorDataInteractor.getGreenChannel(colorByte)
+        return  byteColorDataInteractor.getColorByte(brightness, red, green, blue)
+    }
+
+    fun getComposeColor(): Color {
+        return getComposeColor(paintColor)
+    }
+
+    fun getComposeColor(colorByte: Byte): Color {
+
+        val redRaw = byteColorDataInteractor.getRed(colorByte)
+        val greenRaw = byteColorDataInteractor.getGreen(colorByte)
+        val blueRaw = byteColorDataInteractor.getBlue(colorByte)
+
+        val red = redRaw.toFloat() / 255
+        val green = greenRaw.toFloat() / 255
+        val blue = blueRaw.toFloat() / 255
+
+        return Color(red, green, blue)
     }
 
     /**
