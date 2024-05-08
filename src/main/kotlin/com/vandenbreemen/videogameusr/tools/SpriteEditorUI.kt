@@ -45,76 +45,7 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
 
             Column(modifier = Modifier.weight(0.6f)) {
 
-                val sizeWidthHeight = remember { mutableStateOf(Pair(0, 0)) }
-                val tapState = remember { mutableStateOf(Offset.Zero) }
-
-                Text("Sprite Data Editor")
-
-                //  Handle updates to the sprite here
-                LaunchedEffect(tapState.value, sizeWidthHeight.value) {
-
-                    if(tapState.value == Offset.Zero || sizeWidthHeight.value == Pair(0, 0)){
-                        return@LaunchedEffect
-                    }
-
-                    val width = sizeWidthHeight.value.first
-                    val height = sizeWidthHeight.value.second
-
-                    val pixelWidthInCanvas = width / model.spriteWidth
-                    val pixelHeightInCanvas = height / model.spriteHeight
-
-                    val x = (tapState.value.x / pixelWidthInCanvas).toInt()
-                    val y = (tapState.value.y / pixelHeightInCanvas).toInt()
-
-                    if(isErasing.value) {
-                        model.setPixel(x, y, 0)
-                    }
-                    else if(isEyeDropping.value){
-                        model.getPixel(x, y)?.let {
-                            paintColorByte.value = it
-                            isEyeDropping.value = false
-                        }
-                    }
-                    else {
-                        model.setPixel(x, y, model.paintColor)
-                    }
-
-                    spriteArray.value = model.getSpriteByteArray()
-                    spriteCode.value = model.generateSpriteSourceCode()
-                }
-
-                //  Top panel
-                Canvas(modifier = Modifier.fillMaxSize().pointerInput(Unit) {
-                    detectTapGestures { offset ->
-                        tapState.value = offset
-                        sizeWidthHeight.value = Pair(size.width, size.height)
-                    }
-                }) {
-
-                    //  Draw the sprite
-                    val width = size.width
-                    val height = size.height
-
-                    val pixelWidthInCanvas = ceil((width / model.spriteWidth).toDouble()).toFloat()
-                    val pixelHeightInCanvas = ceil((height / model.spriteHeight).toDouble()).toFloat()
-
-                    for (y in 0 until model.spriteHeight) {
-                        for (x in 0 until model.spriteWidth) {
-                            val left = x * pixelWidthInCanvas
-                            val top = y * pixelHeightInCanvas
-
-                            //  Draw grayscale color based on pixel byte value
-                            val pixelColor = spriteArray.value[y * model.spriteWidth + x]
-
-                            val color = model.getComposeColor(pixelColor)
-                            drawRect(
-                                color,
-                                topLeft = Offset(left, top),
-                                size = Size(pixelWidthInCanvas, pixelHeightInCanvas)
-                            )
-                        }
-                    }
-                }
+                SpritePixelEditor(model, isErasing, isEyeDropping, paintColorByte, spriteArray, spriteCode)
             }
 
 
@@ -136,6 +67,85 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
                 textStyle = TextStyle(fontSize = 8.sp, color = Color.Green, fontFamily = FontFamily.Monospace),
                 modifier = Modifier.fillMaxSize())
 
+        }
+    }
+}
+
+@Composable
+private fun SpritePixelEditor(
+    model: SpriteEditorModel,
+    isErasing: MutableState<Boolean>,
+    isEyeDropping: MutableState<Boolean>,
+    paintColorByte: MutableState<Byte>,
+    spriteArray: MutableState<ByteArray>,
+    spriteCode: MutableState<String>
+) {
+    val sizeWidthHeight = remember { mutableStateOf(Pair(0, 0)) }
+    val tapState = remember { mutableStateOf(Offset.Zero) }
+
+    Text("Sprite Data Editor")
+
+    //  Handle updates to the sprite here
+    LaunchedEffect(tapState.value, sizeWidthHeight.value) {
+
+        if (tapState.value == Offset.Zero || sizeWidthHeight.value == Pair(0, 0)) {
+            return@LaunchedEffect
+        }
+
+        val width = sizeWidthHeight.value.first
+        val height = sizeWidthHeight.value.second
+
+        val pixelWidthInCanvas = width / model.spriteWidth
+        val pixelHeightInCanvas = height / model.spriteHeight
+
+        val x = (tapState.value.x / pixelWidthInCanvas).toInt()
+        val y = (tapState.value.y / pixelHeightInCanvas).toInt()
+
+        if (isErasing.value) {
+            model.setPixel(x, y, 0)
+        } else if (isEyeDropping.value) {
+            model.getPixel(x, y)?.let {
+                paintColorByte.value = it
+                isEyeDropping.value = false
+            }
+        } else {
+            model.setPixel(x, y, model.paintColor)
+        }
+
+        spriteArray.value = model.getSpriteByteArray()
+        spriteCode.value = model.generateSpriteSourceCode()
+    }
+
+    //  Top panel
+    Canvas(modifier = Modifier.fillMaxSize().pointerInput(Unit) {
+        detectTapGestures { offset ->
+            tapState.value = offset
+            sizeWidthHeight.value = Pair(size.width, size.height)
+        }
+    }) {
+
+        //  Draw the sprite
+        val width = size.width
+        val height = size.height
+
+        val pixelWidthInCanvas = ceil((width / model.spriteWidth).toDouble()).toFloat()
+        val pixelHeightInCanvas = ceil((height / model.spriteHeight).toDouble()).toFloat()
+
+        for (y in 0 until model.spriteHeight) {
+            for (x in 0 until model.spriteWidth) {
+                val left = x * pixelWidthInCanvas
+                val top = y * pixelHeightInCanvas
+
+                //  Draw grayscale color based on pixel byte value
+                val pixelColor = spriteArray.value[y * model.spriteWidth + x]
+
+                val color = model.getComposeColor(pixelColor)
+                drawRect(
+                    color,
+                    topLeft = Offset(left, top),
+                    size = Size(pixelWidthInCanvas, pixelHeightInCanvas)
+                )
+            }
         }
     }
 }
