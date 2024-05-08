@@ -29,5 +29,24 @@ class VideoGame2Model(
         }
     }
 
+    fun playGamesTurn() {
+        //  TODO    Implement
+    }
+
+    /**
+     *
+     */
+    fun jump() {
+        //  TODO    Implement
+    }
+
+    fun getPlayerLocation(): Pair<Int, Int> {
+        return playerLocation
+    }
+
+    fun getPlayerSpriteIndex(): Int {
+        return if(playerGoingRight) VideoGame2SpriteAddresses.STANDING_STILL_RIGHT else VideoGame2SpriteAddresses.STANDING_STILL_LEFT
+    }
+
 
 }

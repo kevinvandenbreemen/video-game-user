@@ -1,7 +1,19 @@
 package com.vandenbreemen.com.vandenbreemen.videogameusr.game.videogame2
 
-import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.spriteEditor
+import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ComposeRasterRender
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
+import com.vandenbreemen.viddisplayrast.game.Runner
+
+object VideoGame2SpriteAddresses {
+
+    const val STANDING_STILL_LEFT = 0
+    const val RUNNING_LEFT_FRAME_1 = 1
+    const val RUNNING_LEFT_FRAME_2 = 2
+    const val RUNNING_RIGHT_FRAME_1 = 3
+    const val RUNNING_RIGHT_FRAME_2 = 4
+    const val STANDING_STILL_RIGHT = 5
+
+}
 
 fun main() {
 
@@ -10,7 +22,7 @@ fun main() {
     //  First sprite:  The player, standing still
     //  16x16 array of bytes
 
-    requirement.setData(0, byteArrayOf(
+    requirement.setData(VideoGame2SpriteAddresses.STANDING_STILL_LEFT, byteArrayOf(
         0, 0, 0, 0, 0, 0, 0, -75, -75, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 121, -75, -75, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 121, 121, -75, -75, 0, 0, 0, 0, 0, 0,
@@ -29,8 +41,10 @@ fun main() {
         0, 0, 0, 0, 0, 63, 63, 0, 0, -65, 63, 63, 0, 0, 0, 0
     ))
 
+    //spriteEditor(requirement, 0, "requirement", 800)
+
     //  Character running frame 1
-    requirement.setData(1, byteArrayOf(
+    requirement.setData(VideoGame2SpriteAddresses.RUNNING_LEFT_FRAME_1, byteArrayOf(
         0, 0, 0, 0, 0, 0, 0, -75, -75, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 121, -75, -75, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 121, 121, -75, -75, 0, 0, 0, 0, 0, 0,
@@ -51,7 +65,7 @@ fun main() {
 
     //  Character running frame 2
 
-    requirement.setData(2, byteArrayOf(
+    requirement.setData(VideoGame2SpriteAddresses.RUNNING_LEFT_FRAME_2, byteArrayOf(
         0, 0, 0, 0, 0, 0, 0, -75, -75, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 121, -75, -75, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 121, 121, -75, -75, 0, 0, 0, 0, 0, 0,
@@ -72,7 +86,7 @@ fun main() {
 
     //  Set up the opposite direction movement
     //  Running frame 1:
-    requirement.setData(3, byteArrayOf(
+    requirement.setData(VideoGame2SpriteAddresses.RUNNING_RIGHT_FRAME_1, byteArrayOf(
         0, 0, 0, 0, 0, 0, 0, -75, -75, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, -75, -75, 121, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, -75, -75, 121, 121, 0, 0, 0, 0, 0, 0,
@@ -92,7 +106,7 @@ fun main() {
     ))
 
     //  Frame 2
-    requirement.setData(4, byteArrayOf(
+    requirement.setData(VideoGame2SpriteAddresses.RUNNING_RIGHT_FRAME_2, byteArrayOf(
         0, 0, 0, 0, 0, 0, 0, -75, -75, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, -75, -75, 121, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, -75, -75, 121, 121, 0, 0, 0, 0, 0, 0,
@@ -111,8 +125,36 @@ fun main() {
         0, 0, 0, 0, 0, 0, -107, -107, 0, -107, 0, 0, 0, 0, 0, 0
     ))
 
+    //  Stationary
+    requirement.setData(VideoGame2SpriteAddresses.STANDING_STILL_RIGHT, byteArrayOf(
+        0, 0, 0, 0, 0, 0, 0, -75, -75, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, -75, -75, 121, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, -75, -75, 121, 121, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, -75, 121, 121, 121, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 121, 121, 25, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, -71, -71, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 32, 32, 32, 32, 32, 32, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 32, 0, -96, 32, 32, 32, 0, 32, 0, 0, 0, 0,
+        0, 0, 0, 0, 32, 0, 0, 32, 32, 0, 0, 32, 0, 0, 0, 0,
+        0, 0, 0, 0, 32, 0, 35, 32, 32, 32, 0, 32, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 0, 32, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 3, 0, 0, 3, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 3, 3, 0, 0, 3, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 3, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 63, 63, -65, 0, 0, 63, 63, 0, 0, 0, 0, 0
+    ))
 
-    spriteEditor(requirement, 4, "requirement", 800)
+
+    //spriteEditor(requirement, 4, "requirement", 800)
+
+    //  Set up the game proper!
+
+    val runner = Runner(requirement)
+
+    val model = VideoGame2Model(requirement.screenWidth, requirement.screenHeight, requirement.spriteWidth, requirement.spriteHeight)
+    val controller = VideoGame2Controller(model, runner)
+    ComposeRasterRender.playGameInWindow(runner, controller, 60, 800)
 
 
 
