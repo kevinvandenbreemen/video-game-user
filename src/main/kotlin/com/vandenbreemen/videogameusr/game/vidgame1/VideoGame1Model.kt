@@ -2,6 +2,7 @@ package com.vandenbreemen.com.vandenbreemen.videogameusr.game.vidgame1
 
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.com.vandenbreemen.videogameusr.model.DelayedSwitch
+import com.vandenbreemen.com.vandenbreemen.videogameusr.model.ScreenInteractor
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
@@ -21,6 +22,8 @@ class VideoGame1Model(private val screenWidth: Int, private val screenHeight: In
     private var enemyLocation: Pair<Int, Int> = Pair((screenWidth * 0.9).toInt(), screenHeight / 2)
 
     private val gunFiringSwitch = DelayedSwitch(1000L)
+
+    private val screenInteractor = ScreenInteractor(screenWidth, screenHeight, spriteWidth, spriteHeight)
 
     /**
      * Mapping from location to explosion frame
@@ -50,9 +53,7 @@ class VideoGame1Model(private val screenWidth: Int, private val screenHeight: In
     }
 
     private fun isInBounds(location: Pair<Int, Int>): Boolean {
-
-        //  Since locations will always have origin at top left
-        return location.first in 0..<screenWidth-spriteWidth && location.second in 0..<screenHeight-spriteHeight
+        return screenInteractor.isInBounds(location)
     }
 
     fun getPlayerLocation(): Pair<Int, Int> {
