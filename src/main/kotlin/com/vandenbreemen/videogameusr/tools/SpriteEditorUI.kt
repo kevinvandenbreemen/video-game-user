@@ -3,12 +3,10 @@ package com.vandenbreemen.com.vandenbreemen.videogameusr.tools
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
+import com.vandenbreemen.com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import kotlin.math.ceil
 
@@ -32,6 +31,7 @@ import kotlin.math.ceil
  * Major Components:
  * 1.  Sprite Pixel Editor [SpritePixelEditor]
  * 2.  Color Picker [ColorPickerUI]
+ * 3.  Sprite Editor Application proper [spriteEditor]
  *
  * @param model Model for the sprite editor
  */
@@ -52,17 +52,19 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
         ) {
 
             Column(modifier = Modifier.weight(0.6f)) {
-
                 SpritePixelEditor(model, isErasing, isEyeDropping, paintColorByte, spriteArray, spriteCode)
             }
 
+
+            //  Divider line
+            Divider(color = Color.Black, thickness = 2.dp, modifier = Modifier.padding(vertical = 5.dp))
 
             //  Bottom panel - color picker
 
             //  Determine the available colors -- for now 16 colors out of the 128 possible byte values evenly spaced
             
             Column(modifier = Modifier.weight(0.4f)) {
-                Text("Color Picker")
+                Text("Color Picker", style = MaterialTheme.typography.h6)
                 ColorPickerUI(paintColorByte, isErasing, isEyeDropping, model)
             }
         }
@@ -91,13 +93,14 @@ private fun SpritePixelEditor(
     val sizeWidthHeight = remember { mutableStateOf(Pair(0, 0)) }
     val tapState = remember { mutableStateOf(Offset.Zero) }
 
-    Row {
-        Text("Sprite Data Editor")
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text("Sprite Data Editor", style = MaterialTheme.typography.h6)
+        Spacer(modifier = Modifier.width(10.dp))
         Button(onClick = {
             spriteArray.value = model.mirrorHorizontal()
             spriteCode.value = model.generateSpriteSourceCode()
         }) {
-            Text("Flip Horiz")
+            Text("Flip Horiz", style = MaterialTheme.typography.button)
         }
     }
 
@@ -182,10 +185,13 @@ private fun ColorPickerUI(
 
     Column {
         Row(verticalAlignment = Alignment.CenterVertically){
-            Text("Selected Color:")
-            //  Draw a box with the selected color
-            val color = model.getComposeColor(paintColorByte.value)
-            Box(modifier = Modifier.height(10.dp).width(20.dp).background(color))
+            Column(modifier=Modifier.border(1.dp, Color.Black).padding(5.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                Text("Selected Color", style = MaterialTheme.typography.caption)
+                //  Draw a box with the selected color
+                val color = model.getComposeColor(paintColorByte.value)
+                Box(modifier = Modifier.height(20.dp).width(60.dp).background(color))
+            }
+
 
             Button(onClick = {
                 paintColorByte.value = 0
@@ -213,7 +219,7 @@ private fun ColorPickerUI(
         Row {
 
             //  First the brightness column:
-            Column(Modifier.weight(0.25f)) {
+            Column(Modifier.weight(0.25f), horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("Brightness")
                 for (i in 0 until numColorChannelSteps) {
 
@@ -232,7 +238,7 @@ private fun ColorPickerUI(
 
                 }
             }
-            Column(Modifier.weight(0.25f)) {
+            Column(Modifier.weight(0.25f), horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("Red")
                 for (i in 0 until numColorChannelSteps) {
                     val colorByte = model.byteColorDataInteractor.getColorByte(0, i, 0, 0)
@@ -248,7 +254,7 @@ private fun ColorPickerUI(
                     }
                 }
             }
-            Column(Modifier.weight(0.25f)) {
+            Column(Modifier.weight(0.25f), horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("Green")
                 for (i in 0 until numColorChannelSteps) {
                     val colorByte = model.byteColorDataInteractor.getColorByte(0, 0, i, 0)
@@ -264,7 +270,7 @@ private fun ColorPickerUI(
                     }
                 }
             }
-            Column(Modifier.weight(0.25f)) {
+            Column(Modifier.weight(0.25f), horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("Blue")
                 for (i in 0 until numColorChannelSteps) {
                     val colorByte = model.byteColorDataInteractor.getColorByte(0, 0, 0, i)
@@ -285,10 +291,10 @@ private fun ColorPickerUI(
     }
 }
 
-fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requirementsVariableName: String = "requirement", maxWidth: Int = 800) = application {
+fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requirementsVariableName: String = "requirement", maxWidth: Int = 1000) = application {
 
     //  Step 1:  Work out the height as a ratio of the width
-    val height = (maxWidth * 0.8).toInt()
+    val height = (maxWidth * 0.9).toInt()
 
     val model = SpriteEditorModel(requirements, spriteIndex=spriteIndex, requirementsVariableName = requirementsVariableName)
     Window(
@@ -297,7 +303,11 @@ fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requireme
         title = "Raster Render Test",
         state = WindowState(width = maxWidth.dp, height = height.dp)
     ) {
-        SpriteEditorUI(model)
+
+        VideoGameUserTheme {
+            SpriteEditorUI(model)
+        }
+
     }
 
 }
