@@ -1,10 +1,15 @@
 package com.vandenbreemen.com.vandenbreemen.videogameusr.game.vidgame1
 
+import androidx.compose.ui.graphics.Color
 import com.vandenbreemen.com.vandenbreemen.videogameusr.controller.VideoGameController
+import com.vandenbreemen.com.vandenbreemen.videogameusr.model.ColorInteractor
+import com.vandenbreemen.viddisplayrast.data.ByteColorDataInteractor
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
 
-class VideoGame1Controller(private val runner: Runner, requirements: GameDataRequirements) : VideoGameController {
+class VideoGame1Controller(private val runner: Runner, requirements: GameDataRequirements, private val colorInteractor: ColorInteractor = ColorInteractor(
+    ByteColorDataInteractor()
+)) : VideoGameController {
 
     private val model = VideoGame1Model(requirements.screenWidth, requirements.screenHeight, requirements.spriteWidth, requirements.spriteHeight)
 
@@ -55,4 +60,7 @@ class VideoGame1Controller(private val runner: Runner, requirements: GameDataReq
         model.playGamesTurn()
     }
 
+    override fun getComposeColor(value: Byte): Color {
+        return colorInteractor.getComposeColor(value)
+    }
 }

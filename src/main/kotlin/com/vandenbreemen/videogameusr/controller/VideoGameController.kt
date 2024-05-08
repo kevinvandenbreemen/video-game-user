@@ -22,4 +22,6 @@ interface VideoGameController {
      * Draw a frame in the raster.
      */
     fun drawFrame()
+
+    fun getComposeColor(value: Byte): androidx.compose.ui.graphics.Color
 }

@@ -20,6 +20,8 @@ import androidx.compose.ui.input.key.*
 import androidx.compose.ui.unit.dp
 import com.vandenbreemen.com.vandenbreemen.videogameusr.controller.VideoGameController
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
+import com.vandenbreemen.com.vandenbreemen.videogameusr.model.ColorInteractor
+import com.vandenbreemen.viddisplayrast.data.ByteColorDataInteractor
 import com.vandenbreemen.viddisplayrast.data.DisplayRaster
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
@@ -27,7 +29,7 @@ import kotlinx.coroutines.delay
 import kotlin.math.ceil
 
 @Composable
-fun RasterDisplay(raster: DisplayRaster) {
+fun RasterDisplay(raster: DisplayRaster, controller: VideoGameController) {
 
 //  Render a white square
     Canvas(modifier=Modifier.fillMaxSize()) {
@@ -45,11 +47,10 @@ fun RasterDisplay(raster: DisplayRaster) {
                 val left = x * pixelWidthInCanvas
                 val top = y * pixelHeightInCanvas
 
-                val pixelColor = raster.getPixel(
+                val color = controller.getComposeColor(raster.getPixel(
                     x,
                     y
-                ).toInt()
-                val color = Color(pixelColor, pixelColor, pixelColor)
+                ))
 
                 drawRect(color, topLeft = Offset(left, top), size = Size(pixelWidthInCanvas, pixelHeightInCanvas))
             }
@@ -60,6 +61,9 @@ fun RasterDisplay(raster: DisplayRaster) {
 
 //  Do a simple default implementation of VideoGameController that just shows toasts or something
 class DummyVideoGameController : VideoGameController {
+
+    private val colorInteractor = ColorInteractor(ByteColorDataInteractor())
+
     override fun moveRight() {
         klog("Move Right")
     }
@@ -91,6 +95,10 @@ class DummyVideoGameController : VideoGameController {
     override fun drawFrame() {
         klog("Draw Frame")
     }
+
+    override fun getComposeColor(value: Byte): Color {
+        return colorInteractor.getComposeColor(value)
+    }
 }
 
 @Composable
@@ -103,7 +111,7 @@ fun GameConsole(runner: Runner, framesPerSecond: Int = 60, controller: VideoGame
 
         //  The "screen"
         Column(Modifier.weight(0.6f).padding(5.dp)) {
-            RasterDisplay(raster.value)
+            RasterDisplay(raster.value, controller)
             //Text("The Screen", Modifier.padding(2.dp).background(Color.White))
         }
 
@@ -302,5 +310,5 @@ fun PreviewRasterDisplay() {
     val raster = DisplayRaster(16, 16)
     raster.setPixel(8, 8, 100)
     raster.setPixel(9, 8, 100)
-    RasterDisplay(raster)
+    RasterDisplay(raster, DummyVideoGameController())
 }

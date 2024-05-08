@@ -24,7 +24,7 @@ class ComposeRasterRender {
                 title = "Raster Render Test",
                 state = WindowState(width = maxWidth.dp, height = height.dp)
             ) {
-                RasterDisplay(raster)
+                RasterDisplay(raster, DummyVideoGameController())
             }
         }
 

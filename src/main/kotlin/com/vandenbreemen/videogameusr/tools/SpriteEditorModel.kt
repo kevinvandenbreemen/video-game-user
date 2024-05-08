@@ -2,6 +2,7 @@ package com.vandenbreemen.com.vandenbreemen.videogameusr.tools
 
 import androidx.compose.ui.graphics.Color
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
+import com.vandenbreemen.com.vandenbreemen.videogameusr.model.ColorInteractor
 import com.vandenbreemen.viddisplayrast.data.ByteColorDataInteractor
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
@@ -18,6 +19,7 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
      * Computation of color values etc
      */
     val byteColorDataInteractor = ByteColorDataInteractor()
+    private val colorInteractor = ColorInteractor(byteColorDataInteractor)
 
     /**
      * Color of the paint brush for coloring pixels
@@ -95,15 +97,7 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
 
     fun getComposeColor(colorByte: Byte): Color {
 
-        val redRaw = byteColorDataInteractor.getRed(colorByte)
-        val greenRaw = byteColorDataInteractor.getGreen(colorByte)
-        val blueRaw = byteColorDataInteractor.getBlue(colorByte)
-
-        val red = redRaw.toFloat() / 255
-        val green = greenRaw.toFloat() / 255
-        val blue = blueRaw.toFloat() / 255
-
-        return Color(red, green, blue)
+        return colorInteractor.getComposeColor(colorByte)
     }
 
     /**
