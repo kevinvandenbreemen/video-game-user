@@ -59,6 +59,15 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
         refreshSprite()
     }
 
+    fun getPixel(x: Int, y: Int): Byte? {
+        val index = y * requirements.spriteWidth + x
+        if(index >= spriteByteArray.size){
+            klog("Attempted to get pixel value from location that was out of bounds -- $x, $y.  This is probably a UI bug so ignoring the attempt at bailing")
+            return null
+        }
+        return spriteByteArray[y * requirements.spriteWidth + x]
+    }
+
     fun getSpriteByteArray(): ByteArray {
         return spriteByteArray
     }

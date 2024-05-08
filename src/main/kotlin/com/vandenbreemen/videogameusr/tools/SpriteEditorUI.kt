@@ -34,6 +34,7 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
     val paintColorByte = remember { mutableStateOf(model.paintColor) }
     val spriteCode = remember { mutableStateOf(model.generateSpriteSourceCode()) }
     val isErasing = remember { mutableStateOf(false) }
+    val isEyeDropping = remember { mutableStateOf(false) }
 
     Row(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -67,6 +68,12 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
 
                     if(isErasing.value) {
                         model.setPixel(x, y, 0)
+                    }
+                    else if(isEyeDropping.value){
+                        model.getPixel(x, y)?.let {
+                            paintColorByte.value = it
+                            isEyeDropping.value = false
+                        }
                     }
                     else {
                         model.setPixel(x, y, model.paintColor)
@@ -117,7 +124,7 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
             
             Column(modifier = Modifier.weight(0.4f)) {
                 Text("Color Picker")
-                ColorPickerUI(paintColorByte, isErasing, model)
+                ColorPickerUI(paintColorByte, isErasing, isEyeDropping, model)
             }
         }
         Column(modifier = Modifier.weight(0.33f).fillMaxSize().background(Color.Black)) {
@@ -137,6 +144,7 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
 private fun ColorPickerUI(
     paintColorByte: MutableState<Byte>,
     isErasing: MutableState<Boolean>,
+    isEyeDropping: MutableState<Boolean>,
     model: SpriteEditorModel
 ) {
 
@@ -162,8 +170,17 @@ private fun ColorPickerUI(
 
             Button(onClick = {
                 isErasing.value = !isErasing.value
+                isEyeDropping.value = false
             }, modifier = Modifier.width(70.dp).height(45.dp).padding(5.dp)) {
                 Text(if(isErasing.value) "Eraser ✏\uFE0F" else "Eraser",  style = TextStyle(color = Color.White, fontSize = 8.sp))
+            }
+
+            //  Eyedropper button
+            Button(onClick = {
+                isEyeDropping.value = !isEyeDropping.value
+                isErasing.value = false
+            }, modifier = Modifier.width(80.dp).height(55.dp).padding(5.dp)) {
+                Text(if(isEyeDropping.value) "Eye Dropper 👁️" else "Eye Dropper",  style = TextStyle(color = Color.White, fontSize = 8.sp))
             }
         }
 
