@@ -1,6 +1,7 @@
 package com.vandenbreemen.com.vandenbreemen.videogameusr.tools
 
 import androidx.compose.ui.graphics.Color
+import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.viddisplayrast.data.ByteColorDataInteractor
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
@@ -44,6 +45,13 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
     }
 
     fun setPixel(x: Int, y: Int, value: Byte){
+
+        val index = y * requirements.spriteWidth + x
+        if(index >= spriteByteArray.size){
+            klog("Attempted to set pixel value out of bounds -- $x, $y.  This is probably a UI bug so ignoring the attempt at bailing")
+            return
+        }
+
         spriteByteArray[y * requirements.spriteWidth + x] = value
         requirements.setData(spriteIndex, spriteByteArray.clone())  //  Clone to avoid reference issues
         refreshSprite()
