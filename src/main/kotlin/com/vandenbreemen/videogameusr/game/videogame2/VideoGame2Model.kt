@@ -10,9 +10,24 @@ class VideoGame2Model(
     private var movementIncrement = 1   //  TODO    Consider accelerating the player
     private var playerLocation = Pair((screenWidth *0.5).toInt(), (screenHeight * 0.5).toInt())
 
+    private val playerAnimationLoopFrameCount = 3
+    private var playerAnimationFrameIndex: Int = 0
+    private var playerMoving = false
+    private val movingLeftFrames = listOf(VideoGame2SpriteAddresses.RUNNING_LEFT_FRAME_1, VideoGame2SpriteAddresses.RUNNING_LEFT_FRAME_2, VideoGame2SpriteAddresses.RUNNING_LEFT_FRAME_3)
+    private val movingRightFrames = listOf(VideoGame2SpriteAddresses.RUNNING_RIGHT_FRAME_1, VideoGame2SpriteAddresses.RUNNING_RIGHT_FRAME_2, VideoGame2SpriteAddresses.RUNNING_RIGHT_FRAME_3)
+
     private val screenInteractor = ScreenInteractor(screenWidth, screenHeight, spriteWidth, spriteHeight)
 
     fun movePlayerRight() {
+
+        if(playerGoingRight) {
+            playerAnimationFrameIndex = (playerAnimationFrameIndex + 1) % playerAnimationLoopFrameCount
+            playerMoving = true
+        } else {
+            playerAnimationFrameIndex = 0
+            playerMoving = false
+        }
+
         playerGoingRight = true
         val newPlayerLocation = Pair(playerLocation.first + movementIncrement, playerLocation.second)
         if(screenInteractor.isInBounds(newPlayerLocation)) {
@@ -22,6 +37,15 @@ class VideoGame2Model(
     }
 
     fun movePlayerLeft() {
+
+        if(!playerGoingRight) {
+            playerAnimationFrameIndex = (playerAnimationFrameIndex + 1) % playerAnimationLoopFrameCount
+            playerMoving = true
+        } else {
+            playerAnimationFrameIndex = 0
+            playerMoving = false
+        }
+
         playerGoingRight = false
         val newPlayerLocation = Pair(playerLocation.first - movementIncrement, playerLocation.second)
         if(screenInteractor.isInBounds(newPlayerLocation)) {
@@ -45,6 +69,13 @@ class VideoGame2Model(
     }
 
     fun getPlayerSpriteIndex(): Int {
+        if(playerMoving) {
+            return if (playerGoingRight) {
+                movingRightFrames[playerAnimationFrameIndex]
+            } else {
+                movingLeftFrames[playerAnimationFrameIndex]
+            }
+        }
         return if(playerGoingRight) VideoGame2SpriteAddresses.STANDING_STILL_RIGHT else VideoGame2SpriteAddresses.STANDING_STILL_LEFT
     }
 
