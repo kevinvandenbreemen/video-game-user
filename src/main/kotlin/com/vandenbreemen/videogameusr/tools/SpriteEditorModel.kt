@@ -68,6 +68,25 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
         return spriteByteArray[y * requirements.spriteWidth + x]
     }
 
+    /**
+     * Mirrors the sprite horizontally, returning the result
+     */
+    fun mirrorHorizontal(): ByteArray {
+        val mirrored = ByteArray(spriteByteArray.size)
+        for(y in 0 until spriteHeight){
+            for(x in 0 until spriteWidth){
+                mirrored[y * spriteWidth + x] = spriteByteArray[y * spriteWidth + (spriteWidth - x - 1)]
+            }
+        }
+
+        //  Update the bytes in here
+        this.spriteByteArray.forEachIndexed { index, byte ->
+            this.spriteByteArray[index] = mirrored[index]
+        }
+
+        return this.spriteByteArray
+    }
+
     fun getSpriteByteArray(): ByteArray {
         return spriteByteArray
     }

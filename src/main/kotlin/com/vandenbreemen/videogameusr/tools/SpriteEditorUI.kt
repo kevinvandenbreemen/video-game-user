@@ -27,6 +27,14 @@ import androidx.compose.ui.window.application
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import kotlin.math.ceil
 
+/**
+ * Tool for editing sprites
+ * Major Components:
+ * 1.  Sprite Pixel Editor [SpritePixelEditor]
+ * 2.  Color Picker [ColorPickerUI]
+ *
+ * @param model Model for the sprite editor
+ */
 @Composable
 fun SpriteEditorUI(model: SpriteEditorModel) {
 
@@ -83,7 +91,15 @@ private fun SpritePixelEditor(
     val sizeWidthHeight = remember { mutableStateOf(Pair(0, 0)) }
     val tapState = remember { mutableStateOf(Offset.Zero) }
 
-    Text("Sprite Data Editor")
+    Row {
+        Text("Sprite Data Editor")
+        Button(onClick = {
+            spriteArray.value = model.mirrorHorizontal()
+            spriteCode.value = model.generateSpriteSourceCode()
+        }) {
+            Text("Flip Horiz")
+        }
+    }
 
     //  Handle updates to the sprite here
     LaunchedEffect(tapState.value, sizeWidthHeight.value) {
