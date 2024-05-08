@@ -1,5 +1,6 @@
 package com.vandenbreemen.com.vandenbreemen.videogameusr.game.videogame2
 
+import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.spriteEditor
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ComposeRasterRender
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
@@ -14,12 +15,15 @@ object VideoGame2SpriteAddresses {
     const val RUNNING_RIGHT_FRAME_2 = 4
     const val RUNNING_RIGHT_FRAME_3 = 6
     const val STANDING_STILL_RIGHT = 5
+    const val GROUND_SPRITE_1 = 8
+    const val GROUND_SPRITE_2 = 9
+    const val GROUND_SPRITE_3 = 10
 
 }
 
 fun main() {
 
-    val requirement = GameDataRequirements(200, 150, 16, 16, 2048)
+    val requirement = GameDataRequirements(200, 150, 16, 16, 3072)
 
     //  First sprite:  The player, standing still
     //  16x16 array of bytes
@@ -186,6 +190,30 @@ fun main() {
         0, 0, 0, 0, 0, 3, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 63, 63, -65, 0, 0, 63, 63, 0, 0, 0, 0, 0
     ))
+
+    requirement.setData(VideoGame2SpriteAddresses.GROUND_SPRITE_1, byteArrayOf(
+        0, 0, 0, 0, 36, 0, 0, 0, 36, 0, 0, 36, 0, 0, 0, 0,
+        -87, -91, -87, -91, -87, -91, -87, -91, -87, -91, -87, -91, -87, -91, -87, -91,
+        21, 21, 21, 0, 21, 21, 101, 21, 21, 21, 21, 21, 21, 21, 21, 21,
+        21, 57, 0, 0, 57, 0, 0, 101, 57, 0, 0, 20, 57, 21, 101, 20,
+        21, 20, 20, 20, 37, -70, 20, 0, 101, 20, 0, 101, 20, 0, 21, 36,
+        21, 20, 57, 37, 0, 101, 57, 20, 0, 0, 57, -70, 36, 21, 57, 0,
+        0, 20, 0, -70, 20, 0, 0, 20, 101, 101, 21, 37, 21, 20, 0, 37,
+        58, 0, 0, 101, 0, 21, 21, 21, 36, 37, 0, 101, 101, 0, 37, 0,
+        58, 37, 58, 0, 58, 58, 58, 0, 58, -70, 58, 0, 58, 36, 58, 37,
+        0, 58, 0, 58, 0, 58, 0, 58, 0, 58, 58, 58, -107, 58, 0, 37,
+        21, 0, 16, 0, 0, 21, 0, 0, 0, 0, 0, 21, 0, 0, 16, 16,
+        16, 21, 0, 21, 21, 0, 0, 21, 0, 21, 0, 0, 16, 21, 0, 0,
+        0, 0, 21, 0, 16, 16, 16, 16, 0, 21, 16, 0, 16, 0, 21, 16,
+        21, 21, 0, 21, 0, 0, 16, 0, 16, 0, 0, 5, 21, 20, 0, 0,
+        0, 0, 21, 0, 5, 16, 21, 21, 0, 16, 21, 16, 0, 21, 20, 5,
+        21, 21, 21, 21, 21, 21, 21, 5, 21, 21, 21, 21, 21, 21, 21, 21
+
+    ))
+
+
+
+    spriteEditor(requirement, VideoGame2SpriteAddresses.GROUND_SPRITE_1, "requirement", 800)
 
 
     //spriteEditor(requirement, 4, "requirement", 800)
