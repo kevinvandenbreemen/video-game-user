@@ -7,6 +7,10 @@ class ColorInteractor(private val byteColorDataInteractor: ByteColorDataInteract
 
     fun getComposeColor(colorByte: Byte): Color {
 
+        if(colorByte.toInt() == 0) {
+            return Color(0, 0, 0, 0,)
+        }
+
         val redRaw = byteColorDataInteractor.getRed(colorByte)
         val greenRaw = byteColorDataInteractor.getGreen(colorByte)
         val blueRaw = byteColorDataInteractor.getBlue(colorByte)
