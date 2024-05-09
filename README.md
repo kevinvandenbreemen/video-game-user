@@ -19,3 +19,30 @@ spriteEditor(requirements, 0, "myRequirements")
 
 # Game Play
 Games themselves are run through ```GameConsole```, in the Composables.kt file.
+
+# Game Development
+## Defining your Game's Storage Space
+Raw data about game assets are stored in ```GameDataRequirements``` object.  This object defines the size of the screen a frame of the game is to be
+displayed on along with the dimensions of a single sprite (or tile) of game data.  Lastly it defines the number of bytes that can be used to store the game assets.
+
+## Defining your Game's Assets
+You add a sprite to the ```GameDataRequirements``` using the setData() method.  This method takes in the index of the sprite, the data for the sprite
+
+The following example comes from game 1 and defines the "alien" the player needs to get away from or shoot:
+
+```kotlin
+    requirements.setData(2, byteArrayOf(
+        -125, 0, 0, 0, 0, 0, 0, -125,
+        0, 120, 0, 0, 0, 0, 120, 0,
+        0, 0, 100, -16, -16, 100, 0, 0,
+        0, 100, 64, -52, -52, 64, 100, 0,
+        100, 100, 12, 12, 12, 100, 100, 100,
+        12, 0, 12, 12, 12, 0, 12, 12,
+        0, 0, 12, 0, 0, 12, 0, 0,
+        0, 12, 0, 0, 0, 0, 12, 0
+    ))
+```
+
+This code creates a sprite at sprite index 2 and stores it to the game requirements.
+
+As discussed earlier there is a sprite editor you can use to edit a tile.  In 
