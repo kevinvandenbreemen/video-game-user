@@ -107,10 +107,11 @@ class DummyVideoGameController : VideoGameController {
 }
 
 @Composable
-fun GameConsole(runner: Runner, framesPerSecond: Int = 60, controller: VideoGameController) {
+fun GameConsole(runner: Runner, framesPerSecond: Int = 1, controller: VideoGameController) {
 
-    var raster = remember { mutableStateOf(runner.newFrame()) }
+    val raster = remember { mutableStateOf(runner.newFrame()) }
     val controlsModel = remember { ControlsModel() }
+    val delayTime = 1000 / framesPerSecond.toLong()
 
     Column(Modifier.background(Color.Gray).fillMaxSize().padding(10.dp)) {
 
@@ -153,7 +154,8 @@ fun GameConsole(runner: Runner, framesPerSecond: Int = 60, controller: VideoGame
     //  Now start the game loop
     LaunchedEffect(Unit) {
         while(true) {
-            delay(1000 / framesPerSecond.toLong())
+
+            delay(delayTime)
 
             //  Handle user input based on what keys are pressed
             if(controlsModel.isButtonPressed(Button.UP)) controller.moveUp()

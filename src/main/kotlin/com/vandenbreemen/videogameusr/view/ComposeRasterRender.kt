@@ -30,21 +30,6 @@ class ComposeRasterRender {
             }
         }
 
-        fun showTestConsoleWindow(runner: Runner, maxWidth: Int = 800) = application {
-
-            //  Step 1:  Work out the height as a ratio of the width
-            val height = (maxWidth * 0.75).toInt()
-
-            Window(
-                onCloseRequest = {  },
-                visible = true,
-                title = "Raster Render Test",
-                state = WindowState(width = maxWidth.dp, height = height.dp)
-            ) {
-                GameConsole(runner, 60, DummyVideoGameController())
-            }
-        }
-
         fun playGameInWindow(runner: Runner, controller: VideoGameController, framesPerSecond: Int = 60, maxWidth: Int = 800) = application {
 
             val maxFPS = 60
