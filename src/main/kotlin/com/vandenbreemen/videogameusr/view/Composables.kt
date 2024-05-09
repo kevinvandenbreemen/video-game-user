@@ -5,6 +5,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,7 +18,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.*
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.vandenbreemen.com.vandenbreemen.videogameusr.controller.VideoGameController
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.com.vandenbreemen.videogameusr.model.ColorInteractor
@@ -112,15 +115,13 @@ fun GameConsole(runner: Runner, framesPerSecond: Int = 60, controller: VideoGame
     Column(Modifier.background(Color.Gray).fillMaxSize().padding(10.dp)) {
 
         //  The "screen"
-        Column(Modifier.weight(0.6f).padding(5.dp)) {
+        Column(Modifier.weight(0.5f).padding(5.dp)) {
             RasterDisplay(raster.value, controller)
             //Text("The Screen", Modifier.padding(2.dp).background(Color.White))
         }
 
         //  The "controls"
-        Column(Modifier.weight(.4f).background(Color.Green).padding(2.dp)) {
-
-            Text("Controls", Modifier.padding(2.dp).background(Color.White))
+        Column(Modifier.weight(.1f).background(Color.Green).padding(2.dp)) {
 
             ControlDeck(
                 controlsModel,
@@ -179,7 +180,7 @@ private fun ControlDeck(
     onUp: ()->Unit, onDown: ()->Unit, onLeft: ()->Unit, onRight: ()->Unit, onA: ()->Unit, onB: ()->Unit) {
 
     val focusRequester = remember { FocusRequester() }
-
+    val buttonStyle = TextStyle(color = MaterialTheme.colors.onSurface, fontSize = 10.sp)
 
     Row(modifier=Modifier
         .focusRequester(focusRequester)
@@ -208,6 +209,7 @@ private fun ControlDeck(
             true
     }) {
         //  Buttons
+
         Column(Modifier.weight(0.5f)) {
             Spacer(Modifier.weight(0.5f))
             Row {
@@ -215,7 +217,7 @@ private fun ControlDeck(
                 Button(onClick = {
                     onUp()
                 }) {
-                    Text("\uD83D\uDD3C\uFE0F")
+                    Text("\uD83D\uDD3C\uFE0F", style = buttonStyle)
                 }
                 Spacer(Modifier.weight(0.5f))
             }
@@ -223,13 +225,13 @@ private fun ControlDeck(
                 Button(onClick = {
                     onLeft()
                 }) {
-                    Text("◀\uFE0F")
+                    Text("◀\uFE0F", style = buttonStyle)
                 }
                 Spacer(Modifier.weight(0.5f))
                 Button(onClick = {
                     onRight()
                 }) {
-                    Text("\u25B6\uFE0F")
+                    Text("\u25B6\uFE0F", style = buttonStyle)
                 }
             }
             Row {
@@ -237,7 +239,7 @@ private fun ControlDeck(
                 Button(onClick = {
                     onDown()
                 }) {
-                    Text("\uD83D\uDD3D\uFE0F")
+                    Text("\uD83D\uDD3D\uFE0F", style = buttonStyle)
                 }
                 Spacer(Modifier.weight(0.5f))
             }
@@ -254,7 +256,7 @@ private fun ControlDeck(
                 Button(onClick = {
                     onA()
                 }) {
-                    Text("A")
+                    Text("A", style = buttonStyle)
                 }
 
                 Spacer(Modifier.weight(0.2f))
@@ -262,7 +264,7 @@ private fun ControlDeck(
                 Button(onClick = {
                     onB()
                 }) {
-                    Text("B")
+                    Text("B", style = buttonStyle)
                 }
             }
             Spacer(Modifier.weight(0.5f))

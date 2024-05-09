@@ -54,7 +54,9 @@ class ComposeRasterRender {
                 title = "Video Game Test",
                 state = WindowState(width = maxWidth.dp, height = height.dp)
             ) {
-                GameConsole(runner, framesPerSecond, controller)
+                VideoGameUserTheme {
+                    GameConsole(runner, framesPerSecond, controller)
+                }
             }
         }
     }
