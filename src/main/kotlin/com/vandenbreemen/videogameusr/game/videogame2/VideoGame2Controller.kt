@@ -42,6 +42,10 @@ class VideoGame2Controller(private val model: VideoGame2Model, private val runne
         val playerLocation = model.getPlayerLocation()
         val spriteIndex = model.getPlayerSpriteIndex()
         runner.drawSpriteAt(spriteIndex, playerLocation.first, playerLocation.second)
+
+        model.getGroundSpriteLocations().forEach { (x, y) ->
+            runner.drawSpriteAt(VideoGame2SpriteAddresses.GROUND_SPRITE_1, x, y)
+        }
     }
 
     override fun getComposeColor(value: Byte): Color {

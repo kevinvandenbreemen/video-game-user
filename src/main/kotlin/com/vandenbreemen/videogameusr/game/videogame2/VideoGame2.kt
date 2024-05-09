@@ -1,6 +1,5 @@
 package com.vandenbreemen.com.vandenbreemen.videogameusr.game.videogame2
 
-import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.spriteEditor
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ComposeRasterRender
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
@@ -23,7 +22,7 @@ object VideoGame2SpriteAddresses {
 
 fun main() {
 
-    val requirement = GameDataRequirements(200, 150, 16, 16, 3072)
+    val requirement = GameDataRequirements(240, 150, 16, 16, 3072)
 
     //  First sprite:  The player, standing still
     //  16x16 array of bytes
@@ -213,7 +212,7 @@ fun main() {
 
 
 
-    spriteEditor(requirement, VideoGame2SpriteAddresses.GROUND_SPRITE_1, "requirement", 800)
+    //spriteEditor(requirement, VideoGame2SpriteAddresses.GROUND_SPRITE_1, "requirement", 800)
 
 
     //spriteEditor(requirement, 4, "requirement", 800)

@@ -1,5 +1,6 @@
 package com.vandenbreemen.com.vandenbreemen.videogameusr.game.videogame2
 
+import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.com.vandenbreemen.videogameusr.model.ScreenInteractor
 
 class VideoGame2Model(
@@ -17,6 +18,23 @@ class VideoGame2Model(
     private val movingRightFrames = listOf(VideoGame2SpriteAddresses.RUNNING_RIGHT_FRAME_1, VideoGame2SpriteAddresses.RUNNING_RIGHT_FRAME_2, VideoGame2SpriteAddresses.RUNNING_RIGHT_FRAME_3)
 
     private val screenInteractor = ScreenInteractor(screenWidth, screenHeight, spriteWidth, spriteHeight)
+
+    private val ground = mutableListOf<Pair<Int, Int>>()
+
+
+    init {
+        setup()
+    }
+
+    fun setup() {
+        //  Set up the ground
+        //  Go sprite width incremenets across the width of the screen
+        val yLevel = (screenHeight * 0.5).toInt() + spriteHeight
+        for (x in 0 until screenWidth step spriteWidth) {
+            klog("Add ground sprite at $x, $yLevel")
+            ground.add(Pair(x, yLevel))
+        }
+    }
 
     fun movePlayerRight() {
 
@@ -79,5 +97,7 @@ class VideoGame2Model(
         return if(playerGoingRight) VideoGame2SpriteAddresses.STANDING_STILL_RIGHT else VideoGame2SpriteAddresses.STANDING_STILL_LEFT
     }
 
-
+    fun getGroundSpriteLocations() : List<Pair<Int, Int>>{
+        return ground.toList()
+    }
 }
