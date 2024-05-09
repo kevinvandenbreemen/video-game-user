@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
+import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ConfirmingButton
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import kotlin.math.ceil
@@ -102,6 +103,11 @@ private fun SpritePixelEditor(
         }) {
             Text("Flip Horiz", style = MaterialTheme.typography.button)
         }
+        Spacer(modifier = Modifier.width(10.dp))
+        ConfirmingButton("Clear Sprite", "This will erase all your work", {
+            spriteArray.value = model.clearSprite()
+            spriteCode.value = model.generateSpriteSourceCode()
+        }, {})
     }
 
     //  Handle updates to the sprite here

@@ -25,7 +25,9 @@ import com.vandenbreemen.viddisplayrast.data.ByteColorDataInteractor
 import com.vandenbreemen.viddisplayrast.data.DisplayRaster
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.math.ceil
 
 @Composable
@@ -160,10 +162,12 @@ fun GameConsole(runner: Runner, framesPerSecond: Int = 60, controller: VideoGame
             if(controlsModel.isButtonPressed(Button.A)) controller.pressA()
             if(controlsModel.isButtonPressed(Button.B)) controller.pressB()
 
+            launch(Dispatchers.Default) {  //  Only do this on the main thread so that it can happen only once
+                raster.value = runner.newFrame()
+                controller.playTurn()
+                controller.drawFrame()
+            }
 
-            controller.playTurn()
-            controller.drawFrame()
-            raster.value = runner.newFrame()
         }
 
     }

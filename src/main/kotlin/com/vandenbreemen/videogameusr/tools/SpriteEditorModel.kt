@@ -123,6 +123,16 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
         return getComposeColor(paintColor)
     }
 
+    fun clearSprite(): ByteArray {
+        spriteByteArray.forEachIndexed { index, byte ->
+            spriteByteArray[index] = 0
+        }
+        requirements.setData(spriteIndex, spriteByteArray.clone())
+        refreshSprite()
+
+        return spriteByteArray
+    }
+
     fun getComposeColor(colorByte: Byte): Color {
 
         return colorInteractor.getComposeColor(colorByte)
