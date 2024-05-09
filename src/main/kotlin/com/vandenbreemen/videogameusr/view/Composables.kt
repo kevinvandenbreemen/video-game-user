@@ -33,6 +33,14 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.ceil
 
+/**
+ * [GameConsole] is a composable that will render a game console with a screen and controls
+ * [RasterDisplay] - The screen, where the game itself is rendered
+ */
+object MasterViewComposables {
+
+}
+
 @Composable
 fun RasterDisplay(raster: DisplayRaster, controller: VideoGameController) {
 
@@ -118,7 +126,6 @@ fun GameConsole(runner: Runner, framesPerSecond: Int = 1, controller: VideoGameC
         //  The "screen"
         Column(Modifier.weight(0.5f).padding(5.dp)) {
             RasterDisplay(raster.value, controller)
-            //Text("The Screen", Modifier.padding(2.dp).background(Color.White))
         }
 
         //  The "controls"
