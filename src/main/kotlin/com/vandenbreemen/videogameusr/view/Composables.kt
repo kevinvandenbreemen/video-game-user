@@ -247,8 +247,6 @@ private fun ControlDeck(
         }
 
         Spacer(Modifier.weight(0.3f))
-        Text("Score: 0", Modifier.weight(0.2f).background(Color.White))
-        Spacer(Modifier.weight(0.3f))
 
         Column(Modifier.weight(0.5f)) {
             Spacer(Modifier.weight(0.5f))
