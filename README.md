@@ -16,3 +16,6 @@ Note that you can also specify the name of the requirements variable, for exampl
 ```
 spriteEditor(requirements, 0, "myRequirements")
 ```
+
+# Game Play
+Games themselves are run through ```GameConsole```, in the Composables.kt file.
