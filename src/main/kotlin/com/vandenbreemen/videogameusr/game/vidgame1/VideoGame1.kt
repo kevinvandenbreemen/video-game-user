@@ -1,7 +1,7 @@
 package com.vandenbreemen.com.vandenbreemen.videogameusr.game.controller
 
 import com.vandenbreemen.com.vandenbreemen.videogameusr.game.vidgame1.VideoGame1Controller
-import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ComposeRasterRender
+import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ProgramEntryPoints
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
 
@@ -130,7 +130,7 @@ fun main() {
 
     //  Now set up a game
     val controller = VideoGame1Controller(runner, requirements)
-    ComposeRasterRender.playGameInWindow(runner, controller, 60, 800)
+    ProgramEntryPoints.playGameInWindow(runner, controller, 120, 800)
     //  Draw the screen
 
 

@@ -1,6 +1,6 @@
 package com.vandenbreemen.com.vandenbreemen.videogameusr.game.videogame2
 
-import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ComposeRasterRender
+import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ProgramEntryPoints
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
 
@@ -223,7 +223,7 @@ fun main() {
 
     val model = VideoGame2Model(requirement.screenWidth, requirement.screenHeight, requirement.spriteWidth, requirement.spriteHeight)
     val controller = VideoGame2Controller(model, runner)
-    ComposeRasterRender.playGameInWindow(runner, controller, 60, 800)
+    ProgramEntryPoints.playGameInWindow(runner, controller, 60, 800)
 
 
 

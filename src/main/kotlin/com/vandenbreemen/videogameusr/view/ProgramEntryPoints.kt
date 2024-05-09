@@ -11,7 +11,7 @@ import com.vandenbreemen.viddisplayrast.data.DisplayRaster
 import com.vandenbreemen.viddisplayrast.game.Runner
 
 
-class ComposeRasterRender {
+class ProgramEntryPoints {
 
     companion object {
         fun showTestRenderWindow(raster: DisplayRaster, maxWidth: Int = 800) = application {
