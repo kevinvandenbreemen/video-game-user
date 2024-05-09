@@ -9,7 +9,7 @@ class VideoGame2Model(
 
     private var playerGoingRight = false
     private var movementIncrement = 1   //  TODO    Consider accelerating the player
-    private var playerLocation = Pair((screenWidth *0.5).toInt(), (screenHeight * 0.5).toInt())
+    private var playerLocation = Pair((25).toInt(), (screenHeight * 0.5).toInt())
 
     private val playerAnimationLoopFrameCount = 3
     private var playerAnimationFrameIndex: Int = 0
@@ -30,7 +30,16 @@ class VideoGame2Model(
         //  Set up the ground
         //  Go sprite width incremenets across the width of the screen
         val yLevel = (screenHeight * 0.5).toInt() + spriteHeight
+
+        val holeRange = 8 until 10
+        var groundPlotCounter = 0
+
         for (x in 0 until screenWidth step spriteWidth) {
+            groundPlotCounter++
+            if(groundPlotCounter in holeRange) {
+                klog("Skipping hole at $x, $yLevel")
+                continue
+            }
             klog("Add ground sprite at $x, $yLevel")
             ground.add(Pair(x, yLevel))
         }
