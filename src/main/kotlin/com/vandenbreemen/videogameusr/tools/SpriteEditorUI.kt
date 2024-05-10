@@ -439,7 +439,7 @@ fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requireme
                             SpriteEditorUI(model)
                         }
                         ToolType.LevelEditor -> {
-                            //  Level editor
+                            LevelDesigner()
                         }
                     }
 
@@ -469,7 +469,12 @@ private fun GameToolDrawerContent(
             })
         }
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("Level Editor", style = MaterialTheme.typography.subtitle1)
+            Text("Level Editor", style = MaterialTheme.typography.subtitle1, modifier = Modifier.clickable {
+                coroutineScope.launch {
+                    scaffoldState.drawerState.close()
+                    selectedTool.value = ToolType.LevelEditor
+                }
+            })
         }
     }
 }
