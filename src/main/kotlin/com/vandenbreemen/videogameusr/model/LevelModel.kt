@@ -27,6 +27,11 @@ class LevelModel(private val requirements: GameDataRequirements, val widthInTile
      * Get the sprite index at the given tile
      */
     fun getSpriteTileAt(x: Int, y: Int): Int {
+        // Verify the location is in bounds
+        if(x !in 0 until widthInTiles || y !in 0 until heightInTiles){
+            throw IllegalArgumentException("Invalid location $x, $y, max x=$widthInTiles, max y=$heightInTiles")
+        }
+
         return levelData[x][y]
     }
 

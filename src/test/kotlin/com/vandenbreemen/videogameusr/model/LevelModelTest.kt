@@ -40,6 +40,12 @@ class LevelModelTest {
         }
     }
 
-
+    @Test
+    fun `should prevent accessing sprite tile from location out of bounds`() {
+        val levelModel = LevelModel(requirements, 1000, 100)
+        assertThrows(IllegalArgumentException::class.java) {
+            levelModel.getSpriteTileAt(1000, 100)
+        }
+    }
 
 }
