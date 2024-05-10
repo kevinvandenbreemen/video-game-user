@@ -50,11 +50,11 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
     val spriteIndex = remember { mutableStateOf(model.currentSpriteIndex) }
 
     Row(modifier = Modifier.fillMaxSize()) {
-        Column(Modifier.weight(0.2f)) {
+        Column(Modifier.weight(0.1f)) {
             SpriteTileGrid(model, 100, spriteIndex, spriteCode)
         }
         Column(
-            modifier = Modifier.weight(0.66f).fillMaxSize().background(
+            modifier = Modifier.weight(0.6f).fillMaxSize().background(
                 Color.Gray
             )
         ) {
@@ -76,7 +76,7 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
                 ColorPickerUI(paintColorByte, isErasing, isEyeDropping, model)
             }
         }
-        Column(modifier = Modifier.weight(0.33f).fillMaxSize().background(Color.Black)) {
+        Column(modifier = Modifier.weight(0.3f).fillMaxSize().background(Color.Black)) {
             //  Show the sourcecode for creating the sprite
             Text("Source Code", style = TextStyle(fontSize = 14.sp, color = Color.Green
                 , fontFamily = FontFamily.Monospace, textAlign = TextAlign.Center))
@@ -385,6 +385,7 @@ fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requireme
 
     val model = SpriteEditorModel(requirements, spriteIndex=spriteIndex, requirementsVariableName = requirementsVariableName)
     Window(
+        resizable = false,
         onCloseRequest = {  },
         visible = true,
         title = "Sprite Editor - sprite $spriteIndex",
