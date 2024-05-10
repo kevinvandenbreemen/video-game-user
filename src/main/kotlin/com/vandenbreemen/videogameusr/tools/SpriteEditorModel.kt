@@ -171,9 +171,7 @@ $requirementsVariableName.setData($spriteIndex, byteArrayOf(""")
         return Pair(0, (requirements.maxBytes/(requirements.spriteWidth * requirements.spriteHeight)) - 1)
     }
 
-    fun tilesPerRowOnSpriteTileGrid(): Int {
-        return 3
-    }
+    val tilesPerRowOnSpriteTileGrid = 4
 
     fun getSpriteTileGridArray(index: Int): ByteArray {
         return requirements.spriteData.copyOfRange(index * requirements.spriteWidth * requirements.spriteHeight, (index + 1) * requirements.spriteWidth * requirements.spriteHeight)

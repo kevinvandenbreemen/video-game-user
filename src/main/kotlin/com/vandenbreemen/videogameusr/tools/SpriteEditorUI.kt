@@ -6,6 +6,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -90,55 +92,58 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
 @Composable
 private fun SpriteTileGrid(model: SpriteEditorModel, width: Int = 100, spriteIndex: MutableState<Int>, spriteCode: MutableState<String>) {
     val range = model.getSpriteTileGridRange()
-    val tilesPerRow = model.tilesPerRowOnSpriteTileGrid()
+    val tilesPerRow = model.tilesPerRowOnSpriteTileGrid
 
-    val reqSpriteWidthToRowWidthRatio = (width / model.tilesPerRowOnSpriteTileGrid()) / model.spriteWidth
+    val reqSpriteWidthToRowWidthRatio = (width / model.tilesPerRowOnSpriteTileGrid) / model.spriteWidth
 
     val spriteWidthOnScreen = (model.spriteWidth * reqSpriteWidthToRowWidthRatio).dp
     val spriteHeightOnScreen = (model.spriteHeight * reqSpriteWidthToRowWidthRatio).dp
 
-    Column(modifier = Modifier.border(1.dp, Color.Black).padding(5.dp).background(Color.Gray)) {
+    Column(Modifier.padding(5.dp)) {
         Text("Nearest tiles in Assets", style = MaterialTheme.typography.h6)
-        for(i in range.first..range.second step tilesPerRow){
-            Row(modifier = Modifier.width(width.dp).height(spriteHeightOnScreen).padding(0.dp)) {
-                for(j in i until i + tilesPerRow){
-                    if(j > range.second){
-                        break
-                    }
-                    val spriteArray = model.getSpriteTileGridArray(j)
-                    Canvas(modifier = Modifier.size(width = spriteWidthOnScreen, height = spriteHeightOnScreen).padding(0.dp)
-                        .pointerInput(Unit) {
-                            detectTapGestures { offset ->
-                                model.selectSpriteIndex(j)
-                                spriteIndex.value = j
-                                spriteCode.value = model.generateSpriteSourceCode()
-                            }
-                        }) {
+        //  Scroll this
+        LazyColumn(modifier = Modifier.border(1.dp, Color.Black).background(Color.Gray)) {
+            items((range.first..range.second step tilesPerRow).toList()) { i ->
+                Row(modifier = Modifier.width(width.dp).height(spriteHeightOnScreen).padding(0.dp)) {
+                    for(j in i until i + tilesPerRow){
+                        if(j > range.second){
+                            break
+                        }
+                        val spriteArray = model.getSpriteTileGridArray(j)
+                        Canvas(modifier = Modifier.size(width = spriteWidthOnScreen, height = spriteHeightOnScreen).padding(0.dp)
+                            .pointerInput(Unit) {
+                                detectTapGestures { offset ->
+                                    model.selectSpriteIndex(j)
+                                    spriteIndex.value = j
+                                    spriteCode.value = model.generateSpriteSourceCode()
+                                }
+                            }) {
 
 
-                        //  Detect user tapping on this
+                            //  Detect user tapping on this
 
 
-                        val width = size.width
-                        val height = size.height
+                            val width = size.width
+                            val height = size.height
 
-                        val pixelWidthInCanvas = ceil((width / model.spriteWidth).toDouble()).toFloat()
-                        val pixelHeightInCanvas = ceil((height / model.spriteHeight).toDouble()).toFloat()
+                            val pixelWidthInCanvas = ceil((width / model.spriteWidth).toDouble()).toFloat()
+                            val pixelHeightInCanvas = ceil((height / model.spriteHeight).toDouble()).toFloat()
 
-                        for (y in 0 until model.spriteHeight) {
-                            for (x in 0 until model.spriteWidth) {
-                                val left = x * pixelWidthInCanvas
-                                val top = y * pixelHeightInCanvas
+                            for (y in 0 until model.spriteHeight) {
+                                for (x in 0 until model.spriteWidth) {
+                                    val left = x * pixelWidthInCanvas
+                                    val top = y * pixelHeightInCanvas
 
-                                //  Draw grayscale color based on pixel byte value
-                                val pixelColor = spriteArray[y * model.spriteWidth + x]
+                                    //  Draw grayscale color based on pixel byte value
+                                    val pixelColor = spriteArray[y * model.spriteWidth + x]
 
-                                val color = model.getComposeColor(pixelColor)
-                                drawRect(
-                                    color,
-                                    topLeft = Offset(left, top),
-                                    size = Size(pixelWidthInCanvas, pixelHeightInCanvas)
-                                )
+                                    val color = model.getComposeColor(pixelColor)
+                                    drawRect(
+                                        color,
+                                        topLeft = Offset(left, top),
+                                        size = Size(pixelWidthInCanvas, pixelHeightInCanvas)
+                                    )
+                                }
                             }
                         }
                     }
