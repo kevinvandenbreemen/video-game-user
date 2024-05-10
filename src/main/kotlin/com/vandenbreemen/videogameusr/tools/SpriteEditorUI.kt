@@ -30,9 +30,10 @@ import kotlin.math.ceil
 /**
  * Tool for editing sprites
  * Major Components:
+ * 1.  Sprite Editor Application proper [spriteEditor]
  * 1.  Sprite Pixel Editor [SpritePixelEditor]
  * 2.  Color Picker [ColorPickerUI]
- * 3.  Sprite Editor Application proper [spriteEditor]
+ * 3.  Grid of other tiles [SpriteTileGrid]
  *
  * @param model Model for the sprite editor
  */
@@ -359,7 +360,7 @@ fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requireme
     Window(
         onCloseRequest = {  },
         visible = true,
-        title = "Raster Render Test",
+        title = "Sprite Editor - sprite $spriteIndex",
         state = WindowState(width = maxWidth.dp, height = height.dp)
     ) {
 
