@@ -4,28 +4,36 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
+import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.model.SpriteEditorModel
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ConfirmingButton
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import kotlin.math.ceil
 
 /**
@@ -35,6 +43,8 @@ import kotlin.math.ceil
  * 1.  Sprite Pixel Editor [SpritePixelEditor]
  * 2.  Color Picker [ColorPickerUI]
  * 3.  Grid of other tiles [SpriteTileGrid]
+ * 4.  Tool select drawer [GameToolDrawerContent]
+ * 5.  Previewer of Compose Components [PreviewOfComponentYourWorkingOn]
  *
  * @param model Model for the sprite editor
  */
@@ -50,7 +60,7 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
 
     Row(modifier = Modifier.fillMaxSize()) {
         Column(Modifier.weight(0.1f)) {
-            SpriteTileGrid(model, 100, spriteIndex, spriteCode)
+            SpriteTileGrid(model, 100, spriteIndex)
         }
         Column(
             modifier = Modifier.weight(0.6f).fillMaxSize().background(
@@ -77,6 +87,9 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
         }
         Column(modifier = Modifier.weight(0.3f).fillMaxSize().background(Color.Black)) {
             //  Show the sourcecode for creating the sprite
+            LaunchedEffect(spriteIndex.value) {
+                spriteCode.value = model.generateSpriteSourceCode()
+            }
             val scrollState = rememberScrollState()
             Text("Source Code", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
 
@@ -88,70 +101,6 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
     }
 }
 
-@Composable
-private fun SpriteTileGrid(model: SpriteEditorModel, width: Int = 100, spriteIndex: MutableState<Int>, spriteCode: MutableState<String>) {
-    val range = model.getSpriteTileGridRange()
-    val tilesPerRow = model.tilesPerRowOnSpriteTileGrid
-
-    val reqSpriteWidthToRowWidthRatio = (width / model.tilesPerRowOnSpriteTileGrid) / model.spriteWidth
-
-    val spriteWidthOnScreen = (model.spriteWidth * reqSpriteWidthToRowWidthRatio).dp
-    val spriteHeightOnScreen = (model.spriteHeight * reqSpriteWidthToRowWidthRatio).dp
-
-    Column(Modifier.padding(5.dp)) {
-        Text("All Tile Assets", style = MaterialTheme.typography.subtitle2)
-        //  Scroll this
-        LazyColumn(modifier = Modifier.border(1.dp, Color.Black).background(Color.Gray)) {
-            items((range.first..range.second step tilesPerRow).toList()) { i ->
-                Row(modifier = Modifier.width(width.dp).height(spriteHeightOnScreen).padding(0.dp)) {
-                    for(j in i until i + tilesPerRow){
-                        if(j > range.second){
-                            break
-                        }
-                        val spriteArray = model.getSpriteTileGridArray(j)
-                        Canvas(modifier = Modifier.size(width = spriteWidthOnScreen, height = spriteHeightOnScreen).padding(0.dp)
-                            .pointerInput(Unit) {
-                                detectTapGestures { offset ->
-                                    model.selectSpriteIndex(j)
-                                    spriteIndex.value = j
-                                    spriteCode.value = model.generateSpriteSourceCode()
-                                }
-                            }) {
-
-
-                            //  Detect user tapping on this
-
-
-                            val width = size.width
-                            val height = size.height
-
-                            val pixelWidthInCanvas = ceil((width / model.spriteWidth).toDouble()).toFloat()
-                            val pixelHeightInCanvas = ceil((height / model.spriteHeight).toDouble()).toFloat()
-
-                            for (y in 0 until model.spriteHeight) {
-                                for (x in 0 until model.spriteWidth) {
-                                    val left = x * pixelWidthInCanvas
-                                    val top = y * pixelHeightInCanvas
-
-                                    //  Draw grayscale color based on pixel byte value
-                                    val pixelColor = spriteArray[y * model.spriteWidth + x]
-
-                                    val color = model.getComposeColor(pixelColor)
-                                    drawRect(
-                                        color,
-                                        topLeft = Offset(left, top),
-                                        size = Size(pixelWidthInCanvas, pixelHeightInCanvas)
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-    }
-}
 
 @Composable
 private fun SpritePixelEditor(
@@ -382,9 +331,12 @@ fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requireme
     val maxWidth = 900
 
     //  Step 1:  Work out the height as a ratio of the width
-    val height = (maxWidth * 0.80).toInt()
+    val height = (maxWidth * 0.90).toInt()
 
     val model = SpriteEditorModel(requirements, spriteIndex=spriteIndex, requirementsVariableName = requirementsVariableName)
+    val selectedTool = remember { mutableStateOf(ToolType.SpriteEditor) }
+    val coroutineScope = rememberCoroutineScope()
+
     Window(
         resizable = false,
         onCloseRequest = {  },
@@ -394,9 +346,46 @@ fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requireme
     ) {
 
         VideoGameUserTheme {
-            Column(modifier = Modifier.width(maxWidth.dp).height(height.dp)) {
-                SpriteEditorUI(model)
+
+            //  Show this inside a UI with a hamburger menu on the top left
+            val scaffoldState = rememberScaffoldState( rememberDrawerState(DrawerValue.Closed) )
+            Scaffold(
+                drawerGesturesEnabled = false,
+                scaffoldState = scaffoldState,
+                topBar = {
+                    TopAppBar(title = { Text("Game Editor", style = MaterialTheme.typography.subtitle1) }, navigationIcon = {
+                        IconButton(onClick = {
+                            coroutineScope.launch {
+                                scaffoldState.drawerState.open()
+                            }
+                        }) {
+                            Icon(Icons.Filled.Menu, contentDescription = "Menu")
+                        }
+                    })
+                },
+                drawerShape = object: Shape {
+                    override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline {
+                        return Outline.Rectangle(Rect(0f, 0f, (size.width * 0.6f), size.height))
+                    }
+                },
+                drawerContent = {
+                    GameToolDrawerContent(coroutineScope, scaffoldState, selectedTool)
+                }
+            ) {
+                Column(modifier = Modifier.fillMaxSize()) {
+                    when(selectedTool.value){
+                        ToolType.SpriteEditor -> {
+                            SpriteEditorUI(model)
+                        }
+                        ToolType.LevelEditor -> {
+                            LevelDesigner()
+                        }
+                    }
+
+                }
             }
+
+
         }
 
     }
@@ -404,28 +393,39 @@ fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requireme
 }
 
 @Composable
-@Preview
-fun PreviewSpriteEditorUI() {
-
-    val requirements = GameDataRequirements(200, 150, 8, 8, 1024)
-    requirements.setData(0, byteArrayOf(
-        //  Just 0s
-        1, 0, 0, 0, 0, 0, 0, 0,
-        0, 1, 1, 0, 0, 0, 0, 0,
-        0, 0, 1, 1, 0, 0, 0, 0,
-        1, 1, 1, 1, 1, 0, 0, 0,
-        1, 1, 1, 1, 1, 1, 1, 0,
-        0, 1, 1, 0, 0, 1, 0, 0,
-        1, 1, 0, 0, 0, 0, 0, 0,
-        1, 0, 0, 0, 0, 0, 0, 0,
-    ).also { // Multiply all values  by 100
-        for(i in it.indices){
-            it[i] = (it[i] * 200).toByte()
+private fun GameToolDrawerContent(
+    coroutineScope: CoroutineScope,
+    scaffoldState: ScaffoldState,
+    selectedTool: MutableState<ToolType>
+) {
+    Column(modifier = Modifier.background(MaterialTheme.colors.background).fillMaxSize()) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text("Sprite Editor", style = MaterialTheme.typography.subtitle1, modifier = Modifier.clickable {
+                coroutineScope.launch {
+                    scaffoldState.drawerState.close()
+                    selectedTool.value = ToolType.SpriteEditor
+                }
+            })
         }
-    })
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text("Level Editor", style = MaterialTheme.typography.subtitle1, modifier = Modifier.clickable {
+                coroutineScope.launch {
+                    scaffoldState.drawerState.close()
+                    selectedTool.value = ToolType.LevelEditor
+                }
+            })
+        }
+    }
+}
 
-    val model = SpriteEditorModel(requirements, 0, "requirementInPreview")
+@Composable
+@Preview
+fun PreviewOfComponentYourWorkingOn() {
 
-    SpriteEditorUI(model)
+    val scaffoldState = rememberScaffoldState( rememberDrawerState(DrawerValue.Closed) )
+
+    VideoGameUserTheme {
+        GameToolDrawerContent(rememberCoroutineScope(), scaffoldState, mutableStateOf(ToolType.SpriteEditor))
+    }
 
 }
