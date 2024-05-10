@@ -46,6 +46,9 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
     val isEyeDropping = remember { mutableStateOf(false) }
 
     Row(modifier = Modifier.fillMaxSize()) {
+        Column(Modifier.weight(0.2f)) {
+            SpriteTileGrid(model)
+        }
         Column(
             modifier = Modifier.weight(0.66f).fillMaxSize().background(
                 Color.Gray
@@ -79,6 +82,56 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
                 modifier = Modifier.fillMaxSize())
 
         }
+    }
+}
+
+@Composable
+private fun SpriteTileGrid(model: SpriteEditorModel, width: Int = 100) {
+    val range = model.getSpriteTileGridRange()
+    val tilesPerRow = model.tilesPerRowOnSpriteTileGrid()
+
+    val reqSpriteWidthToRowWidthRatio = (width / model.tilesPerRowOnSpriteTileGrid()) / model.spriteWidth
+
+    val spriteWidthOnScreen = (model.spriteWidth * reqSpriteWidthToRowWidthRatio).dp
+    val spriteHeightOnScreen = (model.spriteHeight * reqSpriteWidthToRowWidthRatio).dp
+
+    Column(modifier = Modifier.border(1.dp, Color.Black).padding(5.dp).background(Color.Gray)) {
+        Text("Nearest tiles in Assets", style = MaterialTheme.typography.h6)
+        for(i in range.first..range.second step tilesPerRow){
+            Row(modifier = Modifier.width(width.dp).height(spriteHeightOnScreen).padding(0.dp)) {
+                for(j in i until i + tilesPerRow){
+                    if(j > range.second){
+                        break
+                    }
+                    val spriteArray = model.getSpriteTileGridArray(j)
+                    Canvas(modifier = Modifier.size(width = spriteWidthOnScreen, height = spriteHeightOnScreen).padding(0.dp)) {
+                        val width = size.width
+                        val height = size.height
+
+                        val pixelWidthInCanvas = ceil((width / model.spriteWidth).toDouble()).toFloat()
+                        val pixelHeightInCanvas = ceil((height / model.spriteHeight).toDouble()).toFloat()
+
+                        for (y in 0 until model.spriteHeight) {
+                            for (x in 0 until model.spriteWidth) {
+                                val left = x * pixelWidthInCanvas
+                                val top = y * pixelHeightInCanvas
+
+                                //  Draw grayscale color based on pixel byte value
+                                val pixelColor = spriteArray[y * model.spriteWidth + x]
+
+                                val color = model.getComposeColor(pixelColor)
+                                drawRect(
+                                    color,
+                                    topLeft = Offset(left, top),
+                                    size = Size(pixelWidthInCanvas, pixelHeightInCanvas)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }
 

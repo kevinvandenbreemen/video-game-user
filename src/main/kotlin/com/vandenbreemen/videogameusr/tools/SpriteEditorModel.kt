@@ -6,8 +6,15 @@ import com.vandenbreemen.com.vandenbreemen.videogameusr.model.ColorInteractor
 import com.vandenbreemen.viddisplayrast.data.ByteColorDataInteractor
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
+import kotlin.math.max
+import kotlin.math.min
 
 class SpriteEditorModel(private val requirements: GameDataRequirements, private val spriteIndex: Int, private val requirementsVariableName: String) {
+
+    /**
+     * For the sprite tile grid, the number of tiles to preview on either side of the current index
+     */
+    private val numTilesBeforeAndAfterIndex = 5
 
     private val runner = Runner(requirements)
     private val spriteByteArray = ByteArray(requirements.spriteWidth * requirements.spriteHeight)
@@ -158,6 +165,25 @@ $requirementsVariableName.setData($spriteIndex, byteArrayOf(""")
 
         return stringBld.toString()
 
+    }
+
+    //  Sprite tile grid stuff
+
+    /**
+     * Get the start and end index of sprites to show on the tile preview grid
+     */
+    fun getSpriteTileGridRange(): Pair<Int, Int> {
+        //  Use the numTilesBeforeAndAfterIndex to get a range of indexes responding the actual size of indexes possible
+        return Pair( max(spriteIndex - numTilesBeforeAndAfterIndex, 0),
+         min(spriteIndex + numTilesBeforeAndAfterIndex, (requirements.maxBytes/(requirements.spriteWidth * requirements.spriteHeight)) - 1) )
+    }
+
+    fun tilesPerRowOnSpriteTileGrid(): Int {
+        return 3
+    }
+
+    fun getSpriteTileGridArray(index: Int): ByteArray {
+        return requirements.spriteData.copyOfRange(index * requirements.spriteWidth * requirements.spriteHeight, (index + 1) * requirements.spriteWidth * requirements.spriteHeight)
     }
 
 
