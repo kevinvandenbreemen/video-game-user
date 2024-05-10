@@ -7,17 +7,24 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
@@ -26,6 +33,7 @@ import androidx.compose.ui.window.application
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ConfirmingButton
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
+import kotlinx.coroutines.launch
 import kotlin.math.ceil
 
 /**
@@ -382,9 +390,11 @@ fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requireme
     val maxWidth = 900
 
     //  Step 1:  Work out the height as a ratio of the width
-    val height = (maxWidth * 0.80).toInt()
+    val height = (maxWidth * 0.90).toInt()
 
     val model = SpriteEditorModel(requirements, spriteIndex=spriteIndex, requirementsVariableName = requirementsVariableName)
+    val coroutineScope = rememberCoroutineScope()
+
     Window(
         resizable = false,
         onCloseRequest = {  },
@@ -394,9 +404,44 @@ fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requireme
     ) {
 
         VideoGameUserTheme {
-            Column(modifier = Modifier.width(maxWidth.dp).height(height.dp)) {
-                SpriteEditorUI(model)
+
+            //  Show this inside a UI with a hamburger menu on the top left
+            val scaffoldState = rememberScaffoldState( rememberDrawerState(DrawerValue.Closed) )
+            Scaffold(
+                scaffoldState = scaffoldState,
+                topBar = {
+                    TopAppBar(title = { Text("Game Editor", style = MaterialTheme.typography.subtitle1) }, navigationIcon = {
+                        IconButton(onClick = {
+                            coroutineScope.launch {
+                                scaffoldState.drawerState.open()
+                            }
+                        }) {
+                            Icon(Icons.Filled.Menu, contentDescription = "Menu")
+                        }
+                    })
+                },
+                drawerShape = object: Shape {
+                    override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline {
+                        return Outline.Rectangle(Rect(0f, 0f, (size.width * 0.6f), size.height))
+                    }
+                },
+                drawerContent = {
+                    Column(modifier=Modifier.background(MaterialTheme.colors.background).fillMaxSize()) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text("Sprite Editor", style = MaterialTheme.typography.subtitle1)
+                        }
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text("Level Editor", style = MaterialTheme.typography.subtitle1)
+                        }
+                    }
+                }
+            ) {
+                Column(modifier = Modifier.fillMaxSize()) {
+                    SpriteEditorUI(model)
+                }
             }
+
+
         }
 
     }
