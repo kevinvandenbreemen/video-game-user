@@ -349,6 +349,7 @@ fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requireme
             //  Show this inside a UI with a hamburger menu on the top left
             val scaffoldState = rememberScaffoldState( rememberDrawerState(DrawerValue.Closed) )
             Scaffold(
+                drawerGesturesEnabled = false,
                 scaffoldState = scaffoldState,
                 topBar = {
                     TopAppBar(title = { Text("Game Editor", style = MaterialTheme.typography.subtitle1) }, navigationIcon = {
