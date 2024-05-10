@@ -1,9 +1,7 @@
 package com.vandenbreemen.com.vandenbreemen.videogameusr.tools
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -79,11 +77,12 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
         }
         Column(modifier = Modifier.weight(0.3f).fillMaxSize().background(Color.Black)) {
             //  Show the sourcecode for creating the sprite
+            val scrollState = rememberScrollState()
             Text("Source Code", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
 
             TextField(value = spriteCode.value, onValueChange = {  }, readOnly = true,
                 textStyle = TextStyle(fontSize = 8.sp, color = Color.Green, fontFamily = FontFamily.Monospace),
-                modifier = Modifier.fillMaxSize())
+                modifier = Modifier.fillMaxSize().verticalScroll(scrollState))
 
         }
     }

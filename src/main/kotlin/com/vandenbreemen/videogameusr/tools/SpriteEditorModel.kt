@@ -19,6 +19,8 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
     val currentSpriteIndex: Int
         get() = spriteIndex
 
+    private val previouslySelectedSpriteIndices = mutableSetOf(spriteIndex)
+
     /**
      * Computation of color values etc
      */
@@ -149,7 +151,14 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
      * Build the source code required to generate the sprite and assign it to the requirements
      */
     fun generateSpriteSourceCode(): String {
-        return spriteCodeGenerationInteractor.generateCodeForSpriteIndex(spriteIndex, requirementsVariableName)
+
+        val codeBuilder = StringBuilder()
+        previouslySelectedSpriteIndices.sorted().forEach { index ->
+            codeBuilder.append(spriteCodeGenerationInteractor.generateCodeForSpriteIndex(index, requirementsVariableName))
+            codeBuilder.append("\n\n")
+        }
+
+        return codeBuilder.toString()
     }
 
     //  Sprite tile grid stuff
@@ -169,6 +178,7 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
 
     fun selectSpriteIndex(index: Int) {
         spriteIndex = index
+        previouslySelectedSpriteIndices.add(index)
         refreshSprite()
     }
 
