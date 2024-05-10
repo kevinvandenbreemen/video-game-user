@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -72,14 +73,13 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
             //  Determine the available colors -- for now 16 colors out of the 128 possible byte values evenly spaced
             
             Column(modifier = Modifier.weight(0.4f)) {
-                Text("Color Picker", style = MaterialTheme.typography.h6)
+                Text("Color Picker", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold))
                 ColorPickerUI(paintColorByte, isErasing, isEyeDropping, model)
             }
         }
         Column(modifier = Modifier.weight(0.3f).fillMaxSize().background(Color.Black)) {
             //  Show the sourcecode for creating the sprite
-            Text("Source Code", style = TextStyle(fontSize = 14.sp, color = Color.Green
-                , fontFamily = FontFamily.Monospace, textAlign = TextAlign.Center))
+            Text("Source Code", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
 
             TextField(value = spriteCode.value, onValueChange = {  }, readOnly = true,
                 textStyle = TextStyle(fontSize = 8.sp, color = Color.Green, fontFamily = FontFamily.Monospace),
@@ -100,7 +100,7 @@ private fun SpriteTileGrid(model: SpriteEditorModel, width: Int = 100, spriteInd
     val spriteHeightOnScreen = (model.spriteHeight * reqSpriteWidthToRowWidthRatio).dp
 
     Column(Modifier.padding(5.dp)) {
-        Text("Nearest tiles in Assets", style = MaterialTheme.typography.h6)
+        Text("All Tile Assets", style = MaterialTheme.typography.subtitle2)
         //  Scroll this
         LazyColumn(modifier = Modifier.border(1.dp, Color.Black).background(Color.Gray)) {
             items((range.first..range.second step tilesPerRow).toList()) { i ->
@@ -169,7 +169,7 @@ private fun SpritePixelEditor(
 
 
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text("Sprite Data Editor", style = MaterialTheme.typography.h6)
+        Text("Sprite Data Editor", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold))
         Spacer(modifier = Modifier.width(10.dp))
         Button(onClick = {
             spriteArray.value = model.mirrorHorizontal()
@@ -284,14 +284,14 @@ private fun ColorPickerUI(
                 paintColorByte.value = 0
                 isErasing.value = false
             }, modifier = Modifier.width(70.dp).height(45.dp).padding(5.dp)) {
-                Text("Reset Color",  style = TextStyle(color = Color.White, fontSize = 8.sp))
+                Text("Reset Color",  style = MaterialTheme.typography.button)
             }
 
             Button(onClick = {
                 isErasing.value = !isErasing.value
                 isEyeDropping.value = false
             }, modifier = Modifier.width(70.dp).height(45.dp).padding(5.dp)) {
-                Text(if(isErasing.value) "Eraser ✏\uFE0F" else "Eraser",  style = TextStyle(color = Color.White, fontSize = 8.sp))
+                Text(if(isErasing.value) "Eraser ✏\uFE0F" else "Eraser",  style = MaterialTheme.typography.button)
             }
 
             //  Eyedropper button
@@ -299,7 +299,7 @@ private fun ColorPickerUI(
                 isEyeDropping.value = !isEyeDropping.value
                 isErasing.value = false
             }, modifier = Modifier.width(80.dp).height(55.dp).padding(5.dp)) {
-                Text(if(isEyeDropping.value) "Eye Dropper 👁️" else "Eye Dropper",  style = TextStyle(color = Color.White, fontSize = 8.sp))
+                Text(if(isEyeDropping.value) "Eye Dropper 👁️" else "Eye Dropper",  style = MaterialTheme.typography.button)
             }
         }
 
@@ -320,7 +320,7 @@ private fun ColorPickerUI(
                             isErasing.value = false
                         }, modifier = Modifier.fillMaxWidth().background(color)
                     ) {
-                        Text("$i", style = TextStyle(color = Color.White, fontSize = 8.sp))
+                        Text("$i", style = MaterialTheme.typography.button)
                     }
 
                 }
@@ -337,7 +337,7 @@ private fun ColorPickerUI(
                             isErasing.value = false
                         }, modifier = Modifier.fillMaxWidth().background(color)
                     ) {
-                        Text("$i", style = TextStyle(color = Color.White, fontSize = 8.sp))
+                        Text("$i", style = MaterialTheme.typography.button)
                     }
                 }
             }
@@ -353,7 +353,7 @@ private fun ColorPickerUI(
                             isErasing.value = false
                         }, modifier = Modifier.fillMaxWidth().background(color)
                     ) {
-                        Text("$i", style = TextStyle(color = Color.White, fontSize = 8.sp))
+                        Text("$i", style =MaterialTheme.typography.button)
                     }
                 }
             }
@@ -369,7 +369,7 @@ private fun ColorPickerUI(
                             isErasing.value = false
                         }, modifier = Modifier.fillMaxWidth().background(color)
                     ) {
-                        Text("$i", style = TextStyle(color = Color.White, fontSize = 8.sp))
+                        Text("$i", style = MaterialTheme.typography.button)
                     }
                 }
             }

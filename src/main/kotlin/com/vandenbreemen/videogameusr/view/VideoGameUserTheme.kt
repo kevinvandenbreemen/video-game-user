@@ -24,7 +24,7 @@ val RobotoTypography = Typography(
     subtitle2 = TextStyle(fontWeight = FontWeight.W500, fontSize = 14.sp),
     body1 = TextStyle(fontWeight = FontWeight.Normal, fontSize = 16.sp),
     body2 = TextStyle(fontWeight = FontWeight.Normal, fontSize = 14.sp),
-    button = TextStyle(fontWeight = FontWeight.W700, fontSize = 14.sp),
+    button = TextStyle(fontWeight = FontWeight.W700, fontSize = 8.sp),
     caption = TextStyle(fontWeight = FontWeight.Normal, fontSize = 12.sp),
     overline = TextStyle(fontWeight = FontWeight.W500, fontSize = 10.sp)
 )

@@ -36,7 +36,7 @@ fun ConfirmingButton(
         }
         else {
             Column(modifier=Modifier.background(Color.Yellow)) {
-                Text(areYouSureMsg, style = MaterialTheme.typography.caption)
+                Text(areYouSureMsg, style = MaterialTheme.typography.button)
                 Row {
                     Button(
                         onClick = {
@@ -44,7 +44,7 @@ fun ConfirmingButton(
                             onConfirm()
                         }
                     ) {
-                        Text("Yes", style = MaterialTheme.typography.caption)
+                        Text("Yes", style = MaterialTheme.typography.button)
                     }
                     Spacer(modifier = Modifier.width(10.dp))
                     Button(
