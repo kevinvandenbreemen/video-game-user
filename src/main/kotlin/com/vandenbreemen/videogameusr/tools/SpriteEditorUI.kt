@@ -45,10 +45,11 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
     val spriteCode = remember { mutableStateOf(model.generateSpriteSourceCode()) }
     val isErasing = remember { mutableStateOf(false) }
     val isEyeDropping = remember { mutableStateOf(false) }
+    val spriteIndex = remember { mutableStateOf(model.currentSpriteIndex) }
 
     Row(modifier = Modifier.fillMaxSize()) {
         Column(Modifier.weight(0.2f)) {
-            SpriteTileGrid(model)
+            SpriteTileGrid(model, 100, spriteIndex, spriteCode)
         }
         Column(
             modifier = Modifier.weight(0.66f).fillMaxSize().background(
@@ -57,7 +58,7 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
         ) {
 
             Column(modifier = Modifier.weight(0.6f)) {
-                SpritePixelEditor(model, isErasing, isEyeDropping, paintColorByte, spriteArray, spriteCode)
+                SpritePixelEditor(model, isErasing, isEyeDropping, paintColorByte, spriteArray, spriteCode, spriteIndex)
             }
 
 
@@ -87,7 +88,7 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
 }
 
 @Composable
-private fun SpriteTileGrid(model: SpriteEditorModel, width: Int = 100) {
+private fun SpriteTileGrid(model: SpriteEditorModel, width: Int = 100, spriteIndex: MutableState<Int>, spriteCode: MutableState<String>) {
     val range = model.getSpriteTileGridRange()
     val tilesPerRow = model.tilesPerRowOnSpriteTileGrid()
 
@@ -105,7 +106,19 @@ private fun SpriteTileGrid(model: SpriteEditorModel, width: Int = 100) {
                         break
                     }
                     val spriteArray = model.getSpriteTileGridArray(j)
-                    Canvas(modifier = Modifier.size(width = spriteWidthOnScreen, height = spriteHeightOnScreen).padding(0.dp)) {
+                    Canvas(modifier = Modifier.size(width = spriteWidthOnScreen, height = spriteHeightOnScreen).padding(0.dp)
+                        .pointerInput(Unit) {
+                            detectTapGestures { offset ->
+                                model.selectSpriteIndex(j)
+                                spriteIndex.value = j
+                                spriteCode.value = model.generateSpriteSourceCode()
+                            }
+                        }) {
+
+
+                        //  Detect user tapping on this
+
+
                         val width = size.width
                         val height = size.height
 
@@ -143,10 +156,12 @@ private fun SpritePixelEditor(
     isEyeDropping: MutableState<Boolean>,
     paintColorByte: MutableState<Byte>,
     spriteArray: MutableState<ByteArray>,
-    spriteCode: MutableState<String>
+    spriteCode: MutableState<String>,
+    spriteIndex: MutableState<Int>
 ) {
     val sizeWidthHeight = remember { mutableStateOf(Pair(0, 0)) }
     val tapState = remember { mutableStateOf(Offset.Zero) }
+
 
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text("Sprite Data Editor", style = MaterialTheme.typography.h6)
@@ -165,7 +180,7 @@ private fun SpritePixelEditor(
     }
 
     //  Handle updates to the sprite here
-    LaunchedEffect(tapState.value, sizeWidthHeight.value) {
+    LaunchedEffect(tapState.value, sizeWidthHeight.value, spriteIndex.value) {
 
         if (tapState.value == Offset.Zero || sizeWidthHeight.value == Pair(0, 0)) {
             return@LaunchedEffect
@@ -351,10 +366,10 @@ private fun ColorPickerUI(
     }
 }
 
-fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requirementsVariableName: String = "requirement", maxWidth: Int = 1000) = application {
+fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requirementsVariableName: String = "requirement", maxWidth: Int = 900) = application {
 
     //  Step 1:  Work out the height as a ratio of the width
-    val height = (maxWidth * 0.9).toInt()
+    val height = (maxWidth * 0.80).toInt()
 
     val model = SpriteEditorModel(requirements, spriteIndex=spriteIndex, requirementsVariableName = requirementsVariableName)
     Window(
@@ -365,7 +380,9 @@ fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requireme
     ) {
 
         VideoGameUserTheme {
-            SpriteEditorUI(model)
+            Column(modifier = Modifier.width(maxWidth.dp).height(height.dp)) {
+                SpriteEditorUI(model)
+            }
         }
 
     }

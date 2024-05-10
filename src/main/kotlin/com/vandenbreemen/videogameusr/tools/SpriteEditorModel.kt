@@ -9,7 +9,7 @@ import com.vandenbreemen.viddisplayrast.game.Runner
 import kotlin.math.max
 import kotlin.math.min
 
-class SpriteEditorModel(private val requirements: GameDataRequirements, private val spriteIndex: Int, private val requirementsVariableName: String) {
+class SpriteEditorModel(private val requirements: GameDataRequirements, private var spriteIndex: Int, private val requirementsVariableName: String) {
 
     /**
      * For the sprite tile grid, the number of tiles to preview on either side of the current index
@@ -21,6 +21,8 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
 
     val spriteWidth = requirements.spriteWidth
     val spriteHeight = requirements.spriteHeight
+    val currentSpriteIndex: Int
+        get() = spriteIndex
 
     /**
      * Computation of color values etc
@@ -184,6 +186,11 @@ $requirementsVariableName.setData($spriteIndex, byteArrayOf(""")
 
     fun getSpriteTileGridArray(index: Int): ByteArray {
         return requirements.spriteData.copyOfRange(index * requirements.spriteWidth * requirements.spriteHeight, (index + 1) * requirements.spriteWidth * requirements.spriteHeight)
+    }
+
+    fun selectSpriteIndex(index: Int) {
+        spriteIndex = index
+        refreshSprite()
     }
 
 
