@@ -1,4 +1,4 @@
-package com.vandenbreemen.com.vandenbreemen.videogameusr.tools.model
+package com.vandenbreemen.videogameusr.tools.model
 
 import androidx.compose.ui.graphics.Color
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
@@ -7,6 +7,7 @@ import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.SpriteCodeGenerati
 import com.vandenbreemen.viddisplayrast.data.ByteColorDataInteractor
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
+import com.vandenbreemen.videogameusr.model.LevelModel
 
 class SpriteEditorModel(private val requirements: GameDataRequirements, private var spriteIndex: Int, private val requirementsVariableName: String) {
 
@@ -181,6 +182,19 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
         spriteIndex = index
         previouslySelectedSpriteIndices.add(index)
         refreshSprite()
+    }
+
+    //  Level editing stuff
+
+    //  TODO    Gotta make all this parameterizable
+    private val currentLevelBeingEdited = LevelModel(requirements, 100, 100)
+    private val levelEditorModel = LevelEditorModel(requirements, currentLevelBeingEdited, this)
+
+    /**
+     * Get a model suitable for editing a level
+     */
+    fun getLevelEditorModel(): LevelEditorModel {
+        return levelEditorModel
     }
 
 

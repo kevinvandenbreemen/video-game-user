@@ -17,7 +17,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
-import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.model.SpriteEditorModel
+import com.vandenbreemen.videogameusr.tools.model.SpriteEditorModel
 import kotlin.math.ceil
 
 object WhereToFindEverythingInCommonToolsUI {

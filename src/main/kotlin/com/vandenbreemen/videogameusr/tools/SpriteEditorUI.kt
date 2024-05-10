@@ -28,10 +28,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
-import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.model.SpriteEditorModel
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ConfirmingButton
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
+import com.vandenbreemen.videogameusr.tools.model.SpriteEditorModel
+import com.vandenbreemen.videogameusr.tools.viewmodel.LevelEditorViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.ceil
@@ -378,7 +379,7 @@ fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requireme
                             SpriteEditorUI(model)
                         }
                         ToolType.LevelEditor -> {
-                            LevelDesigner()
+                            LevelDesigner(LevelEditorViewModel(model.getLevelEditorModel()))
                         }
                     }
 
