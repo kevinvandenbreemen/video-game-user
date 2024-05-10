@@ -9,6 +9,8 @@ import com.vandenbreemen.viddisplayrast.game.Runner
 
 class SpriteEditorModel(private val requirements: GameDataRequirements, private var spriteIndex: Int, private val requirementsVariableName: String) {
 
+    private val spriteCodeGenerationInteractor = SpriteCodeGenerationInteractor(requirements)
+
     private val runner = Runner(requirements)
     private val spriteByteArray = ByteArray(requirements.spriteWidth * requirements.spriteHeight)
 
@@ -147,22 +149,7 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
      * Build the source code required to generate the sprite and assign it to the requirements
      */
     fun generateSpriteSourceCode(): String {
-
-        val stringBld = StringBuilder("""
-$requirementsVariableName.setData($spriteIndex, byteArrayOf(""")
-        spriteByteArray.forEachIndexed { index, byte ->
-            if(index % requirements.spriteWidth == 0){
-                stringBld.append("\n       ")
-            }
-            stringBld.append(byte)
-            if(index < spriteByteArray.size - 1){
-                stringBld.append(", ")
-            }
-        }
-        stringBld.append("\n))")
-
-        return stringBld.toString()
-
+        return spriteCodeGenerationInteractor.generateCodeForSpriteIndex(spriteIndex, requirementsVariableName)
     }
 
     //  Sprite tile grid stuff
@@ -177,7 +164,7 @@ $requirementsVariableName.setData($spriteIndex, byteArrayOf(""")
     val tilesPerRowOnSpriteTileGrid = 4
 
     fun getSpriteTileGridArray(index: Int): ByteArray {
-        return requirements.spriteData.copyOfRange(index * requirements.spriteWidth * requirements.spriteHeight, (index + 1) * requirements.spriteWidth * requirements.spriteHeight)
+        return spriteCodeGenerationInteractor.getSpriteTileGridArray(index)
     }
 
     fun selectSpriteIndex(index: Int) {
