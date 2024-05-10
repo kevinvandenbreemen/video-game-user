@@ -1,4 +1,4 @@
-package com.vandenbreemen.com.vandenbreemen.videogameusr.tools
+package com.vandenbreemen.videogameusr.tools
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Column
@@ -8,7 +8,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
+import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.SpriteTileGrid
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.videogameusr.model.LevelModel
@@ -27,7 +27,6 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
 
         val selectedSpriteIndex = remember { mutableStateOf( levelEditorViewModel.currentSelectedSpriteIndex ) }
         LaunchedEffect(selectedSpriteIndex.value) {
-            klog("Update selected sprite index to ${selectedSpriteIndex.value}")
             levelEditorViewModel.selectSpriteIndex(selectedSpriteIndex.value)
         }
 
