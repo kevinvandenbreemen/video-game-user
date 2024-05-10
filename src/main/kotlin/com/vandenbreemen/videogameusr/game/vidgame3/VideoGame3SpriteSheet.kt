@@ -1,4 +1,4 @@
-package com.vandenbreemen.com.vandenbreemen.videogameusr.game.vidgame3
+package com.vandenbreemen.videogameusr.game.vidgame3
 
 import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.spriteEditor
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
@@ -150,6 +150,34 @@ fun game3SpriteSheet(requirements: GameDataRequirements) {
         0, 0, 5, 5, 5, 5, 5, 0,
         0, 0, 5, 5, 5, 5, 5, 5
     ))
+
+
+
+    requirements.setData(4, byteArrayOf(
+        0, 0, 56, 56, -66, -66, -66, -66,
+        0, 0, 56, 56, -66, -66, -66, -66,
+        0, 56, 56, 56, -66, 126, -66, -66,
+        56, 56, 56, 0, 0, -66, -66, -66,
+        0, 0, 0, 0, -117, 75, -66, -66,
+        0, 0, 0, 0, -117, 75, 75, -117,
+        0, 0, 0, 75, -117, -117, -117, -117,
+        0, 0, 75, -117, -117, -117, -117, 75
+    ))
+
+
+    requirements.setData(14, byteArrayOf(
+        21, 37, 37, 0, 0, 0, 0, 0,
+        21, 37, 37, 0, 0, 0, 0, 0,
+        21, 21, 37, 101, 0, 0, 0, 0,
+        0, 37, 37, 37, 37, 0, 0, 0,
+        0, 0, 37, 37, 37, 5, 0, 0,
+        0, 0, 37, 37, 5, 5, 5, 0,
+        0, 0, 5, 5, 5, 0, 0, 0,
+        12, 8, 8, 12, 8, 12, 12, 12
+    ))
+
+
+
 
 
 
