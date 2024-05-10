@@ -86,6 +86,9 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
             this.spriteByteArray[index] = mirrored[index]
         }
 
+        requirements.setData(spriteIndex, spriteByteArray.clone())
+        refreshSprite()
+
         return this.spriteByteArray
     }
 
