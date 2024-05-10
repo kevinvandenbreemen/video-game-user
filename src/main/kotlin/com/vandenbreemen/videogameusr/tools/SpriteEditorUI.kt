@@ -33,6 +33,7 @@ import androidx.compose.ui.window.application
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ConfirmingButton
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.ceil
 
@@ -43,6 +44,8 @@ import kotlin.math.ceil
  * 1.  Sprite Pixel Editor [SpritePixelEditor]
  * 2.  Color Picker [ColorPickerUI]
  * 3.  Grid of other tiles [SpriteTileGrid]
+ * 4.  Tool select drawer [GameToolDrawerContent]
+ * 5.  Previewer of Compose Components [PreviewOfComponentYourWorkingOn]
  *
  * @param model Model for the sprite editor
  */
@@ -393,6 +396,7 @@ fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requireme
     val height = (maxWidth * 0.90).toInt()
 
     val model = SpriteEditorModel(requirements, spriteIndex=spriteIndex, requirementsVariableName = requirementsVariableName)
+    val selectedTool = remember { mutableStateOf(ToolType.SpriteEditor) }
     val coroutineScope = rememberCoroutineScope()
 
     Window(
@@ -426,18 +430,19 @@ fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requireme
                     }
                 },
                 drawerContent = {
-                    Column(modifier=Modifier.background(MaterialTheme.colors.background).fillMaxSize()) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("Sprite Editor", style = MaterialTheme.typography.subtitle1)
-                        }
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("Level Editor", style = MaterialTheme.typography.subtitle1)
-                        }
-                    }
+                    GameToolDrawerContent(coroutineScope, scaffoldState, selectedTool)
                 }
             ) {
                 Column(modifier = Modifier.fillMaxSize()) {
-                    SpriteEditorUI(model)
+                    when(selectedTool.value){
+                        ToolType.SpriteEditor -> {
+                            SpriteEditorUI(model)
+                        }
+                        ToolType.LevelEditor -> {
+                            //  Level editor
+                        }
+                    }
+
                 }
             }
 
@@ -449,28 +454,34 @@ fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requireme
 }
 
 @Composable
-@Preview
-fun PreviewSpriteEditorUI() {
-
-    val requirements = GameDataRequirements(200, 150, 8, 8, 1024)
-    requirements.setData(0, byteArrayOf(
-        //  Just 0s
-        1, 0, 0, 0, 0, 0, 0, 0,
-        0, 1, 1, 0, 0, 0, 0, 0,
-        0, 0, 1, 1, 0, 0, 0, 0,
-        1, 1, 1, 1, 1, 0, 0, 0,
-        1, 1, 1, 1, 1, 1, 1, 0,
-        0, 1, 1, 0, 0, 1, 0, 0,
-        1, 1, 0, 0, 0, 0, 0, 0,
-        1, 0, 0, 0, 0, 0, 0, 0,
-    ).also { // Multiply all values  by 100
-        for(i in it.indices){
-            it[i] = (it[i] * 200).toByte()
+private fun GameToolDrawerContent(
+    coroutineScope: CoroutineScope,
+    scaffoldState: ScaffoldState,
+    selectedTool: MutableState<ToolType>
+) {
+    Column(modifier = Modifier.background(MaterialTheme.colors.background).fillMaxSize()) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text("Sprite Editor", style = MaterialTheme.typography.subtitle1, modifier = Modifier.clickable {
+                coroutineScope.launch {
+                    scaffoldState.drawerState.close()
+                    selectedTool.value = ToolType.SpriteEditor
+                }
+            })
         }
-    })
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text("Level Editor", style = MaterialTheme.typography.subtitle1)
+        }
+    }
+}
 
-    val model = SpriteEditorModel(requirements, 0, "requirementInPreview")
+@Composable
+@Preview
+fun PreviewOfComponentYourWorkingOn() {
 
-    SpriteEditorUI(model)
+    val scaffoldState = rememberScaffoldState( rememberDrawerState(DrawerValue.Closed) )
+
+    VideoGameUserTheme {
+        GameToolDrawerContent(rememberCoroutineScope(), scaffoldState, mutableStateOf(ToolType.SpriteEditor))
+    }
 
 }
