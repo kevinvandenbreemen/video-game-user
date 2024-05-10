@@ -1,15 +1,19 @@
 package com.vandenbreemen.videogameusr.tools.viewmodel
 
-import androidx.compose.runtime.mutableStateOf
 import com.vandenbreemen.videogameusr.tools.model.LevelEditorModel
 import com.vandenbreemen.videogameusr.tools.model.SpriteEditorModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class LevelEditorViewModel(private val levelEditorModel: LevelEditorModel) {
 
-    val currentSelectedSpriteIndex = mutableStateOf(levelEditorModel.selectedSpriteIndex)
+    private val _currentSelectedSpriteIndex = MutableStateFlow(levelEditorModel.selectedSpriteIndex)
+    val currentSelectedSpriteIndexStateFlow = _currentSelectedSpriteIndex.asStateFlow()
+    val currentSelectedSpriteIndex: Int get() = levelEditorModel.selectedSpriteIndex
+
     fun selectSpriteIndex(index: Int) {
         levelEditorModel.selectSpriteIndex(index)
-        currentSelectedSpriteIndex.value = index
+        _currentSelectedSpriteIndex.value = index
     }
 
     fun getSpriteEditorModel(): SpriteEditorModel {

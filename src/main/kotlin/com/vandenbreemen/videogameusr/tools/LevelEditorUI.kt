@@ -3,9 +3,12 @@ package com.vandenbreemen.com.vandenbreemen.videogameusr.tools
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.videogameusr.model.LevelModel
@@ -21,9 +24,16 @@ import com.vandenbreemen.videogameusr.tools.viewmodel.LevelEditorViewModel
 @Composable
 fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
     Row {
+
+        val selectedSpriteIndex = remember { mutableStateOf( levelEditorViewModel.currentSelectedSpriteIndex ) }
+        LaunchedEffect(selectedSpriteIndex.value) {
+            klog("Update selected sprite index to ${selectedSpriteIndex.value}")
+            levelEditorViewModel.selectSpriteIndex(selectedSpriteIndex.value)
+        }
+
         Column(modifier = Modifier.weight(.2f)) {
             //  The tile selector
-            SpriteTileGrid(levelEditorViewModel.getSpriteEditorModel(), 100, levelEditorViewModel.currentSelectedSpriteIndex)
+            SpriteTileGrid(levelEditorViewModel.getSpriteEditorModel(), 100, selectedSpriteIndex)
         }
         Column(modifier = Modifier.weight(.8f)) {
             //  The level editor
@@ -34,9 +44,14 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
 
 @Composable
 fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
-    Column {
-        Text("Level Editor")
-        Text("Selected Sprite Index: ${levelEditorViewModel.currentSelectedSpriteIndex.value}")
+
+    val selectedSpriteIndex by levelEditorViewModel.currentSelectedSpriteIndexStateFlow.collectAsState()
+
+    Column(modifier=Modifier.fillMaxSize(), horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally) {
+        Text("Level Editor", style = MaterialTheme.typography.subtitle1)
+        Text("Selected Sprite Index: $selectedSpriteIndex")
+
+        //  Display a grid of tiles
     }
 
 }
