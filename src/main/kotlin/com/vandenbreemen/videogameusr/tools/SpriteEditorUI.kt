@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
+import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.model.SpriteEditorModel
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ConfirmingButton
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
