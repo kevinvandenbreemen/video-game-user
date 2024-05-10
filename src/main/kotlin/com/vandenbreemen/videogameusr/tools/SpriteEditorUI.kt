@@ -179,8 +179,15 @@ private fun SpritePixelEditor(
         }, {})
     }
 
+    //  Handle picking a different sprite to edit here!
+    LaunchedEffect(spriteIndex.value) {
+        model.selectSpriteIndex(spriteIndex.value)
+        spriteArray.value = model.getSpriteByteArray()
+        spriteCode.value = model.generateSpriteSourceCode()
+    }
+
     //  Handle updates to the sprite here
-    LaunchedEffect(tapState.value, sizeWidthHeight.value, spriteIndex.value) {
+    LaunchedEffect(tapState.value, sizeWidthHeight.value) {
 
         if (tapState.value == Offset.Zero || sizeWidthHeight.value == Pair(0, 0)) {
             return@LaunchedEffect
