@@ -4,8 +4,6 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -61,7 +59,7 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
 
     Row(modifier = Modifier.fillMaxSize()) {
         Column(Modifier.weight(0.1f)) {
-            SpriteTileGrid(model, 100, spriteIndex, spriteCode)
+            SpriteTileGrid(model, 100, spriteIndex)
         }
         Column(
             modifier = Modifier.weight(0.6f).fillMaxSize().background(
@@ -88,6 +86,9 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
         }
         Column(modifier = Modifier.weight(0.3f).fillMaxSize().background(Color.Black)) {
             //  Show the sourcecode for creating the sprite
+            LaunchedEffect(spriteIndex.value) {
+                spriteCode.value = model.generateSpriteSourceCode()
+            }
             val scrollState = rememberScrollState()
             Text("Source Code", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
 
@@ -99,70 +100,6 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
     }
 }
 
-@Composable
-private fun SpriteTileGrid(model: SpriteEditorModel, width: Int = 100, spriteIndex: MutableState<Int>, spriteCode: MutableState<String>) {
-    val range = model.getSpriteTileGridRange()
-    val tilesPerRow = model.tilesPerRowOnSpriteTileGrid
-
-    val reqSpriteWidthToRowWidthRatio = (width / model.tilesPerRowOnSpriteTileGrid) / model.spriteWidth
-
-    val spriteWidthOnScreen = (model.spriteWidth * reqSpriteWidthToRowWidthRatio).dp
-    val spriteHeightOnScreen = (model.spriteHeight * reqSpriteWidthToRowWidthRatio).dp
-
-    Column(Modifier.padding(5.dp)) {
-        Text("All Tile Assets", style = MaterialTheme.typography.subtitle2)
-        //  Scroll this
-        LazyColumn(modifier = Modifier.border(1.dp, Color.Black).background(Color.Gray)) {
-            items((range.first..range.second step tilesPerRow).toList()) { i ->
-                Row(modifier = Modifier.width(width.dp).height(spriteHeightOnScreen).padding(0.dp)) {
-                    for(j in i until i + tilesPerRow){
-                        if(j > range.second){
-                            break
-                        }
-                        val spriteArray = model.getSpriteTileGridArray(j)
-                        Canvas(modifier = Modifier.size(width = spriteWidthOnScreen, height = spriteHeightOnScreen).padding(0.dp)
-                            .pointerInput(Unit) {
-                                detectTapGestures { offset ->
-                                    model.selectSpriteIndex(j)
-                                    spriteIndex.value = j
-                                    spriteCode.value = model.generateSpriteSourceCode()
-                                }
-                            }) {
-
-
-                            //  Detect user tapping on this
-
-
-                            val width = size.width
-                            val height = size.height
-
-                            val pixelWidthInCanvas = ceil((width / model.spriteWidth).toDouble()).toFloat()
-                            val pixelHeightInCanvas = ceil((height / model.spriteHeight).toDouble()).toFloat()
-
-                            for (y in 0 until model.spriteHeight) {
-                                for (x in 0 until model.spriteWidth) {
-                                    val left = x * pixelWidthInCanvas
-                                    val top = y * pixelHeightInCanvas
-
-                                    //  Draw grayscale color based on pixel byte value
-                                    val pixelColor = spriteArray[y * model.spriteWidth + x]
-
-                                    val color = model.getComposeColor(pixelColor)
-                                    drawRect(
-                                        color,
-                                        topLeft = Offset(left, top),
-                                        size = Size(pixelWidthInCanvas, pixelHeightInCanvas)
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-    }
-}
 
 @Composable
 private fun SpritePixelEditor(
