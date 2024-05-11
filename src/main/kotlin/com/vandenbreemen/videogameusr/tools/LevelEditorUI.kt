@@ -11,6 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -98,13 +99,13 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
                     //  Left arrow
                     Text("Left", style = MaterialTheme.typography.caption)
                 }
-                Column {
+                Column(modifier = Modifier.weight(0.8f)) {
 
                     val offset = remember { mutableStateOf(Offset.Zero) }
 
 
                     //  Show a grid of squares corresponding to the zoom etc
-                    Canvas(modifier = Modifier.fillMaxSize().pointerInput(Unit) {
+                    Canvas(modifier = Modifier.fillMaxSize().clipToBounds().pointerInput(Unit) {
                             detectDragGestures { change, dragAmount ->
                                 offset.value += dragAmount
                                 change.consume()
