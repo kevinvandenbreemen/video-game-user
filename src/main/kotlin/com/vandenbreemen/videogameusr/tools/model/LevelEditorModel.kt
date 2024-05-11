@@ -11,6 +11,9 @@ class LevelEditorModel(private val requirements: GameDataRequirements,
     val spriteWidth = requirements.spriteWidth
     val spriteHeight = requirements.spriteHeight
 
+    val levelWidth = levelModel.widthInTiles
+    val levelHeight = levelModel.heightInTiles
+
     private var currentSelectedSpriteIndex: Int = 0
     val selectedSpriteIndex: Int get() = currentSelectedSpriteIndex
 

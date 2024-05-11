@@ -117,8 +117,8 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
                         translate(pan.value.x, pan.value.y) {
                             scale(scale.value) {
                                 //  Draw the rows as boxes
-                                for (row in 0 until 100) {
-                                    for (col in 0 until 100) {
+                                for (row in 0 until levelEditorViewModel.levelHeight) {
+                                    for (col in 0 until levelEditorViewModel.levelWidth) {
                                         drawRect(
                                             color = Color.Black,
                                             topLeft = Offset(col * 10f, row * 10f),

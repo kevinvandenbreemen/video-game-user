@@ -18,6 +18,9 @@ class LevelEditorViewModel(private val levelEditorModel: LevelEditorModel) {
     private val _pan = MutableStateFlow(Offset(levelEditorModel.pan.first, levelEditorModel.pan.second))
     val pan = _pan.asStateFlow()
 
+    val levelWidth: Int get() = levelEditorModel.levelWidth
+    val levelHeight: Int get() = levelEditorModel.levelHeight
+
     fun selectSpriteIndex(index: Int) {
         levelEditorModel.selectSpriteIndex(index)
         _currentSelectedSpriteIndex.value = index
