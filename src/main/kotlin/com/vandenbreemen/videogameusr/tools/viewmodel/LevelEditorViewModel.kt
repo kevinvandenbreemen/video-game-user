@@ -21,6 +21,9 @@ class LevelEditorViewModel(private val levelEditorModel: LevelEditorModel) {
     val levelWidth: Int get() = levelEditorModel.levelWidth
     val levelHeight: Int get() = levelEditorModel.levelHeight
 
+    val spriteWidth: Int get() = levelEditorModel.spriteWidth
+    val spriteHeight: Int get() = levelEditorModel.spriteHeight
+
     fun selectSpriteIndex(index: Int) {
         levelEditorModel.selectSpriteIndex(index)
         _currentSelectedSpriteIndex.value = index

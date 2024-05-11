@@ -114,6 +114,9 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
                         }
                     ) {
 
+                        val spriteWidth = levelEditorViewModel.spriteWidth.toFloat()
+                        val spriteHeight = levelEditorViewModel.spriteHeight.toFloat()
+
                         translate(pan.value.x, pan.value.y) {
                             scale(scale.value) {
                                 //  Draw the rows as boxes
@@ -121,8 +124,8 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
                                     for (col in 0 until levelEditorViewModel.levelWidth) {
                                         drawRect(
                                             color = Color.Black,
-                                            topLeft = Offset(col * 10f, row * 10f),
-                                            size = Size(10f, 10f),
+                                            topLeft = Offset(col * spriteWidth, row * spriteHeight),
+                                            size = Size(spriteWidth, spriteHeight),
                                             style = Stroke(0.5f)
                                         )
                                     }
