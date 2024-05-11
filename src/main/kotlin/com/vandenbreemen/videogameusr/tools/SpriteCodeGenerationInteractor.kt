@@ -25,7 +25,7 @@ $requirementsVariableName.setData($spriteIndex, byteArrayOf(""")
     }
 
     fun getSpriteTileGridArray(index: Int): ByteArray {
-        return requirements.spriteData.copyOfRange(index * requirements.spriteWidth * requirements.spriteHeight, (index + 1) * requirements.spriteWidth * requirements.spriteHeight)
+        return requirements.getSpriteData(index)
     }
 
 }

@@ -26,7 +26,7 @@ repositories {
 dependencies {
     testImplementation(kotlin("test"))
 
-    val videoDisplayRasterVersion = "1.0.2.5"
+    val videoDisplayRasterVersion = "1.0.2.6"
     implementation("com.vandenbreemen:video-display-raster:$videoDisplayRasterVersion")
 
     implementation(compose.runtime)
