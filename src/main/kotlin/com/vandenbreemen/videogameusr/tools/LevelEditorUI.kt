@@ -61,6 +61,7 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
 
 
         val scale = levelEditorViewModel.scale.collectAsState()
+        val pan = levelEditorViewModel.pan.collectAsState()
 
         Row {
             Button(onClick = {
@@ -101,20 +102,19 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
                 }
                 Column(modifier = Modifier.weight(0.8f)) {
 
-                    val offset = remember { mutableStateOf(Offset.Zero) }
-
 
                     //  Show a grid of squares corresponding to the zoom etc
                     Canvas(modifier = Modifier.fillMaxSize().clipToBounds().pointerInput(Unit) {
                             detectDragGestures { change, dragAmount ->
-                                offset.value += dragAmount
+
+                                levelEditorViewModel.pan(dragAmount.x, dragAmount.y)
                                 change.consume()
                             }
 
                         }
                     ) {
 
-                        translate(offset.value.x, offset.value.y) {
+                        translate(pan.value.x, pan.value.y) {
                             scale(scale.value) {
                                 //  Draw the rows as boxes
                                 for (row in 0 until 100) {
