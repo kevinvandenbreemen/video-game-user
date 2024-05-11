@@ -7,7 +7,7 @@ import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.SpriteCodeGenerati
 import com.vandenbreemen.viddisplayrast.data.ByteColorDataInteractor
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
-import com.vandenbreemen.videogameusr.model.LevelModel
+import com.vandenbreemen.videogameusr.model.game.LevelModel
 
 class SpriteEditorModel(private val requirements: GameDataRequirements, private var spriteIndex: Int, private val requirementsVariableName: String) {
 

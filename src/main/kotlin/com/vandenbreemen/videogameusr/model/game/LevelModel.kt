@@ -1,4 +1,4 @@
-package com.vandenbreemen.videogameusr.model
+package com.vandenbreemen.videogameusr.model.game
 
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 

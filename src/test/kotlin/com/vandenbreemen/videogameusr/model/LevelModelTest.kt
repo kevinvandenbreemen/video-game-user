@@ -1,6 +1,7 @@
 package com.vandenbreemen.videogameusr.model
 
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
+import com.vandenbreemen.videogameusr.model.game.LevelModel
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test

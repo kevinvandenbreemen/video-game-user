@@ -23,7 +23,7 @@ import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.SpriteTileGrid
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.videogameusr.model.CoreDependenciesHelper
-import com.vandenbreemen.videogameusr.model.LevelModel
+import com.vandenbreemen.videogameusr.model.game.LevelModel
 import com.vandenbreemen.videogameusr.tools.model.LevelEditorModel
 import com.vandenbreemen.videogameusr.tools.model.SpriteEditorModel
 import com.vandenbreemen.videogameusr.tools.viewmodel.LevelEditorViewModel
