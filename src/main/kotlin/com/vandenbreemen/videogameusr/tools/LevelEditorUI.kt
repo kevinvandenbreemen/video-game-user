@@ -21,6 +21,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.SpriteTileGrid
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
+import com.vandenbreemen.videogameusr.model.CoreDependenciesHelper
 import com.vandenbreemen.videogameusr.model.LevelModel
 import com.vandenbreemen.videogameusr.tools.model.LevelEditorModel
 import com.vandenbreemen.videogameusr.tools.model.SpriteEditorModel
@@ -128,6 +129,20 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
                                             size = Size(spriteWidth, spriteHeight),
                                             style = Stroke(0.5f)
                                         )
+
+                                        //  Now grab the sprite from the level and draw it
+                                        val spriteColorGrid = levelEditorViewModel.getSpritePixelColorGrid(col, row)
+                                        if (spriteColorGrid != null) {
+                                            for (y in 0 until spriteHeight.toInt()) {
+                                                for (x in 0 until spriteWidth.toInt()) {
+                                                    drawRect(
+                                                        color = spriteColorGrid[y][x],
+                                                        topLeft = Offset(col * spriteWidth + x, row * spriteHeight + y),
+                                                        size = Size(1f, 1f)
+                                                    )
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -161,7 +176,9 @@ fun PreviewOfWhatYourWorkingOn() {
 
     val requirements = GameDataRequirements(8, 8, 8, 8, 1024)
     val levelModel = LevelModel(requirements, 1000, 100)
-    val levelEditorModel = LevelEditorModel(requirements, levelModel, SpriteEditorModel(requirements, 0, "kevin"))
+    val levelEditorModel = LevelEditorModel(requirements, levelModel, SpriteEditorModel(requirements, 0, "kevin"),
+        CoreDependenciesHelper.getColorInteractor()
+        )
     val levelEditorViewModel = LevelEditorViewModel(levelEditorModel)
 
     VideoGameUserTheme {

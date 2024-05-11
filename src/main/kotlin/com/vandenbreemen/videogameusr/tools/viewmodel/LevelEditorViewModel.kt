@@ -1,6 +1,7 @@
 package com.vandenbreemen.videogameusr.tools.viewmodel
 
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import com.vandenbreemen.videogameusr.tools.model.LevelEditorModel
 import com.vandenbreemen.videogameusr.tools.model.SpriteEditorModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,6 +47,10 @@ class LevelEditorViewModel(private val levelEditorModel: LevelEditorModel) {
     fun pan(x: Float, y: Float){
         levelEditorModel.pan(x, y)
         _pan.value = Offset(levelEditorModel.pan.first, levelEditorModel.pan.second)
+    }
+
+    fun getSpritePixelColorGrid(x: Int, y: Int): Array<Array<Color>>? {
+        return levelEditorModel.getSpritePixelColorGrid(x, y)
     }
 
 }

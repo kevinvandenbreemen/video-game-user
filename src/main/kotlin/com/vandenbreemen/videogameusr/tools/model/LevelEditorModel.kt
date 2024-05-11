@@ -1,11 +1,14 @@
 package com.vandenbreemen.videogameusr.tools.model
 
+import androidx.compose.ui.graphics.Color
+import com.vandenbreemen.com.vandenbreemen.videogameusr.model.ColorInteractor
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.videogameusr.model.LevelModel
 
 class LevelEditorModel(private val requirements: GameDataRequirements,
                        private val levelModel: LevelModel,
-                        private val spriteEditorModel: SpriteEditorModel
+                        private val spriteEditorModel: SpriteEditorModel,
+                    private val colorInteractor: ColorInteractor
     ) {
 
     val spriteWidth = requirements.spriteWidth
@@ -41,6 +44,24 @@ class LevelEditorModel(private val requirements: GameDataRequirements,
 
     fun pan(x: Float, y: Float){
         panXY = Pair(panXY.first + x, panXY.second + y)
+    }
+
+    fun getSpritePixelColorGrid(x: Int, y: Int): Array<Array<Color>>? {
+        val spriteBytes = levelModel.getSpriteBytesAt(x, y) ?: return null
+
+        //  Now build grid based on spriteWidth and spriteHeight
+        val grid = Array(spriteHeight) { y ->
+            Array(spriteWidth) { x ->
+                val byte = spriteBytes[y * spriteWidth + x]
+                colorInteractor.getComposeColor(byte)
+            }
+        }
+
+        return grid
+    }
+
+    fun setSpriteTileAt(x: Int, y: Int, spriteIndex: Int){
+        levelModel.setSpriteTileAt(x, y, spriteIndex)
     }
 
 }
