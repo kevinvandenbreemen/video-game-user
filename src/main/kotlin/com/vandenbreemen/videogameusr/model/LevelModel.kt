@@ -7,8 +7,19 @@ import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
  */
 class LevelModel(private val requirements: GameDataRequirements, val widthInTiles: Int, val heightInTiles: Int) {
 
+    companion object {
+        const val NO_SPRITE = -1
+    }
+
     //  2-d array of sprite indexes
-    private val levelData = Array(widthInTiles) { IntArray(heightInTiles) }
+    private val levelData = Array(widthInTiles) { IntArray(heightInTiles) }.also {
+        //  Initialize with all -1s
+        for(x in 0 until widthInTiles){
+            for(y in 0 until heightInTiles){
+                it[x][y] = NO_SPRITE
+            }
+        }
+    }
 
     /**
      * Specify sprite to go at the given tile
@@ -33,6 +44,14 @@ class LevelModel(private val requirements: GameDataRequirements, val widthInTile
         }
 
         return levelData[x][y]
+    }
+
+    fun getSpriteBytesAt(x: Int, y: Int): ByteArray? {
+        val spriteIndex = getSpriteTileAt(x, y)
+        if(spriteIndex == NO_SPRITE){
+            return null
+        }
+        return requirements.getSpriteData(spriteIndex)
     }
 
 }
