@@ -7,6 +7,7 @@ import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.SpriteCodeGenerati
 import com.vandenbreemen.viddisplayrast.data.ByteColorDataInteractor
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
+import com.vandenbreemen.videogameusr.model.CoreDependenciesHelper
 import com.vandenbreemen.videogameusr.model.game.LevelModel
 
 class SpriteEditorModel(private val requirements: GameDataRequirements, private var spriteIndex: Int, private val requirementsVariableName: String) {
@@ -188,7 +189,9 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
 
     //  TODO    Gotta make all this parameterizable
     private val currentLevelBeingEdited = LevelModel(requirements, 100, 100)
-    private val levelEditorModel = LevelEditorModel(requirements, currentLevelBeingEdited, this)
+    private val levelEditorModel = LevelEditorModel(requirements, currentLevelBeingEdited, this,
+        CoreDependenciesHelper.getColorInteractor()
+        )
 
     /**
      * Get a model suitable for editing a level
