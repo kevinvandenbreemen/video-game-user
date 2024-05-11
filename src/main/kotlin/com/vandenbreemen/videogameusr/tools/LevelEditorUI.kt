@@ -2,7 +2,7 @@ package com.vandenbreemen.videogameusr.tools
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.input.pointer.pointerInput
+import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.SpriteTileGrid
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
@@ -106,11 +107,20 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
 
                     //  Show a grid of squares corresponding to the zoom etc
                     Canvas(modifier = Modifier.fillMaxSize().clipToBounds().pointerInput(Unit) {
-                            detectDragGestures { change, dragAmount ->
 
-                                levelEditorViewModel.pan(dragAmount.x, dragAmount.y)
-                                change.consume()
-                            }
+                        //  Detect user tapping on a tile and set its sprite
+                        detectTapGestures {
+                            val spriteWidth = levelEditorViewModel.spriteWidth.toFloat()
+                            val spriteHeight = levelEditorViewModel.spriteHeight.toFloat()
+
+                            val x = (it.x / scale.value + pan.value.x) / spriteWidth
+                            val y = (it.y / scale.value + pan.value.y) / spriteHeight
+
+
+                            klog("Setting sprite at $x, $y to $selectedSpriteIndex")
+                            levelEditorViewModel.setSpriteTileAt(x.toInt(), y.toInt(), selectedSpriteIndex)
+
+                        }
 
                         }
                     ) {

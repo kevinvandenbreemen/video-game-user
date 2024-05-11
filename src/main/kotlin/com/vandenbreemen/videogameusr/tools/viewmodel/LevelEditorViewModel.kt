@@ -53,4 +53,8 @@ class LevelEditorViewModel(private val levelEditorModel: LevelEditorModel) {
         return levelEditorModel.getSpritePixelColorGrid(x, y)
     }
 
+    fun setSpriteTileAt(x: Int, y: Int, spriteIndex: Int){
+        levelEditorModel.setSpriteTileAt(x, y, spriteIndex)
+    }
+
 }
