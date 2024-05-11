@@ -62,7 +62,7 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
 
     Row(modifier = Modifier.fillMaxSize()) {
         Column(Modifier.weight(0.1f)) {
-            SpriteTileGrid(model, 100, spriteIndex)
+            SpriteTileGrid(model, 100, onSelectSpriteIndex = { spriteIndex.value = it })
         }
         Column(
             modifier = Modifier.weight(0.6f).fillMaxSize().background(

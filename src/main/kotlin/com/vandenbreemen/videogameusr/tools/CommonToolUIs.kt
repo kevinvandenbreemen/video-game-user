@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -25,7 +24,7 @@ object WhereToFindEverythingInCommonToolsUI {
 }
 
 @Composable
-fun SpriteTileGrid(model: SpriteEditorModel, width: Int = 100, spriteIndex: MutableState<Int>) {
+fun SpriteTileGrid(model: SpriteEditorModel, width: Int = 100, onSelectSpriteIndex: (Int)-> Unit) {
     val range = model.getSpriteTileGridRange()
     val tilesPerRow = model.tilesPerRowOnSpriteTileGrid
 
@@ -49,7 +48,7 @@ fun SpriteTileGrid(model: SpriteEditorModel, width: Int = 100, spriteIndex: Muta
                             .pointerInput(Unit) {
                                 detectTapGestures { offset ->
                                     model.selectSpriteIndex(j)
-                                    spriteIndex.value = j
+                                    onSelectSpriteIndex(j)
                                 }
                             }) {
 
