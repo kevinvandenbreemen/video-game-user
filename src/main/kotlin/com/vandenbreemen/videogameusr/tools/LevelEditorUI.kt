@@ -56,9 +56,6 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
 
     val selectedSpriteIndex by levelEditorViewModel.currentSelectedSpriteIndexStateFlow.collectAsState()
 
-    //  Create an array of 100 rows of 100 ints each
-    val rows = Array(100) { IntArray(100) }
-
     Column(modifier=Modifier.fillMaxSize(), horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally) {
 
 
@@ -66,12 +63,16 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
         val scale = levelEditorViewModel.scale.collectAsState()
 
         Row {
-            Button(onClick = {  }) {
+            Button(onClick = {
+                levelEditorViewModel.zoomIn()
+            }) {
                 //  Left arrow
                 Text("Zoom In", style = MaterialTheme.typography.caption)
             }
 
-            Button(onClick = { }) {
+            Button(onClick = {
+                levelEditorViewModel.zoomOut()
+            }) {
                 //  Left arrow
                 Text("Zoom Out", style = MaterialTheme.typography.caption)
             }

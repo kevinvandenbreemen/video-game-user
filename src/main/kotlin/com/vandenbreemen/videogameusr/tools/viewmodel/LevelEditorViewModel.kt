@@ -11,6 +11,9 @@ class LevelEditorViewModel(private val levelEditorModel: LevelEditorModel) {
     val currentSelectedSpriteIndexStateFlow = _currentSelectedSpriteIndex.asStateFlow()
     val currentSelectedSpriteIndex: Int get() = levelEditorModel.selectedSpriteIndex
 
+    private val _scale = MutableStateFlow(levelEditorModel.zoom)
+    val scale = _scale.asStateFlow()
+
     fun selectSpriteIndex(index: Int) {
         levelEditorModel.selectSpriteIndex(index)
         _currentSelectedSpriteIndex.value = index
@@ -18,6 +21,16 @@ class LevelEditorViewModel(private val levelEditorModel: LevelEditorModel) {
 
     fun getSpriteEditorModel(): SpriteEditorModel {
         return levelEditorModel.getSpriteEditorModel()
+    }
+
+    fun zoomIn(){
+        levelEditorModel.zoomIn()
+        _scale.value = levelEditorModel.zoom
+    }
+
+    fun zoomOut(){
+        levelEditorModel.zoomOut()
+        _scale.value = levelEditorModel.zoom
     }
 
 }
