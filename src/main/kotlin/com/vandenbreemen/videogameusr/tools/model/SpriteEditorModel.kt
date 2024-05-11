@@ -161,6 +161,9 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
             codeBuilder.append("\n\n")
         }
 
+        //  Kick off a full sprite write
+        spriteCodeGenerationInteractor.writeAllSpritesToFile()
+
         return codeBuilder.toString()
     }
 

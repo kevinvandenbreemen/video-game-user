@@ -17,6 +17,11 @@ Note that you can also specify the name of the requirements variable, for exampl
 spriteEditor(requirements, 0, "myRequirements")
 ```
 
+### A Note about Code Generation for Lots of Sprites
+While you use the sprite editor the tool willl create an entire "sprite sheet" detailing how to draw all of the sprites your ```GameDataRequirements``` object allows for in a file in a file called ```generated/SpriteData.kt```.  If you are making lots of edits you can simply open that file and copy/paste the contents into your game.
+
+> **Tip**:  You can tweak this behaviour by modifying the SpriteCodeGenerationInteractor class. 
+
 # Game Play
 Games themselves are run through ```GameConsole```, in the Composables.kt file.
 

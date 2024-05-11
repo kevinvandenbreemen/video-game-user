@@ -38,3 +38,5 @@ bin/
 .DS_Store
 .idea
 gradle.properties
+
+generated
