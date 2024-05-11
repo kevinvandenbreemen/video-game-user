@@ -45,4 +45,9 @@ The following example comes from game 1 and defines the "alien" the player needs
 
 This code creates a sprite at sprite index 2 and stores it to the game requirements.
 
-As discussed earlier there is a sprite editor you can use to edit a tile.  In 
+As discussed earlier there is a sprite editor you can use to edit a tile.
+
+## Defining your Game's Logic
+Game logic is typically written in a game model.  The game model is then interacted with by an object implementing the ```VideoGameController``` interface.
+
+There are some example games that can be found in the ```com.vandenbreemen.videogameusr.game``` package.
