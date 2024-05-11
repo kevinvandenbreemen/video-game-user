@@ -9,8 +9,8 @@ import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -33,7 +33,7 @@ import com.vandenbreemen.videogameusr.tools.viewmodel.LevelEditorViewModel
  */
 @Composable
 fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
-    Row {
+    Row(modifier = Modifier.fillMaxSize()) {
 
         val selectedSpriteIndex = remember { mutableStateOf( levelEditorViewModel.currentSelectedSpriteIndex ) }
         LaunchedEffect(selectedSpriteIndex.value) {
@@ -61,6 +61,8 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
 
     Column(modifier=Modifier.fillMaxSize(), horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally) {
 
+
+
         val scale = remember { mutableStateOf(1f) }
 
         Row {
@@ -85,11 +87,14 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
                 Spacer(modifier = Modifier.weight(1f))
             }
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().weight(0.8f),
                 //  center
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
                 ){
-                Button(onClick = { levelEditorViewModel.selectSpriteIndex(0) }) {
+                Button(
+                    modifier = Modifier.weight(0.1f),
+                    onClick = { levelEditorViewModel.selectSpriteIndex(0) }) {
                     //  Left arrow
                     Text("Left", style = MaterialTheme.typography.caption)
                 }
@@ -109,7 +114,7 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
                                 scale.value *= zoom
                             }
 
-                        }.clipToBounds()
+                        }
                     ) {
 
                         translate(offset.value.x, offset.value.y) {
