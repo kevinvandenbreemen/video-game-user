@@ -3,7 +3,6 @@ package com.vandenbreemen.videogameusr.tools
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -64,15 +63,15 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
 
 
 
-        val scale = remember { mutableStateOf(1f) }
+        val scale = levelEditorViewModel.scale.collectAsState()
 
         Row {
-            Button(onClick = { scale.value *= 2 }) {
+            Button(onClick = {  }) {
                 //  Left arrow
                 Text("Zoom In", style = MaterialTheme.typography.caption)
             }
 
-            Button(onClick = { scale.value /= 2 }) {
+            Button(onClick = { }) {
                 //  Left arrow
                 Text("Zoom Out", style = MaterialTheme.typography.caption)
             }
@@ -109,10 +108,6 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
                             detectDragGestures { change, dragAmount ->
                                 offset.value += dragAmount
                                 change.consume()
-                            }
-
-                            detectTransformGestures { _, _, zoom, _ ->
-                                scale.value *= zoom
                             }
 
                         }
