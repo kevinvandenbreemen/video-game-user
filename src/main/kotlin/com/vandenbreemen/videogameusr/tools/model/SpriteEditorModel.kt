@@ -203,5 +203,12 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
         return levelEditorModel
     }
 
+    /**
+     * Copy the contents of sprite at fromIndex to the current selected sprite
+     */
+    fun copySprite(fromIndex: Int) {
+        val spriteDataAtOrigin = requirements.getSpriteData(fromIndex)
+        requirements.setData(spriteIndex, spriteDataAtOrigin)
+    }
 
 }

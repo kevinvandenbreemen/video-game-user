@@ -132,6 +132,10 @@ private fun SpritePixelEditor(
             spriteArray.value = model.clearSprite()
             spriteCode.value = model.generateSpriteSourceCode()
         }, {})
+        Spacer(modifier = Modifier.width(10.dp))
+        ConfirmingButton("Copy to Current", "This will overwrite the current sprite", {
+
+        }, {})
     }
 
     //  Handle picking a different sprite to edit here!
