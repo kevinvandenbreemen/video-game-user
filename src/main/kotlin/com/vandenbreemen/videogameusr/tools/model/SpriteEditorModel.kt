@@ -209,6 +209,7 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
     fun copySprite(fromIndex: Int) {
         val spriteDataAtOrigin = requirements.getSpriteData(fromIndex)
         requirements.setData(spriteIndex, spriteDataAtOrigin)
+        refreshSprite()
     }
 
 }

@@ -24,7 +24,9 @@ object WhereToFindEverythingInCommonToolsUI {
 }
 
 @Composable
-fun SpriteTileGrid(model: SpriteEditorModel, width: Int = 100, onSelectSpriteIndex: (Int)-> Unit) {
+fun SpriteTileGrid(model: SpriteEditorModel, width: Int = 100,
+                   title:String = "All Tile Assets",
+                   onSelectSpriteIndex: (Int)-> Unit) {
     val range = model.getSpriteTileGridRange()
     val tilesPerRow = model.tilesPerRowOnSpriteTileGrid
 
@@ -34,7 +36,7 @@ fun SpriteTileGrid(model: SpriteEditorModel, width: Int = 100, onSelectSpriteInd
     val spriteHeightOnScreen = (model.spriteHeight * reqSpriteWidthToRowWidthRatio).dp
 
     Column(Modifier.padding(5.dp)) {
-        Text("All Tile Assets", style = MaterialTheme.typography.subtitle2)
+        Text(title, style = MaterialTheme.typography.subtitle2)
         //  Scroll this
         LazyColumn(modifier = Modifier.border(1.dp, Color.Black).background(Color.Gray)) {
             items((range.first..range.second step tilesPerRow).toList()) { i ->
@@ -47,7 +49,7 @@ fun SpriteTileGrid(model: SpriteEditorModel, width: Int = 100, onSelectSpriteInd
                         Canvas(modifier = Modifier.size(width = spriteWidthOnScreen, height = spriteHeightOnScreen).padding(0.dp)
                             .pointerInput(Unit) {
                                 detectTapGestures { offset ->
-                                    model.selectSpriteIndex(j)
+
                                     onSelectSpriteIndex(j)
                                 }
                             }) {

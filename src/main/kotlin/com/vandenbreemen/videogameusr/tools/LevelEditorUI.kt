@@ -44,7 +44,7 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
 
         Column(modifier = Modifier.weight(.2f)) {
             //  The tile selector
-            SpriteTileGrid(levelEditorViewModel.getSpriteEditorModel(), 100, selectedSpriteIndex::value::set)
+            SpriteTileGrid(levelEditorViewModel.getSpriteEditorModel(), 100, "All Tile Assets", selectedSpriteIndex::value::set)
         }
         Column(modifier = Modifier.weight(.8f)) {
             //  The level editor

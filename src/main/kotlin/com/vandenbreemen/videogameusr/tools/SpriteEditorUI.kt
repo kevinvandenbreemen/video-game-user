@@ -59,10 +59,21 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
     val isErasing = remember { mutableStateOf(false) }
     val isEyeDropping = remember { mutableStateOf(false) }
     val spriteIndex = remember { mutableStateOf(model.currentSpriteIndex) }
+    val isPickingSpriteToCopyFrom = remember { mutableStateOf(false) }
 
     Row(modifier = Modifier.fillMaxSize()) {
         Column(Modifier.weight(0.1f)) {
-            SpriteTileGrid(model, 100, onSelectSpriteIndex = { spriteIndex.value = it })
+            SpriteTileGrid(model, 100,
+                title = if(isPickingSpriteToCopyFrom.value) "Select tile to Copy" else "All Tile Assets",
+                onSelectSpriteIndex = {
+                if(isPickingSpriteToCopyFrom.value) {
+                    model.copySprite(it)
+                    isPickingSpriteToCopyFrom.value = false
+                    return@SpriteTileGrid
+                }
+                model.selectSpriteIndex(it)
+                spriteIndex.value = it
+            })
         }
         Column(
             modifier = Modifier.weight(0.6f).fillMaxSize().background(
@@ -71,7 +82,7 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
         ) {
 
             Column(modifier = Modifier.weight(0.6f)) {
-                SpritePixelEditor(model, isErasing, isEyeDropping, paintColorByte, spriteArray, spriteCode, spriteIndex)
+                SpritePixelEditor(model, isErasing, isEyeDropping, paintColorByte, spriteArray, spriteCode, spriteIndex, isPickingSpriteToCopyFrom)
             }
 
 
@@ -112,7 +123,8 @@ private fun SpritePixelEditor(
     paintColorByte: MutableState<Byte>,
     spriteArray: MutableState<ByteArray>,
     spriteCode: MutableState<String>,
-    spriteIndex: MutableState<Int>
+    spriteIndex: MutableState<Int>,
+    isPickingSpriteToCopyFrom: MutableState<Boolean>
 ) {
     val sizeWidthHeight = remember { mutableStateOf(Pair(0, 0)) }
     val tapState = remember { mutableStateOf(Offset.Zero) }
@@ -134,7 +146,7 @@ private fun SpritePixelEditor(
         }, {})
         Spacer(modifier = Modifier.width(10.dp))
         ConfirmingButton("Copy to Current", "This will overwrite the current sprite", {
-
+            isPickingSpriteToCopyFrom.value = true
         }, {})
     }
 
