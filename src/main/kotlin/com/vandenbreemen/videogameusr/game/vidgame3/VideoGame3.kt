@@ -1,8 +1,8 @@
 package com.vandenbreemen.videogameusr.game.vidgame3
 
-import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.gameEditor
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ProgramEntryPoints
 import com.vandenbreemen.viddisplayrast.game.Runner
+import com.vandenbreemen.videogameusr.tools.gameEditor
 
 fun main() {
 
