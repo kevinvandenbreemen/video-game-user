@@ -4,11 +4,13 @@ import androidx.compose.ui.graphics.Color
 import com.vandenbreemen.com.vandenbreemen.videogameusr.model.ColorInteractor
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.videogameusr.model.game.LevelModel
+import com.vandenbreemen.videogameusr.tools.interactor.CodeGenerationInteractor
 
 class LevelEditorModel(private val requirements: GameDataRequirements,
                        private val levelModel: LevelModel,
                        private val gameDataEditorModel: GameDataEditorModel,
-                       private val colorInteractor: ColorInteractor
+                       private val colorInteractor: ColorInteractor,
+                        private val codeGenerationInteractor: CodeGenerationInteractor
     ) {
 
     val spriteWidth = requirements.spriteWidth
@@ -76,6 +78,13 @@ class LevelEditorModel(private val requirements: GameDataRequirements,
 
     fun getSpriteIndexAt(x: Int, y: Int): Int {
         return levelModel.getSpriteTileAt(x, y)
+    }
+
+    /**
+     * Write the code for this level to the file
+     */
+    fun writeCodeToFile() {
+        codeGenerationInteractor.writeLevelToFile(levelModel)
     }
 
 }
