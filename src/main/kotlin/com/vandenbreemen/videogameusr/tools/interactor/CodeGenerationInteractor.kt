@@ -7,7 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.io.File
 
-class SpriteCodeGenerationInteractor(private val requirements: GameDataRequirements) {
+class CodeGenerationInteractor(private val requirements: GameDataRequirements) {
 
     private var fileToWriteTo = "generated/SpriteData.kt"
     private val codeGenerationModel = CoreDependenciesHelper.getCodeGenerationModel()

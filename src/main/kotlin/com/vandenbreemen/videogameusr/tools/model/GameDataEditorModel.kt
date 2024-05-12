@@ -7,13 +7,13 @@ import com.vandenbreemen.viddisplayrast.data.ByteColorDataInteractor
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
 import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
-import com.vandenbreemen.videogameusr.tools.interactor.SpriteCodeGenerationInteractor
+import com.vandenbreemen.videogameusr.tools.interactor.CodeGenerationInteractor
 
 class GameDataEditorModel(private val requirements: GameDataRequirements,
                           private val tileBasedGameWorld: TileBasedGameWorld,
                           private var spriteIndex: Int, private val requirementsVariableName: String) {
 
-    private val spriteCodeGenerationInteractor = SpriteCodeGenerationInteractor(requirements)
+    private val codeGenerationInteractor = CodeGenerationInteractor(requirements)
 
     private val runner = Runner(requirements)
     private val spriteByteArray = ByteArray(requirements.spriteWidth * requirements.spriteHeight)
@@ -158,12 +158,12 @@ class GameDataEditorModel(private val requirements: GameDataRequirements,
 
         val codeBuilder = StringBuilder()
         previouslySelectedSpriteIndices.sorted().forEach { index ->
-            codeBuilder.append(spriteCodeGenerationInteractor.generateCodeForSpriteIndex(index, requirementsVariableName))
+            codeBuilder.append(codeGenerationInteractor.generateCodeForSpriteIndex(index, requirementsVariableName))
             codeBuilder.append("\n\n")
         }
 
         //  Kick off a full sprite write
-        spriteCodeGenerationInteractor.writeAllSpritesToFile()
+        codeGenerationInteractor.writeAllSpritesToFile()
 
         return codeBuilder.toString()
     }
@@ -180,7 +180,7 @@ class GameDataEditorModel(private val requirements: GameDataRequirements,
     val tilesPerRowOnSpriteTileGrid = 4
 
     fun getSpriteTileGridArray(index: Int): ByteArray {
-        return spriteCodeGenerationInteractor.getSpriteTileGridArray(index)
+        return codeGenerationInteractor.getSpriteTileGridArray(index)
     }
 
     fun selectSpriteIndex(index: Int) {
