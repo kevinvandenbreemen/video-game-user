@@ -23,6 +23,7 @@ import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
 import com.vandenbreemen.videogameusr.tools.model.GameDataEditorModel
 import com.vandenbreemen.videogameusr.tools.model.LevelEditorModel
 import com.vandenbreemen.videogameusr.tools.viewmodel.LevelEditorViewModel
+import kotlin.math.ceil
 
 /**
  * Major Components<br/>
@@ -62,8 +63,20 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
 
             //  Detect user tapping on a tile and set its sprite
             detectTapGestures {
+                val x = it.x
+                val y = it.y
 
+                val casnvasWidth = size.width
+                val canvasHeight = size.height
 
+                val boxWidth = ceil(casnvasWidth / levelEditorViewModel.levelWidth.toFloat())
+                val boxHeight = ceil(canvasHeight / levelEditorViewModel.levelHeight.toFloat())
+                val col = (x / boxWidth).toInt()
+                val row = (y / boxHeight).toInt()
+                klog("tapped ($x, $y), Canvas width, height=($casnvasWidth, $canvasHeight), Level Width, Height = (${levelEditorViewModel.levelWidth}, ${levelEditorViewModel.levelHeight}), Box width,height =($boxWidth, $boxHeight) --> Tap on row=$row, col=$col")
+
+                val index = selectedSpriteIndex
+                levelEditorViewModel.setSpriteTileAt(col, row, index)
             }
 
         }
@@ -75,8 +88,8 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
             val casnvasWidth = size.width
             val canvasHeight = size.height
 
-            val boxWidth = (casnvasWidth / levelEditorViewModel.levelWidth)
-            val boxHeight = (canvasHeight / levelEditorViewModel.levelHeight)
+            val boxWidth = ceil(casnvasWidth / levelEditorViewModel.levelWidth.toFloat())
+            val boxHeight = ceil(canvasHeight / levelEditorViewModel.levelHeight.toFloat())
 
             val pixelWidth = (boxWidth / spriteWidth)
             val pixelHeight = (boxHeight / spriteHeight)
