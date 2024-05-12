@@ -46,6 +46,7 @@ import kotlin.math.ceil
  * Major Components:
  * 1.  Sprite Editor Application proper [gameEditor]
  * 1.  Sprite Pixel Editor [SpritePixelEditor]
+ * 2.  Level Editor [LevelDesigner]
  * 2.  Color Picker [ColorPickerUI]
  * 3.  Grid of other tiles [SpriteTileGrid]
  * 4.  Tool select drawer [GameToolDrawerContent]
