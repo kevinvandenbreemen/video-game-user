@@ -24,6 +24,7 @@ import com.vandenbreemen.com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.videogameusr.model.CoreDependenciesHelper
 import com.vandenbreemen.videogameusr.model.game.LevelModel
+import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
 import com.vandenbreemen.videogameusr.tools.model.GameDataEditorModel
 import com.vandenbreemen.videogameusr.tools.model.LevelEditorModel
 import com.vandenbreemen.videogameusr.tools.viewmodel.LevelEditorViewModel
@@ -186,9 +187,8 @@ fun PreviewOfWhatYourWorkingOn() {
 
     val requirements = GameDataRequirements(8, 8, 8, 8, 1024)
     val levelModel = LevelModel(requirements, 1000, 100)
-    val levelEditorModel = LevelEditorModel(requirements, levelModel, GameDataEditorModel(requirements, 0, "kevin"),
-        CoreDependenciesHelper.getColorInteractor()
-        )
+    val levelEditorModel = LevelEditorModel(requirements, levelModel, GameDataEditorModel(requirements,
+        TileBasedGameWorld(requirements), 0, "requirements"), CoreDependenciesHelper.getColorInteractor())
     val levelEditorViewModel = LevelEditorViewModel(levelEditorModel)
 
     VideoGameUserTheme {

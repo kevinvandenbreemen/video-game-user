@@ -355,7 +355,7 @@ fun gameEditor(requirements: GameDataRequirements,
     //  Step 1:  Work out the height as a ratio of the width
     val height = (maxWidth * 0.80).toInt()
 
-    val model = GameDataEditorModel(requirements, spriteIndex=spriteIndex, requirementsVariableName = requirementsVariableName)
+    val model = GameDataEditorModel(requirements, spriteIndex=spriteIndex, requirementsVariableName = requirementsVariableName, tileBasedGameWorld = tileBasedGameWorld)
     val selectedTool = remember { mutableStateOf(ToolType.SpriteEditor) }
     val coroutineScope = rememberCoroutineScope()
 
@@ -400,7 +400,9 @@ fun gameEditor(requirements: GameDataRequirements,
                             SpriteEditorUI(model)
                         }
                         ToolType.LevelEditor -> {
-                            LevelDesigner(LevelEditorViewModel(model.getLevelEditorModel()))
+                            LevelDesigner(LevelEditorViewModel(
+                                model.editLevel(0)  //  TODO    Gotta parameterize this sometime!
+                            ))
                         }
                     }
 

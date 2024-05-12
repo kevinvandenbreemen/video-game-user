@@ -18,4 +18,8 @@ class TileBasedGameWorld(val requirements: GameDataRequirements) {
         return level
     }
 
+    fun getLevel(index: Int): LevelModel {
+        return levels[index]
+    }
+
 }
