@@ -1,4 +1,4 @@
-package com.vandenbreemen.videogameusr.tools
+package com.vandenbreemen.videogameusr.tools.composables
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
