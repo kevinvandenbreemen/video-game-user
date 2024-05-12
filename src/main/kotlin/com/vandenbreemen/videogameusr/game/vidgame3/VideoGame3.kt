@@ -1,7 +1,17 @@
 package com.vandenbreemen.videogameusr.game.vidgame3
 
+import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ProgramEntryPoints
+import com.vandenbreemen.viddisplayrast.game.Runner
+
 fun main() {
 
-    VideoGame3Model()
+    val model = VideoGame3Model()
+    model.setupLevel()
+
+    //spriteEditor(model.requirements, 4, "requirements")
+
+    val runner = Runner(model.requirements)
+    val controller = VideoGame3Controller(model, runner)
+    ProgramEntryPoints.playGameInWindow(runner, controller, 60, 800)
 
 }
