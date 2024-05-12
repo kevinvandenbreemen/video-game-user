@@ -10,7 +10,7 @@ import com.vandenbreemen.viddisplayrast.game.Runner
 import com.vandenbreemen.videogameusr.model.CoreDependenciesHelper
 import com.vandenbreemen.videogameusr.model.game.LevelModel
 
-class SpriteEditorModel(private val requirements: GameDataRequirements, private var spriteIndex: Int, private val requirementsVariableName: String) {
+class GameDataEditorModel(private val requirements: GameDataRequirements, private var spriteIndex: Int, private val requirementsVariableName: String) {
 
     private val spriteCodeGenerationInteractor = SpriteCodeGenerationInteractor(requirements)
 

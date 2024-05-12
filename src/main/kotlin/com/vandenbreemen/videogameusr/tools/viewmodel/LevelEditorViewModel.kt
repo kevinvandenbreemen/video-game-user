@@ -2,8 +2,8 @@ package com.vandenbreemen.videogameusr.tools.viewmodel
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import com.vandenbreemen.videogameusr.tools.model.GameDataEditorModel
 import com.vandenbreemen.videogameusr.tools.model.LevelEditorModel
-import com.vandenbreemen.videogameusr.tools.model.SpriteEditorModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -30,7 +30,7 @@ class LevelEditorViewModel(private val levelEditorModel: LevelEditorModel) {
         _currentSelectedSpriteIndex.value = index
     }
 
-    fun getSpriteEditorModel(): SpriteEditorModel {
+    fun getSpriteEditorModel(): GameDataEditorModel {
         return levelEditorModel.getSpriteEditorModel()
     }
 

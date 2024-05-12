@@ -7,7 +7,7 @@ import com.vandenbreemen.videogameusr.model.game.LevelModel
 
 class LevelEditorModel(private val requirements: GameDataRequirements,
                        private val levelModel: LevelModel,
-                       private val spriteEditorModel: SpriteEditorModel,
+                       private val gameDataEditorModel: GameDataEditorModel,
                        private val colorInteractor: ColorInteractor
     ) {
 
@@ -30,8 +30,8 @@ class LevelEditorModel(private val requirements: GameDataRequirements,
         currentSelectedSpriteIndex = index
     }
 
-    fun getSpriteEditorModel(): SpriteEditorModel {
-        return spriteEditorModel
+    fun getSpriteEditorModel(): GameDataEditorModel {
+        return gameDataEditorModel
     }
 
     fun zoomIn(){

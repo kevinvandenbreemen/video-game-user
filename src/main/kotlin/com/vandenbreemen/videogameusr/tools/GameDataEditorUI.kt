@@ -33,7 +33,7 @@ import com.vandenbreemen.com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
 import com.vandenbreemen.videogameusr.tools.LevelDesigner
-import com.vandenbreemen.videogameusr.tools.model.SpriteEditorModel
+import com.vandenbreemen.videogameusr.tools.model.GameDataEditorModel
 import com.vandenbreemen.videogameusr.tools.viewmodel.LevelEditorViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -52,7 +52,7 @@ import kotlin.math.ceil
  * @param model Model for the sprite editor
  */
 @Composable
-fun SpriteEditorUI(model: SpriteEditorModel) {
+fun SpriteEditorUI(model: GameDataEditorModel) {
 
     val spriteArray = remember { mutableStateOf(model.getSpriteByteArray()) }
     val paintColorByte = remember { mutableStateOf(model.paintColor) }
@@ -118,7 +118,7 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
 
 @Composable
 private fun SpritePixelEditor(
-    model: SpriteEditorModel,
+    model: GameDataEditorModel,
     isErasing: MutableState<Boolean>,
     isEyeDropping: MutableState<Boolean>,
     paintColorByte: MutableState<Byte>,
@@ -228,7 +228,7 @@ private fun ColorPickerUI(
     paintColorByte: MutableState<Byte>,
     isErasing: MutableState<Boolean>,
     isEyeDropping: MutableState<Boolean>,
-    model: SpriteEditorModel
+    model: GameDataEditorModel
 ) {
 
     LaunchedEffect(paintColorByte.value) {  //  Force a redraw if the user picks a color
@@ -354,7 +354,7 @@ fun gameEditor(requirements: GameDataRequirements,
     //  Step 1:  Work out the height as a ratio of the width
     val height = (maxWidth * 0.80).toInt()
 
-    val model = SpriteEditorModel(requirements, spriteIndex=spriteIndex, requirementsVariableName = requirementsVariableName)
+    val model = GameDataEditorModel(requirements, spriteIndex=spriteIndex, requirementsVariableName = requirementsVariableName)
     val selectedTool = remember { mutableStateOf(ToolType.SpriteEditor) }
     val coroutineScope = rememberCoroutineScope()
 
