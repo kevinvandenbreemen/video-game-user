@@ -41,7 +41,7 @@ import kotlin.math.ceil
 /**
  * Tool for editing sprites
  * Major Components:
- * 1.  Sprite Editor Application proper [spriteEditor]
+ * 1.  Sprite Editor Application proper [gameEditor]
  * 1.  Sprite Pixel Editor [SpritePixelEditor]
  * 2.  Color Picker [ColorPickerUI]
  * 3.  Grid of other tiles [SpriteTileGrid]
@@ -344,7 +344,7 @@ private fun ColorPickerUI(
     }
 }
 
-fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requirementsVariableName: String = "requirement") = application {
+fun gameEditor(requirements: GameDataRequirements, spriteIndex: Int, requirementsVariableName: String = "requirement") = application {
 
     val maxWidth = 1100
 
