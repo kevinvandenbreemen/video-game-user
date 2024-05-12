@@ -11,6 +11,18 @@ class LevelModelTest {
     val requirements = GameDataRequirements(100, 100, 8, 8, 1024)
 
     @Test
+    fun `should initialize all sprite tiles to the no sprite index`() {
+
+            val levelModel = LevelModel(requirements, 1000, 100)
+
+            for(x in 0 until 1000){
+                for(y in 0 until 100){
+                    assertEquals(LevelModel.NO_SPRITE, levelModel.getSpriteTileAt(x, y))
+                }
+            }
+    }
+
+    @Test
     fun `should register sprite index`() {
 
         val levelModel = LevelModel(requirements, 1000, 100)
@@ -37,8 +49,14 @@ class LevelModelTest {
         val levelModel = LevelModel(requirements, 1000, 100)
 
         assertThrows(IllegalArgumentException::class.java) {
-            levelModel.setSpriteTileAt(10, 19, -1)
+            levelModel.setSpriteTileAt(10, 19, -2)
         }
+    }
+
+    @Test
+    fun `should allow adding sprite index -1 to signify no sprite set at a tile`() {
+        val levelModel = LevelModel(requirements, 1000, 100)
+        levelModel.setSpriteTileAt(10, 19, -1)
     }
 
     @Test
