@@ -13,6 +13,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.IntSize
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.SpriteTileGrid
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.VideoGameUserTheme
@@ -50,6 +51,42 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
     }
 }
 
+private data class LevelGridRenderingInfo(val boxWidth: Float, val boxHeight: Float, val pixelWidth: Float, val pixelHeight: Float)
+
+private fun getLevelGridRenderingInfo(size: Any, levelEditorViewModel: LevelEditorViewModel): LevelGridRenderingInfo {
+
+    //  Handle regular Size
+    if(size is IntSize) {
+        val casnvasWidth = size.width
+        val canvasHeight = size.height
+
+        val boxWidth = ceil(casnvasWidth / levelEditorViewModel.levelWidth.toFloat())
+        val boxHeight = ceil(canvasHeight / levelEditorViewModel.levelHeight.toFloat())
+
+        val pixelWidth = (boxWidth / levelEditorViewModel.spriteWidth.toFloat())
+        val pixelHeight = (boxHeight / levelEditorViewModel.spriteHeight.toFloat())
+
+        return LevelGridRenderingInfo(boxWidth, boxHeight, pixelWidth, pixelHeight)
+    }
+
+    //  Handle Size
+    if(size is Size) {
+        val casnvasWidth = size.width
+        val canvasHeight = size.height
+
+        val boxWidth = ceil(casnvasWidth / levelEditorViewModel.levelWidth.toFloat())
+        val boxHeight = ceil(canvasHeight / levelEditorViewModel.levelHeight.toFloat())
+
+        val pixelWidth = (boxWidth / levelEditorViewModel.spriteWidth.toFloat())
+        val pixelHeight = (boxHeight / levelEditorViewModel.spriteHeight.toFloat())
+
+        return LevelGridRenderingInfo(boxWidth, boxHeight, pixelWidth, pixelHeight)
+    }
+
+    throw IllegalArgumentException("Unknown size type $size")
+
+}
+
 @Composable
 fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
 
@@ -63,14 +100,19 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
 
             //  Detect user tapping on a tile and set its sprite
             detectTapGestures {
+
+                val gridRenderinInfo = getLevelGridRenderingInfo(size, levelEditorViewModel)
+
                 val x = it.x
                 val y = it.y
 
                 val casnvasWidth = size.width
                 val canvasHeight = size.height
 
-                val boxWidth = ceil(casnvasWidth / levelEditorViewModel.levelWidth.toFloat())
-                val boxHeight = ceil(canvasHeight / levelEditorViewModel.levelHeight.toFloat())
+
+
+                val boxWidth = gridRenderinInfo.boxWidth
+                val boxHeight = gridRenderinInfo.boxHeight
                 val col = (x / boxWidth).toInt()
                 val row = (y / boxHeight).toInt()
                 klog("tapped ($x, $y), Canvas width, height=($casnvasWidth, $canvasHeight), Level Width, Height = (${levelEditorViewModel.levelWidth}, ${levelEditorViewModel.levelHeight}), Box width,height =($boxWidth, $boxHeight) --> Tap on row=$row, col=$col")
@@ -82,17 +124,21 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
         }
         ) {
 
+            val gridRenderinInfo = getLevelGridRenderingInfo(size, levelEditorViewModel)
+
             val spriteWidth = levelEditorViewModel.spriteWidth.toFloat()
             val spriteHeight = levelEditorViewModel.spriteHeight.toFloat()
 
             val casnvasWidth = size.width
             val canvasHeight = size.height
 
-            val boxWidth = ceil(casnvasWidth / levelEditorViewModel.levelWidth.toFloat())
-            val boxHeight = ceil(canvasHeight / levelEditorViewModel.levelHeight.toFloat())
+            val boxWidth = gridRenderinInfo.boxWidth
+            val boxHeight = gridRenderinInfo.boxHeight
 
-            val pixelWidth = (boxWidth / spriteWidth)
-            val pixelHeight = (boxHeight / spriteHeight)
+            val pixelWidth = gridRenderinInfo.pixelWidth
+            val pixelHeight = gridRenderinInfo.pixelHeight
+
+
 
             klog("canvas width=$casnvasWidth, Box width=$boxWidth, box height=$boxHeight")
 
