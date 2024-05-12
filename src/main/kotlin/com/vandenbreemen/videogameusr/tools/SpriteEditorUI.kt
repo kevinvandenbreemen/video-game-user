@@ -346,10 +346,10 @@ private fun ColorPickerUI(
 
 fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requirementsVariableName: String = "requirement") = application {
 
-    val maxWidth = 900
+    val maxWidth = 1100
 
     //  Step 1:  Work out the height as a ratio of the width
-    val height = (maxWidth * 0.90).toInt()
+    val height = (maxWidth * 0.80).toInt()
 
     val model = SpriteEditorModel(requirements, spriteIndex=spriteIndex, requirementsVariableName = requirementsVariableName)
     val selectedTool = remember { mutableStateOf(ToolType.SpriteEditor) }
