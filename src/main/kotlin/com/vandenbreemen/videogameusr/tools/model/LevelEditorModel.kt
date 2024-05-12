@@ -47,7 +47,17 @@ class LevelEditorModel(private val requirements: GameDataRequirements,
     }
 
     fun getSpritePixelColorGrid(x: Int, y: Int): Array<Array<Color>>? {
-        val spriteBytes = levelModel.getSpriteBytesAt(x, y) ?: return null
+        val index = levelModel.getSpriteTileAt(x, y)
+        return getSpritePixelColorGridForTileIndex(index)
+    }
+
+    fun getSpritePixelColorGridForTileIndex(tileIndex: Int): Array<Array<Color>>? {
+
+        if(tileIndex == LevelModel.NO_SPRITE){
+            return null
+        }
+
+        val spriteBytes = requirements.getSpriteData(tileIndex) ?: return null
 
         //  Now build grid based on spriteWidth and spriteHeight
         val grid = Array(spriteHeight) { y ->
@@ -62,6 +72,10 @@ class LevelEditorModel(private val requirements: GameDataRequirements,
 
     fun setSpriteTileAt(x: Int, y: Int, spriteIndex: Int){
         levelModel.setSpriteTileAt(x, y, spriteIndex)
+    }
+
+    fun getSpriteIndexAt(x: Int, y: Int): Int {
+        return levelModel.getSpriteTileAt(x, y)
     }
 
 }

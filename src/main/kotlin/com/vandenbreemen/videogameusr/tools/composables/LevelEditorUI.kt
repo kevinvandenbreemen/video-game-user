@@ -58,6 +58,7 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
 fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
 
     val selectedSpriteIndex by levelEditorViewModel.currentSelectedSpriteIndexStateFlow.collectAsState()
+    val tileIndexGridForLevel = levelEditorViewModel.levelCoordinateToTileGrid.collectAsState()
 
     Column(modifier=Modifier.fillMaxSize(), horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally) {
 
@@ -142,7 +143,8 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
                                         )
 
                                         //  Now grab the sprite from the level and draw it
-                                        val spriteColorGrid = levelEditorViewModel.getSpritePixelColorGrid(col, row)
+                                        val index = tileIndexGridForLevel.value[row][col]
+                                        val spriteColorGrid = levelEditorViewModel.getSpritePixelColorGridForSpriteIndex(index)
                                         if (spriteColorGrid != null) {
                                             for (y in 0 until spriteHeight.toInt()) {
                                                 for (x in 0 until spriteWidth.toInt()) {
