@@ -1,4 +1,4 @@
-package com.vandenbreemen.com.vandenbreemen.videogameusr.tools
+package com.vandenbreemen.videogameusr.tools
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.*
@@ -28,11 +28,14 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
+import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.SpriteTileGrid
+import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.ToolType
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ConfirmingButton
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
-import com.vandenbreemen.videogameusr.tools.LevelDesigner
-import com.vandenbreemen.videogameusr.tools.model.SpriteEditorModel
+import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
+import com.vandenbreemen.videogameusr.tools.composables.LevelDesigner
+import com.vandenbreemen.videogameusr.tools.model.GameDataEditorModel
 import com.vandenbreemen.videogameusr.tools.viewmodel.LevelEditorViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -41,8 +44,9 @@ import kotlin.math.ceil
 /**
  * Tool for editing sprites
  * Major Components:
- * 1.  Sprite Editor Application proper [spriteEditor]
+ * 1.  Sprite Editor Application proper [gameEditor]
  * 1.  Sprite Pixel Editor [SpritePixelEditor]
+ * 2.  Level Editor [LevelDesigner]
  * 2.  Color Picker [ColorPickerUI]
  * 3.  Grid of other tiles [SpriteTileGrid]
  * 4.  Tool select drawer [GameToolDrawerContent]
@@ -51,7 +55,7 @@ import kotlin.math.ceil
  * @param model Model for the sprite editor
  */
 @Composable
-fun SpriteEditorUI(model: SpriteEditorModel) {
+fun SpriteEditorUI(model: GameDataEditorModel) {
 
     val spriteArray = remember { mutableStateOf(model.getSpriteByteArray()) }
     val paintColorByte = remember { mutableStateOf(model.paintColor) }
@@ -117,7 +121,7 @@ fun SpriteEditorUI(model: SpriteEditorModel) {
 
 @Composable
 private fun SpritePixelEditor(
-    model: SpriteEditorModel,
+    model: GameDataEditorModel,
     isErasing: MutableState<Boolean>,
     isEyeDropping: MutableState<Boolean>,
     paintColorByte: MutableState<Byte>,
@@ -227,7 +231,7 @@ private fun ColorPickerUI(
     paintColorByte: MutableState<Byte>,
     isErasing: MutableState<Boolean>,
     isEyeDropping: MutableState<Boolean>,
-    model: SpriteEditorModel
+    model: GameDataEditorModel
 ) {
 
     LaunchedEffect(paintColorByte.value) {  //  Force a redraw if the user picks a color
@@ -344,14 +348,16 @@ private fun ColorPickerUI(
     }
 }
 
-fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requirementsVariableName: String = "requirement") = application {
+fun gameEditor(requirements: GameDataRequirements,
+               tileBasedGameWorld: TileBasedGameWorld,
+               spriteIndex: Int, requirementsVariableName: String = "requirement") = application {
 
     val maxWidth = 1100
 
     //  Step 1:  Work out the height as a ratio of the width
     val height = (maxWidth * 0.80).toInt()
 
-    val model = SpriteEditorModel(requirements, spriteIndex=spriteIndex, requirementsVariableName = requirementsVariableName)
+    val model = GameDataEditorModel(requirements, spriteIndex=spriteIndex, requirementsVariableName = requirementsVariableName, tileBasedGameWorld = tileBasedGameWorld)
     val selectedTool = remember { mutableStateOf(ToolType.SpriteEditor) }
     val coroutineScope = rememberCoroutineScope()
 
@@ -396,7 +402,9 @@ fun spriteEditor(requirements: GameDataRequirements, spriteIndex: Int, requireme
                             SpriteEditorUI(model)
                         }
                         ToolType.LevelEditor -> {
-                            LevelDesigner(LevelEditorViewModel(model.getLevelEditorModel()))
+                            LevelDesigner(LevelEditorViewModel(
+                                model.editLevel(0)  //  TODO    Gotta parameterize this sometime!
+                            ))
                         }
                     }
 

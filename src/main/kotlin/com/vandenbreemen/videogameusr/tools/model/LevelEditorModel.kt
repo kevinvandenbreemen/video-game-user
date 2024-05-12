@@ -4,11 +4,13 @@ import androidx.compose.ui.graphics.Color
 import com.vandenbreemen.com.vandenbreemen.videogameusr.model.ColorInteractor
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.videogameusr.model.game.LevelModel
+import com.vandenbreemen.videogameusr.tools.interactor.CodeGenerationInteractor
 
 class LevelEditorModel(private val requirements: GameDataRequirements,
                        private val levelModel: LevelModel,
-                       private val spriteEditorModel: SpriteEditorModel,
-                       private val colorInteractor: ColorInteractor
+                       private val gameDataEditorModel: GameDataEditorModel,
+                       private val colorInteractor: ColorInteractor,
+                        private val codeGenerationInteractor: CodeGenerationInteractor
     ) {
 
     val spriteWidth = requirements.spriteWidth
@@ -30,8 +32,8 @@ class LevelEditorModel(private val requirements: GameDataRequirements,
         currentSelectedSpriteIndex = index
     }
 
-    fun getSpriteEditorModel(): SpriteEditorModel {
-        return spriteEditorModel
+    fun getSpriteEditorModel(): GameDataEditorModel {
+        return gameDataEditorModel
     }
 
     fun zoomIn(){
@@ -47,7 +49,17 @@ class LevelEditorModel(private val requirements: GameDataRequirements,
     }
 
     fun getSpritePixelColorGrid(x: Int, y: Int): Array<Array<Color>>? {
-        val spriteBytes = levelModel.getSpriteBytesAt(x, y) ?: return null
+        val index = levelModel.getSpriteTileAt(x, y)
+        return getSpritePixelColorGridForTileIndex(index)
+    }
+
+    fun getSpritePixelColorGridForTileIndex(tileIndex: Int): Array<Array<Color>>? {
+
+        if(tileIndex == LevelModel.NO_SPRITE){
+            return null
+        }
+
+        val spriteBytes = requirements.getSpriteData(tileIndex) ?: return null
 
         //  Now build grid based on spriteWidth and spriteHeight
         val grid = Array(spriteHeight) { y ->
@@ -62,6 +74,17 @@ class LevelEditorModel(private val requirements: GameDataRequirements,
 
     fun setSpriteTileAt(x: Int, y: Int, spriteIndex: Int){
         levelModel.setSpriteTileAt(x, y, spriteIndex)
+    }
+
+    fun getSpriteIndexAt(x: Int, y: Int): Int {
+        return levelModel.getSpriteTileAt(x, y)
+    }
+
+    /**
+     * Write the code for this level to the file
+     */
+    fun writeCodeToFile() {
+        codeGenerationInteractor.writeLevelToFile(levelModel)
     }
 
 }

@@ -3,16 +3,17 @@ package com.vandenbreemen.videogameusr.tools.model
 import androidx.compose.ui.graphics.Color
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.com.vandenbreemen.videogameusr.model.ColorInteractor
-import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.SpriteCodeGenerationInteractor
 import com.vandenbreemen.viddisplayrast.data.ByteColorDataInteractor
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
-import com.vandenbreemen.videogameusr.model.CoreDependenciesHelper
-import com.vandenbreemen.videogameusr.model.game.LevelModel
+import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
+import com.vandenbreemen.videogameusr.tools.interactor.CodeGenerationInteractor
 
-class SpriteEditorModel(private val requirements: GameDataRequirements, private var spriteIndex: Int, private val requirementsVariableName: String) {
+class GameDataEditorModel(private val requirements: GameDataRequirements,
+                          private val tileBasedGameWorld: TileBasedGameWorld,
+                          private var spriteIndex: Int, private val requirementsVariableName: String) {
 
-    private val spriteCodeGenerationInteractor = SpriteCodeGenerationInteractor(requirements)
+    private val codeGenerationInteractor = CodeGenerationInteractor(requirements)
 
     private val runner = Runner(requirements)
     private val spriteByteArray = ByteArray(requirements.spriteWidth * requirements.spriteHeight)
@@ -157,12 +158,12 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
 
         val codeBuilder = StringBuilder()
         previouslySelectedSpriteIndices.sorted().forEach { index ->
-            codeBuilder.append(spriteCodeGenerationInteractor.generateCodeForSpriteIndex(index, requirementsVariableName))
+            codeBuilder.append(codeGenerationInteractor.generateCodeForSpriteIndex(index, requirementsVariableName))
             codeBuilder.append("\n\n")
         }
 
         //  Kick off a full sprite write
-        spriteCodeGenerationInteractor.writeAllSpritesToFile()
+        codeGenerationInteractor.writeAllSpritesToFile()
 
         return codeBuilder.toString()
     }
@@ -179,7 +180,7 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
     val tilesPerRowOnSpriteTileGrid = 4
 
     fun getSpriteTileGridArray(index: Int): ByteArray {
-        return spriteCodeGenerationInteractor.getSpriteTileGridArray(index)
+        return codeGenerationInteractor.getSpriteTileGridArray(index)
     }
 
     fun selectSpriteIndex(index: Int) {
@@ -190,17 +191,11 @@ class SpriteEditorModel(private val requirements: GameDataRequirements, private 
 
     //  Level editing stuff
 
-    //  TODO    Gotta make all this parameterizable
-    private val currentLevelBeingEdited = LevelModel(requirements, 100, 100)
-    private val levelEditorModel = LevelEditorModel(requirements, currentLevelBeingEdited, this,
-        CoreDependenciesHelper.getColorInteractor()
-        )
-
     /**
      * Get a model suitable for editing a level
      */
-    fun getLevelEditorModel(): LevelEditorModel {
-        return levelEditorModel
+    fun editLevel(index: Int): LevelEditorModel {
+        return LevelEditorModel(requirements, tileBasedGameWorld.getLevel(index), this, colorInteractor, codeGenerationInteractor)
     }
 
     /**

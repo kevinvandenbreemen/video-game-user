@@ -16,7 +16,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
-import com.vandenbreemen.videogameusr.tools.model.SpriteEditorModel
+import com.vandenbreemen.videogameusr.tools.model.GameDataEditorModel
 import kotlin.math.ceil
 
 object WhereToFindEverythingInCommonToolsUI {
@@ -24,7 +24,7 @@ object WhereToFindEverythingInCommonToolsUI {
 }
 
 @Composable
-fun SpriteTileGrid(model: SpriteEditorModel, width: Int = 100,
+fun SpriteTileGrid(model: GameDataEditorModel, width: Int = 100,
                    title:String = "All Tile Assets",
                    onSelectSpriteIndex: (Int)-> Unit) {
     val range = model.getSpriteTileGridRange()

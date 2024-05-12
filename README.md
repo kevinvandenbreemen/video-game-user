@@ -52,6 +52,23 @@ This code creates a sprite at sprite index 2 and stores it to the game requireme
 
 As discussed earlier there is a sprite editor you can use to edit a tile.
 
+## Tile Based Game
+If you are creating a tile based game you can use the convenient ```TileBasedGameWorld``` type to define where your tiles should go in the game world.  This type provides a series of levels, which consist of grids of tiles.
+
+The ```TileBaseedGameWorld``` contains a list of ```LevelModel```s.  A LevelModel is a grid of sprite tiles.  You can specify the sprite tiles that should go into a LevelModel as follows:
+
+```
+val levelModel = LevelModel(requirements, 10, 10)
+
+//  Specify a single tile
+levelModel.setTile(0, 0, 2)
+
+//  Specify the tiles of an entire row
+levelModel.setSpritesOnRow(0, listOf(
+    2, 2, 2, 2, 2, 10, 6, 6, 6, 6, 6, 6, 6, 7, 6, 6, 6, 6, 6, 6, 6, 7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 2, 2, 2, 2
+))
+```
+
 ## Defining your Game's Logic
 Game logic is typically written in a game model.  The game model is then interacted with by an object implementing the ```VideoGameController``` interface.
 

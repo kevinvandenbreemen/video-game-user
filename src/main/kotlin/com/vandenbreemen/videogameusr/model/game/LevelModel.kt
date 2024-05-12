@@ -25,6 +25,12 @@ class LevelModel(private val requirements: GameDataRequirements, val widthInTile
      * Specify sprite to go at the given tile
      */
     fun setSpriteTileAt(x: Int, y: Int, spriteIndex: Int){
+
+        if(spriteIndex == NO_SPRITE){
+            levelData[x][y] = NO_SPRITE
+            return
+        }
+
         //  Verify the sprite index is good
         val maxSprites = requirements.maxBytes / (requirements.spriteWidth * requirements.spriteHeight)
         if(spriteIndex !in 0 until maxSprites){
