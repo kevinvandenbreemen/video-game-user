@@ -1,17 +1,18 @@
 package com.vandenbreemen.videogameusr.game.vidgame3
 
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
-import com.vandenbreemen.videogameusr.model.game.LevelModel
+import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
 
 class VideoGame3Model {
 
     val requirements = GameDataRequirements(200, 150, 8, 8, (8*8)*100)
+    val tileBasedGameWorld = TileBasedGameWorld(requirements)
 
     init {
         game3SpriteSheet(requirements)
     }
 
-    val levelModel = LevelModel(requirements, 35, 40)
+    val levelModel = tileBasedGameWorld.addLevel(35, 40)
 
     fun setupLevel() {
 

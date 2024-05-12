@@ -52,6 +52,9 @@ This code creates a sprite at sprite index 2 and stores it to the game requireme
 
 As discussed earlier there is a sprite editor you can use to edit a tile.
 
+## Tile Based Game
+If you are creating a tile based game you can use the convenient ```TileBasedGameWorld``` type to define where your tiles should go in the game world.  This type provides a series of levels, which consist of grids of tiles.
+
 ## Defining your Game's Logic
 Game logic is typically written in a game model.  The game model is then interacted with by an object implementing the ```VideoGameController``` interface.
 

@@ -9,7 +9,9 @@ fun main() {
     val model = VideoGame3Model()
     model.setupLevel()
 
-    gameEditor(model.requirements, 4, "requirements")
+    gameEditor(model.requirements,
+        model.tileBasedGameWorld,
+        4, "requirements")
 
     val runner = Runner(model.requirements)
     val controller = VideoGame3Controller(model, runner)

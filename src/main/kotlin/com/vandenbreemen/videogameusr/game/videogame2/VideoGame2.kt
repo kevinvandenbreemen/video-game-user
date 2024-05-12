@@ -4,6 +4,7 @@ import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.gameEditor
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ProgramEntryPoints
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
+import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
 
 object VideoGame2SpriteAddresses {
 
@@ -213,7 +214,9 @@ fun main() {
 
 
 
-    gameEditor(requirement, VideoGame2SpriteAddresses.GROUND_SPRITE_1, "requirement")
+    gameEditor(requirement,
+        TileBasedGameWorld(requirement),
+        VideoGame2SpriteAddresses.GROUND_SPRITE_1, "requirement")
 
 
     //spriteEditor(requirement, 4, "requirement", 800)
