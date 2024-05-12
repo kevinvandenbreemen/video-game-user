@@ -54,4 +54,17 @@ class LevelModel(private val requirements: GameDataRequirements, val widthInTile
         return requirements.getSpriteData(spriteIndex)
     }
 
+    /**
+     * Set the sprites on a row
+     */
+    fun setSpritesOnRow(y: Int, spriteIndexes: List<Int>){
+        if(spriteIndexes.size != widthInTiles){
+            throw IllegalArgumentException("Invalid number of sprites for row $y, expected ${widthInTiles}, got ${spriteIndexes.size}")
+        }
+
+        for(x in 0 until widthInTiles){
+            setSpriteTileAt(x, y, spriteIndexes[x])
+        }
+    }
+
 }
