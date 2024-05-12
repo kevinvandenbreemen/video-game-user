@@ -11,7 +11,7 @@ class VideoGame3Model {
         game3SpriteSheet(requirements)
     }
 
-    private val levelModel = LevelModel(requirements, 35, 40)
+    val levelModel = LevelModel(requirements, 35, 40)
 
     fun setupLevel() {
 
@@ -23,6 +23,8 @@ class VideoGame3Model {
         ))
 
     }
+
+    fun playTurn() {}
 
 
 }
