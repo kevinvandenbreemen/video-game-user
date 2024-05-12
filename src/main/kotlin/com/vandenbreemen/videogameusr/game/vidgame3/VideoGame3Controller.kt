@@ -41,7 +41,7 @@ class VideoGame3Controller(private val videoGame3Model: VideoGame3Model, runner:
     }
 
     override fun drawFrame() {
-        levelRenderingInteractor.drawFrameBasedOnCameraLocation()
+        levelRenderingInteractor.drawCameraView()
     }
 
     override fun getComposeColor(value: Byte): Color {

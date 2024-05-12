@@ -43,7 +43,7 @@ class LevelRenderingInteractor(
         cameraLocation = Pair(cameraLocation.first, cameraLocation.second + 1)
     }
 
-    fun drawFrameBasedOnCameraLocation() {
+    fun drawCameraView() {
         val x = cameraLocation.first
         val y = cameraLocation.second
         val width = cameraWidthHeight.first / requirements.spriteWidth
