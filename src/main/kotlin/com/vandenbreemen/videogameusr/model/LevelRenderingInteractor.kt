@@ -51,6 +51,11 @@ class LevelRenderingInteractor(
 
         for(i in 0 until width){
             for(j in 0 until height){
+
+                if(x + i < 0 || y + j < 0 || x + i >= levelModel.widthInTiles || y + j >= levelModel.heightInTiles){
+                    break
+                }
+
                 val spriteTileId = levelModel.getSpriteTileAt(x + i, y + j)
                 if(spriteTileId != LevelModel.NO_SPRITE){
                     runner.drawSpriteAt(spriteTileId, i * requirements.spriteWidth, j * requirements.spriteHeight)
