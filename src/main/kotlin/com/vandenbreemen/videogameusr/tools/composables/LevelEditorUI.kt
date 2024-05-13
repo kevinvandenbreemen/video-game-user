@@ -183,7 +183,7 @@ fun PreviewOfWhatYourWorkingOn() {
     val levelModel = LevelModel(requirements, 1000, 100)
     val levelEditorModel = LevelEditorModel(requirements, levelModel, GameDataEditorModel(requirements,
         TileBasedGameWorld(requirements), 0, "requirements"),
-        CoreDependenciesHelper.getColorInteractor(), CodeGenerationInteractor(requirements)
+        CoreDependenciesHelper.getColorInteractor(), CodeGenerationInteractor(requirements), "Level 1"
     )
     val levelEditorViewModel = LevelEditorViewModel(levelEditorModel)
 

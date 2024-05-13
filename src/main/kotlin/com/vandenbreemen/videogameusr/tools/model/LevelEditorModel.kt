@@ -10,7 +10,8 @@ class LevelEditorModel(private val requirements: GameDataRequirements,
                        private val levelModel: LevelModel,
                        private val gameDataEditorModel: GameDataEditorModel,
                        private val colorInteractor: ColorInteractor,
-                        private val codeGenerationInteractor: CodeGenerationInteractor
+                        private val codeGenerationInteractor: CodeGenerationInteractor,
+                     val levelName: String,
     ) {
 
     val spriteWidth = requirements.spriteWidth

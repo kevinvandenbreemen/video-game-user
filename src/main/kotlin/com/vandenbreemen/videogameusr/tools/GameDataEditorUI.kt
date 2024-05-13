@@ -380,7 +380,10 @@ fun gameEditor(requirements: GameDataRequirements,
                 drawerGesturesEnabled = false,
                 scaffoldState = scaffoldState,
                 topBar = {
-                    TopAppBar(title = { Text("Game Editor", style = MaterialTheme.typography.subtitle1) }, navigationIcon = {
+
+                    val titleStr = if(selectedTool.value == ToolType.SpriteEditor) "Sprite Editor" else "Level Editor - ${selectedLevelToEdit.value}"
+
+                    TopAppBar(title = { Text(titleStr, style = MaterialTheme.typography.subtitle1) }, navigationIcon = {
                         IconButton(onClick = {
                             coroutineScope.launch {
                                 scaffoldState.drawerState.open()
@@ -407,8 +410,11 @@ fun gameEditor(requirements: GameDataRequirements,
                             SpriteEditorUI(model)
                         }
                         ToolType.LevelEditor -> {
+
+                            val levelName = selectedLevelToEdit.value ?: throw IllegalStateException("No level selected")
+
                             LevelDesigner(LevelEditorViewModel(
-                                model.editLevel(selectedLevelToEdit.value ?: "")  //  TODO    Gotta parameterize this sometime!
+                                model.editLevel(levelName)
                             ))
                         }
                     }
