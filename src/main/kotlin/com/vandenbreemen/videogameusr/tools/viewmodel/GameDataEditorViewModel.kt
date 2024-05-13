@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.asStateFlow
 class GameDataEditorViewModel(private val gameDataEditorModel: GameDataEditorModel) {
 
 
-    val _levelName: MutableStateFlow<String?> = if(gameDataEditorModel.getLevelNames().isNotEmpty()) MutableStateFlow(gameDataEditorModel.getLevelNames()[0]) else MutableStateFlow(null)
+    val _levelName: MutableStateFlow<String?> = MutableStateFlow(null)
     val levelName = _levelName.asStateFlow()
 
 
