@@ -10,7 +10,7 @@ class VideoGame3Controller(private val videoGame3Model: VideoGame3Model, runner:
 
     private val model = videoGame3Model
     private val colorInteractor = CoreDependenciesHelper.getColorInteractor()
-    private val levelRenderingInteractor = LevelRenderingInteractor(model.requirements, runner, model.levelModel)
+    private val levelRenderingInteractor = LevelRenderingInteractor(model.requirements, runner, model.background)
 
     override fun moveRight() {
         levelRenderingInteractor.moveCameraRight()
@@ -41,7 +41,8 @@ class VideoGame3Controller(private val videoGame3Model: VideoGame3Model, runner:
     }
 
     override fun drawFrame() {
-        levelRenderingInteractor.drawCameraView()
+        levelRenderingInteractor.drawCameraView(model.background)
+        levelRenderingInteractor.drawCameraView(model.foregroundCastle)
     }
 
     override fun getComposeColor(value: Byte): Color {
