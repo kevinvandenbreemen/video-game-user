@@ -36,6 +36,7 @@ import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
 import com.vandenbreemen.videogameusr.tools.composables.LevelDesigner
 import com.vandenbreemen.videogameusr.tools.model.GameDataEditorModel
+import com.vandenbreemen.videogameusr.tools.viewmodel.GameDataEditorViewModel
 import com.vandenbreemen.videogameusr.tools.viewmodel.LevelEditorViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -358,7 +359,9 @@ fun gameEditor(requirements: GameDataRequirements,
     val height = (maxWidth * 0.80).toInt()
 
     val model = GameDataEditorModel(requirements, spriteIndex=spriteIndex, requirementsVariableName = requirementsVariableName, tileBasedGameWorld = tileBasedGameWorld)
+    val viewModel = GameDataEditorViewModel(model)
     val selectedTool = remember { mutableStateOf(ToolType.SpriteEditor) }
+    val selectedLevelToEdit = viewModel.levelName.collectAsState()
     val coroutineScope = rememberCoroutineScope()
 
     Window(
@@ -393,7 +396,9 @@ fun gameEditor(requirements: GameDataRequirements,
                     }
                 },
                 drawerContent = {
-                    GameToolDrawerContent(coroutineScope, scaffoldState, selectedTool)
+                    GameToolDrawerContent(coroutineScope, scaffoldState,
+                        viewModel,
+                        selectedTool)
                 }
             ) {
                 Column(modifier = Modifier.fillMaxSize()) {
@@ -403,7 +408,7 @@ fun gameEditor(requirements: GameDataRequirements,
                         }
                         ToolType.LevelEditor -> {
                             LevelDesigner(LevelEditorViewModel(
-                                model.editLevel("background")  //  TODO    Gotta parameterize this sometime!
+                                model.editLevel(selectedLevelToEdit.value ?: "")  //  TODO    Gotta parameterize this sometime!
                             ))
                         }
                     }
@@ -422,6 +427,7 @@ fun gameEditor(requirements: GameDataRequirements,
 private fun GameToolDrawerContent(
     coroutineScope: CoroutineScope,
     scaffoldState: ScaffoldState,
+    gameDataEditorModel: GameDataEditorViewModel,
     selectedTool: MutableState<ToolType>
 ) {
     Column(modifier = Modifier.background(MaterialTheme.colors.background).fillMaxSize()) {
@@ -433,13 +439,24 @@ private fun GameToolDrawerContent(
                 }
             })
         }
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("Level Editor", style = MaterialTheme.typography.subtitle1, modifier = Modifier.clickable {
-                coroutineScope.launch {
-                    scaffoldState.drawerState.close()
-                    selectedTool.value = ToolType.LevelEditor
+        Column {
+            Text("Level Editor", style = MaterialTheme.typography.subtitle1)
+
+            //  Buttons for each of the levels
+            Column(modifier=Modifier.border(1.dp, Color.Black).padding(5.dp)) {
+                for(levelName in gameDataEditorModel.getLevelNames()) {
+                    Button(onClick = {
+                        coroutineScope.launch {
+                            scaffoldState.drawerState.close()
+                            gameDataEditorModel.selectLevelForEdit(levelName)
+                            selectedTool.value = ToolType.LevelEditor
+                        }
+                    }) {
+                        Text(levelName, style = MaterialTheme.typography.caption)
+                    }
                 }
-            })
+            }
+
         }
     }
 }
@@ -450,8 +467,15 @@ fun PreviewOfComponentYourWorkingOn() {
 
     val scaffoldState = rememberScaffoldState( rememberDrawerState(DrawerValue.Closed) )
 
+    val requirements = GameDataRequirements(16, 16, 8, 8, 128,)
+    val tileBasedGameWorld = TileBasedGameWorld(requirements)
+    val model = GameDataEditorModel(requirements, tileBasedGameWorld,0, "requirements")
+    val viewModel = GameDataEditorViewModel(model)
+
     VideoGameUserTheme {
-        GameToolDrawerContent(rememberCoroutineScope(), scaffoldState, mutableStateOf(ToolType.SpriteEditor))
+        GameToolDrawerContent(rememberCoroutineScope(), scaffoldState,
+            viewModel,
+            mutableStateOf(ToolType.SpriteEditor))
     }
 
 }
