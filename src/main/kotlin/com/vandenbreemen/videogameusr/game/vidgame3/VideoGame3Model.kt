@@ -14,6 +14,15 @@ class VideoGame3Model {
 
     val foregroundCastle = tileBasedGameWorld.addLevel("castle", 35, 40)
     val background = tileBasedGameWorld.addLevel("background", 35, 40)
+    val grassLand = tileBasedGameWorld.addLevel("grassland", 35, 40).also {
+        val grassTileId = 2
+        //  Fill the whole thing with grass tile id!
+        for(x in 0 until 35){
+            for(y in 0 until 40){
+                it.setSpriteTileAt(x, y, grassTileId)
+            }
+        }
+    }
 
 
 

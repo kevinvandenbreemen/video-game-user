@@ -41,6 +41,7 @@ class VideoGame3Controller(private val videoGame3Model: VideoGame3Model, runner:
     }
 
     override fun drawFrame() {
+        levelRenderingInteractor.drawCameraView(model.grassLand)
         levelRenderingInteractor.drawCameraView(model.background)
         levelRenderingInteractor.drawCameraView(model.foregroundCastle)
     }
