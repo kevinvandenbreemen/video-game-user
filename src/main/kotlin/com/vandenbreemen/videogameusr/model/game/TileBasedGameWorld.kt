@@ -7,19 +7,23 @@ import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
  */
 class TileBasedGameWorld(val requirements: GameDataRequirements) {
 
-    private val levels: MutableList<LevelModel> = mutableListOf()
+    private val levels: MutableMap<String, LevelModel> = mutableMapOf()
 
     /**
      * Add a level to the game
      */
-    fun addLevel(widthInTiles: Int, heightInTiles: Int): LevelModel {
+    fun addLevel(name: String, widthInTiles: Int, heightInTiles: Int): LevelModel {
         val level = LevelModel(requirements, widthInTiles, heightInTiles)
-        levels.add(level)
+        levels[name] = level
         return level
     }
 
-    fun getLevel(index: Int): LevelModel {
-        return levels[index]
+    fun getLevel(name: String): LevelModel {
+        return levels[name] ?: throw IllegalArgumentException("No level found with name $name")
+    }
+
+    fun getLevelNames(): List<String> {
+        return levels.keys.toList()
     }
 
 }

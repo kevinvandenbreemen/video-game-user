@@ -403,7 +403,7 @@ fun gameEditor(requirements: GameDataRequirements,
                         }
                         ToolType.LevelEditor -> {
                             LevelDesigner(LevelEditorViewModel(
-                                model.editLevel(0)  //  TODO    Gotta parameterize this sometime!
+                                model.editLevel("background")  //  TODO    Gotta parameterize this sometime!
                             ))
                         }
                     }
