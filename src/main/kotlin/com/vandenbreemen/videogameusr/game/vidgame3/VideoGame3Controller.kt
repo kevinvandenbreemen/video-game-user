@@ -15,6 +15,7 @@ class VideoGame3Controller(private val videoGame3Model: VideoGame3Model, private
     }
 
     override fun moveRight() {
+        model.moveRight()
         levelRenderingInteractor.moveCameraRight()
     }
 
@@ -47,17 +48,7 @@ class VideoGame3Controller(private val videoGame3Model: VideoGame3Model, private
         levelRenderingInteractor.drawCameraView(model.grassLand)
         levelRenderingInteractor.drawCameraView(model.foregroundCastle)
 
-        levelRenderingInteractor.drawSinglePlayerCenter(getPlayerSpriteTiles())
-    }
-
-    private fun getPlayerSpriteTiles(): Array<Array<Int>> {
-        //  2d array of sprite tiles
-        return arrayOf(
-            arrayOf(0, 1),
-            arrayOf(4, 5),
-            arrayOf(8, 9),
-            arrayOf(12, 13)
-        )
+        levelRenderingInteractor.drawSinglePlayerCenter(model.getPlayerSpriteTiles())
     }
 
     override fun getComposeColor(value: Byte): Color {

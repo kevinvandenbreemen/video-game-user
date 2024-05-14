@@ -12,6 +12,38 @@ class VideoGame3Model {
         game3SpriteSheet(requirements)
     }
 
+    private val animationCycleRight = listOf<Array<Array<Int>>>(
+        arrayOf(
+            arrayOf(0, 1),
+            arrayOf(4, 5),
+            arrayOf(8, 9),
+            arrayOf(12, 13)
+        ),
+        arrayOf(
+            arrayOf(0, 1),
+            arrayOf(4, 5),
+            arrayOf(8, 9),
+            arrayOf(16, 17)
+        ),
+        arrayOf(
+            arrayOf(0, 1),
+            arrayOf(4, 5),
+            arrayOf(8, 9),
+            arrayOf(17, 14)
+        ),
+        )
+
+    var animationFrame: Array<Array<Int>> = arrayOf(
+        arrayOf(0, 1),
+        arrayOf(4, 5),
+        arrayOf(8, 9),
+        arrayOf(12, 13)
+    )
+
+    private val animationCycleFrames = 10
+    private var frameCounter = 0
+    private var frameIndexPos = 0
+
     val foregroundCastle = tileBasedGameWorld.addLevel("castle", 35, 40)
     val background = tileBasedGameWorld.addLevel("background", 35, 40)
     val grassLand = tileBasedGameWorld.addLevel("grassland", 35, 40).also {
@@ -24,6 +56,20 @@ class VideoGame3Model {
         }
     }
 
+    fun moveRight() {
+        frameCounter++
+        if(frameCounter % animationCycleFrames == 0) {
+            frameIndexPos ++
+            frameIndexPos %= animationCycleRight.size
+            animationFrame = animationCycleRight[frameIndexPos]
+            frameCounter = 0
+        }
+    }
+
+    fun getPlayerSpriteTiles(): Array<Array<Int>> {
+        //  2d array of sprite tiles
+        return animationFrame
+    }
 
 
     fun setupLevel() {
