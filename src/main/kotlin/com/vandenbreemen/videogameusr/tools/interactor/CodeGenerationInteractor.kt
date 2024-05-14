@@ -65,8 +65,9 @@ $requirementsVariableName.setData($spriteIndex, byteArrayOf(""")
 
             val codeBuilder = StringBuilder()
 
+            codeBuilder.append("levelModel.apply {\n")
             for(row in 0 until levelModel.heightInTiles) {
-                codeBuilder.append("levelModel.setSpritesOnRow($row, listOf(\n")
+                codeBuilder.append("setSpritesOnRow($row, listOf(")
                 for (col in 0 until levelModel.widthInTiles) {
 
                     val spriteIndex = levelModel.getSpriteTileAt(col, row)
@@ -76,8 +77,9 @@ $requirementsVariableName.setData($spriteIndex, byteArrayOf(""")
                     }
 
                 }
-                codeBuilder.append("\n))\n\n")
+                codeBuilder.append("))\n")
             }
+            codeBuilder.append("}")
 
             File(tileDataFileToWrite).writeText(codeBuilder.toString())
             klog("Wrote level data to $tileDataFileToWrite")
