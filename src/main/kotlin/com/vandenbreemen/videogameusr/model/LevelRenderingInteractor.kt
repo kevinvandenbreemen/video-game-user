@@ -46,6 +46,15 @@ class LevelRenderingInteractor(
         cameraLocation = Pair(cameraLocation.first, cameraLocation.second + 1)
     }
 
+    fun moveCameraTo(x: Int, y: Int){
+        cameraLocation = Pair(x, y)
+    }
+
+    //  Get the camera location
+    fun getCameraLocation(): Pair<Int, Int> {
+        return cameraLocation
+    }
+
     fun drawCameraView(levelModel: LevelModel) {
         val x = cameraLocation.first
         val y = cameraLocation.second
@@ -63,6 +72,18 @@ class LevelRenderingInteractor(
                 if(spriteTileId != LevelModel.NO_SPRITE){
                     runner.drawSpriteAt(spriteTileId, i * requirements.spriteWidth, j * requirements.spriteHeight)
                 }
+            }
+        }
+    }
+
+    //  Draw the player at the center.  Function takes a 2d array of sprite tiles
+    fun drawSinglePlayerCenter(playerSpriteTiles: Array<Array<Int>>) {
+        val x = cameraWidthHeight.first / requirements.spriteWidth / 2
+        val y = cameraWidthHeight.second / requirements.spriteHeight / 2
+
+        for(i in playerSpriteTiles.indices){
+            for(j in playerSpriteTiles[i].indices){
+                runner.drawSpriteAt(playerSpriteTiles[i][j], x * requirements.spriteWidth + j * requirements.spriteWidth, y * requirements.spriteHeight + i * requirements.spriteHeight)
             }
         }
     }
