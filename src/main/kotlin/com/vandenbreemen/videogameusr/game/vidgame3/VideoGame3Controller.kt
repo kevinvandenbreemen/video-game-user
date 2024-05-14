@@ -21,14 +21,17 @@ class VideoGame3Controller(private val videoGame3Model: VideoGame3Model, private
 
     override fun moveLeft() {
         levelRenderingInteractor.moveCameraLeft()
+        model.moveLeft()
     }
 
     override fun moveUp() {
         levelRenderingInteractor.moveCameraUp()
+        model.moveUp()
     }
 
     override fun moveDown() {
         levelRenderingInteractor.moveCameraDown()
+        model.moveDown()
     }
 
     override fun pressA() {

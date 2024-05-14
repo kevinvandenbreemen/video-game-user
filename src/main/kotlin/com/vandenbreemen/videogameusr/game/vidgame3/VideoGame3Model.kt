@@ -23,15 +23,54 @@ class VideoGame3Model {
             arrayOf(0, 1),
             arrayOf(4, 5),
             arrayOf(8, 9),
-            arrayOf(16, 17)
-        ),
-        arrayOf(
-            arrayOf(0, 1),
-            arrayOf(4, 5),
-            arrayOf(8, 9),
             arrayOf(17, 14)
         ),
         )
+
+    private val animationCycleLeft = listOf<Array<Array<Int>>>(
+        arrayOf(
+            arrayOf(2, 3),
+            arrayOf(6, 7),
+            arrayOf(10, 11),
+            arrayOf(16, 15)
+        ),
+        arrayOf(
+            arrayOf(2, 3),
+            arrayOf(6, 7),
+            arrayOf(10, 11),
+            arrayOf(17, 14)
+        ),
+    )
+
+    private val animationCycleUp = listOf<Array<Array<Int>>>(
+        arrayOf(
+            arrayOf(40, 41),
+            arrayOf(44, 45),
+            arrayOf(48, 49),
+            arrayOf(52, 53)
+        ),
+        arrayOf(
+            arrayOf(40, 41),
+            arrayOf(44, 45),
+            arrayOf(48, 49),
+            arrayOf(53, 52)
+        ),
+    )
+
+    private val animationCycleDown = listOf(
+        arrayOf(
+            arrayOf(20, 21),
+            arrayOf(24, 25),
+            arrayOf(28, 29),
+            arrayOf(36, 37)
+        ),
+        arrayOf(
+            arrayOf(20, 21),
+            arrayOf(24, 25),
+            arrayOf(28, 29),
+            arrayOf(37, 36)
+        ),
+    )
 
     var animationFrame: Array<Array<Int>> = arrayOf(
         arrayOf(0, 1),
@@ -56,14 +95,30 @@ class VideoGame3Model {
         }
     }
 
-    fun moveRight() {
+    private fun nextFrame(animationCycle: List<Array<Array<Int>>>) {
         frameCounter++
         if(frameCounter % animationCycleFrames == 0) {
             frameIndexPos ++
-            frameIndexPos %= animationCycleRight.size
-            animationFrame = animationCycleRight[frameIndexPos]
+            frameIndexPos %= animationCycle.size
+            animationFrame = animationCycle[frameIndexPos]
             frameCounter = 0
         }
+    }
+
+    fun moveRight() {
+        nextFrame(animationCycleRight)
+    }
+
+    fun moveLeft() {
+        nextFrame(animationCycleLeft)
+    }
+
+    fun moveUp() {
+        nextFrame(animationCycleUp)
+    }
+
+    fun moveDown() {
+        nextFrame(animationCycleDown)
     }
 
     fun getPlayerSpriteTiles(): Array<Array<Int>> {
