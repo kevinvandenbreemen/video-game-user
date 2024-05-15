@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 import com.vandenbreemen.com.vandenbreemen.videogameusr.controller.VideoGameController
 import com.vandenbreemen.viddisplayrast.game.Runner
 import com.vandenbreemen.videogameusr.model.CoreDependenciesHelper
-import com.vandenbreemen.videogameusr.model.LevelRenderingInteractor
+import com.vandenbreemen.videogameusr.view.render.LevelRenderingInteractor
 
 class VideoGame3Controller(private val videoGame3Model: VideoGame3Model, private val runner: Runner): VideoGameController {
 

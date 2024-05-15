@@ -1,4 +1,4 @@
-package com.vandenbreemen.videogameusr.model
+package com.vandenbreemen.videogameusr.view.render
 
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
