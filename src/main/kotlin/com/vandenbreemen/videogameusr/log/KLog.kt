@@ -21,7 +21,13 @@ enum class KlogLevel {
     INFO,
     WARN,
     ERROR
+    ;
+
+    fun isAtLeast(level: KlogLevel): Boolean {
+        return this.ordinal >= level.ordinal
+    }
 }
+
 
 private val dispatcher = Dispatchers.Default
 private const val LOG_DELAY = 100L
@@ -42,6 +48,8 @@ private data class Entry (
     }
 }
 
+data class KLogConfig(val level: KlogLevel)
+
 private val loqQueue = Vector<Entry>()
 val logJob = CoroutineScope(dispatcher).launch {
 
@@ -57,15 +65,37 @@ val logJob = CoroutineScope(dispatcher).launch {
     }
 }
 
+/**
+ * Current logging level
+ */
+private var config = KLogConfig(KlogLevel.INFO)
+
+fun klogConfig(updated: KLogConfig) {
+    config = updated
+}
+
 private fun logOutOfBand(timestamp: Long, level: KlogLevel, message: String, throwable: Throwable? = null) {
     loqQueue.add(Entry(timestamp, level, message, throwable))
 }
 
 fun klog(level: KlogLevel, message: String) {
+    if(!level.isAtLeast(config.level)){
+        return
+    }
     logOutOfBand(System.currentTimeMillis(), level, message)
 }
 
+fun klog(level: KlogLevel, messageLmb: () -> String) {
+    if(!level.isAtLeast(config.level)){
+        return
+    }
+    logOutOfBand(System.currentTimeMillis(), level, messageLmb())
+}
+
 fun klog(level: KlogLevel, message: String, throwable: Throwable) {
+    if(!level.isAtLeast(config.level)){
+        return
+    }
     logOutOfBand(System.currentTimeMillis(), level, message, throwable)
 }
 
