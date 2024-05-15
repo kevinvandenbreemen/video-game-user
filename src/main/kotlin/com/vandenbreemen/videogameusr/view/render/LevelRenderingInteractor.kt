@@ -1,12 +1,11 @@
 package com.vandenbreemen.videogameusr.view.render
 
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
-import com.vandenbreemen.viddisplayrast.game.Runner
 import com.vandenbreemen.videogameusr.model.game.LevelModel
 
 class LevelRenderingInteractor(
     private val requirements: GameDataRequirements,
-    private val runner: Runner,
+    private val runner: RunnerView,
 
     //  TODO    This is silly.
     private val typicalLevelModel: LevelModel) {
