@@ -42,6 +42,12 @@ class RunnerView(private val requirements: GameDataRequirements): Runner(require
         try {
             renderSemaphore.acquire()
             if (cameraViewStart.first == 0) {
+
+                cameraViewStart = Pair(requirements.spriteWidth, cameraViewStart.second)
+                cameraViewEnd = Pair(requirements.screenWidth - requirements.spriteWidth, cameraViewEnd.second)
+
+                onFailure()
+
                 return
             }
             cameraViewStart = Pair(cameraViewStart.first - 1, cameraViewStart.second)
@@ -59,6 +65,12 @@ class RunnerView(private val requirements: GameDataRequirements): Runner(require
         try {
             renderSemaphore.acquire()
             if(cameraViewEnd.first == requirements.screenWidth - 1){
+
+                cameraViewStart = Pair(requirements.spriteWidth, cameraViewStart.second)
+                cameraViewEnd = Pair(requirements.screenWidth - requirements.spriteWidth, cameraViewEnd.second)
+
+                onFailure()
+
                 return
             }
             cameraViewStart = Pair(cameraViewStart.first + 1, cameraViewStart.second)
@@ -75,12 +87,10 @@ class RunnerView(private val requirements: GameDataRequirements): Runner(require
     fun moveCameraUp(onFailure: ()->Unit) {
         try {
             renderSemaphore.acquire()
-            klog(KlogLevel.DEBUG) { "Runner - Moving camera up" }
             if (cameraViewStart.second == 0) {
                 cameraViewStart = Pair(cameraViewStart.first, requirements.spriteHeight)
                 cameraViewEnd = Pair(cameraViewEnd.first, requirements.screenHeight - requirements.spriteHeight)
 
-                klog(KlogLevel.DEBUG) { "Runner - Camera already at top - recentering" }
                 onFailure()
                 return
             }
@@ -99,6 +109,12 @@ class RunnerView(private val requirements: GameDataRequirements): Runner(require
         try {
             renderSemaphore.acquire()
             if (cameraViewEnd.second == requirements.screenHeight - 1) {
+
+                cameraViewStart = Pair(cameraViewStart.first, requirements.spriteHeight)
+                cameraViewEnd = Pair(cameraViewEnd.first, requirements.screenHeight - requirements.spriteHeight)
+
+                onFailure()
+
                 return
             }
             cameraViewStart = Pair(cameraViewStart.first, cameraViewStart.second + 1)
