@@ -15,16 +15,23 @@ class RunnerView(private val requirements: GameDataRequirements): Runner(require
     private var cameraViewStart = Pair(requirements.spriteWidth, requirements.spriteHeight)
     private var cameraViewEnd = Pair(requirements.screenWidth - requirements.spriteWidth, requirements.screenHeight - requirements.spriteHeight)
 
+    private val renderSemaphore = Semaphore(1)
+
     override fun newFrame(): DisplayRaster {
 
-        klog(KlogLevel.DEBUG) { "screen width/height = ${requirements.screenWidth}, ${requirements.screenHeight} - Displaying camera view from $cameraViewStart to $cameraViewEnd" }
+        try {
+            renderSemaphore.acquire()
+            klog(KlogLevel.DEBUG) { "screen width/height = ${requirements.screenWidth}, ${requirements.screenHeight} - Displaying camera view from $cameraViewStart to $cameraViewEnd" }
 
-        return super.newFrame().view(
-            cameraViewStart.first,
-            cameraViewStart.second,
-            cameraViewEnd.first,
-            cameraViewEnd.second
-        )
+            return super.newFrame().view(
+                cameraViewStart.first,
+                cameraViewStart.second,
+                cameraViewEnd.first,
+                cameraViewEnd.second
+            )
+        } finally {
+            renderSemaphore.release()
+        }
     }
 
     /**
@@ -32,11 +39,16 @@ class RunnerView(private val requirements: GameDataRequirements): Runner(require
      * @return True if the camera was moved, false if it was already at the edge
      */
     fun moveCameraLeft(onFailure: ()->Unit) {
-        if(cameraViewStart.first == 0){
-            return
+        try {
+            renderSemaphore.acquire()
+            if (cameraViewStart.first == 0) {
+                return
+            }
+            cameraViewStart = Pair(cameraViewStart.first - 1, cameraViewStart.second)
+            cameraViewEnd = Pair(cameraViewEnd.first - 1, cameraViewEnd.second)
+        } finally {
+            renderSemaphore.release()
         }
-        cameraViewStart = Pair(cameraViewStart.first - 1, cameraViewStart.second)
-        cameraViewEnd = Pair(cameraViewEnd.first - 1, cameraViewEnd.second)
     }
 
     /**
@@ -44,11 +56,16 @@ class RunnerView(private val requirements: GameDataRequirements): Runner(require
      * @return True if the camera was moved, false if it was already at the edge
      */
     fun moveCameraRight(onFailure: ()->Unit) {
-        if(cameraViewEnd.first == requirements.screenWidth - 1){
-            return
+        try {
+            renderSemaphore.acquire()
+            if(cameraViewEnd.first == requirements.screenWidth - 1){
+                return
+            }
+            cameraViewStart = Pair(cameraViewStart.first + 1, cameraViewStart.second)
+            cameraViewEnd = Pair(cameraViewEnd.first + 1, cameraViewEnd.second)
+        } finally {
+            renderSemaphore.release()
         }
-        cameraViewStart = Pair(cameraViewStart.first + 1, cameraViewStart.second)
-        cameraViewEnd = Pair(cameraViewEnd.first + 1, cameraViewEnd.second)
     }
 
     /**
@@ -56,16 +73,22 @@ class RunnerView(private val requirements: GameDataRequirements): Runner(require
      * @return True if the camera was moved, false if it was already at the edge
      */
     fun moveCameraUp(onFailure: ()->Unit) {
-        if(cameraViewStart.second == 0){
+        try {
+            renderSemaphore.acquire()
+            klog(KlogLevel.DEBUG) { "Runner - Moving camera up" }
+            if (cameraViewStart.second == 0) {
+                cameraViewStart = Pair(cameraViewStart.first, requirements.spriteHeight)
+                cameraViewEnd = Pair(cameraViewEnd.first, requirements.screenHeight - requirements.spriteHeight)
 
-
-            cameraViewStart = Pair(cameraViewStart.first, requirements.spriteHeight)
-            cameraViewEnd = Pair(cameraViewEnd.first, requirements.screenHeight - requirements.spriteHeight)
-
-            onFailure()
+                klog(KlogLevel.DEBUG) { "Runner - Camera already at top - recentering" }
+                onFailure()
+                return
+            }
+            cameraViewStart = Pair(cameraViewStart.first, cameraViewStart.second - 1)
+            cameraViewEnd = Pair(cameraViewEnd.first, cameraViewEnd.second - 1)
+        } finally {
+            renderSemaphore.release()
         }
-        cameraViewStart = Pair(cameraViewStart.first, cameraViewStart.second - 1)
-        cameraViewEnd = Pair(cameraViewEnd.first, cameraViewEnd.second - 1)
     }
 
     /**
@@ -73,11 +96,16 @@ class RunnerView(private val requirements: GameDataRequirements): Runner(require
      * @return True if the camera was moved, false if it was already at the edge
      */
     fun moveCameraDown(onFailure: ()->Unit) {
-        if(cameraViewEnd.second == requirements.screenHeight - 1){
-            return
+        try {
+            renderSemaphore.acquire()
+            if (cameraViewEnd.second == requirements.screenHeight - 1) {
+                return
+            }
+            cameraViewStart = Pair(cameraViewStart.first, cameraViewStart.second + 1)
+            cameraViewEnd = Pair(cameraViewEnd.first, cameraViewEnd.second + 1)
+        } finally {
+            renderSemaphore.release()
         }
-        cameraViewStart = Pair(cameraViewStart.first, cameraViewStart.second + 1)
-        cameraViewEnd = Pair(cameraViewEnd.first, cameraViewEnd.second + 1)
     }
 
 
