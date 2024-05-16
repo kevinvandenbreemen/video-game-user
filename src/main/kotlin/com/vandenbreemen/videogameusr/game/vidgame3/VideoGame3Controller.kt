@@ -12,7 +12,7 @@ class VideoGame3Controller(private val videoGame3Model: VideoGame3Model, private
     private val model = videoGame3Model
     private val colorInteractor = CoreDependenciesHelper.getColorInteractor()
     private val levelRenderingInteractor = LevelRenderingInteractor(model.requirements, runner, model.background).also {
-        it.moveCameraTo(15, 30)
+        it.moveCameraTo(15, 20)
     }
 
     override fun moveRight() {
