@@ -132,7 +132,7 @@ fun main() {
 
     //  Now set up a game
     val controller = VideoGame1Controller(runner, requirements)
-    ProgramEntryPoints.playGameInWindow(runner, controller, 120, 800)
+    ProgramEntryPoints.playGameInWindow(controller, 120, 800)
     //  Draw the screen
 
 

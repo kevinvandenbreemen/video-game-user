@@ -1,5 +1,7 @@
 package com.vandenbreemen.com.vandenbreemen.videogameusr.controller
 
+import com.vandenbreemen.viddisplayrast.data.DisplayRaster
+
 /**
  * This is where the actual game logic should be implemented.  Please note that implementations of this interface
  * should NEVER call the Runner.newFrame() method!
@@ -22,6 +24,8 @@ interface VideoGameController {
      * Draw a frame in the raster.
      */
     fun drawFrame()
+
+    fun getFrameForDisplay(): DisplayRaster
 
     fun getComposeColor(value: Byte): androidx.compose.ui.graphics.Color
 }

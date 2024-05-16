@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 import com.vandenbreemen.com.vandenbreemen.videogameusr.controller.VideoGameController
 import com.vandenbreemen.com.vandenbreemen.videogameusr.model.ColorInteractor
 import com.vandenbreemen.viddisplayrast.data.ByteColorDataInteractor
+import com.vandenbreemen.viddisplayrast.data.DisplayRaster
 import com.vandenbreemen.viddisplayrast.game.Runner
 
 class VideoGame2Controller(private val model: VideoGame2Model, private val runner: Runner): VideoGameController {
@@ -32,6 +33,10 @@ class VideoGame2Controller(private val model: VideoGame2Model, private val runne
 
     override fun pressB() {
         TODO("Not yet implemented")
+    }
+
+    override fun getFrameForDisplay(): DisplayRaster {
+        return runner.newFrame()
     }
 
     override fun playTurn() {
