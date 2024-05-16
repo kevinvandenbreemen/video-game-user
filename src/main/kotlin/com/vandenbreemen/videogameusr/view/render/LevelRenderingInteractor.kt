@@ -92,12 +92,20 @@ class LevelRenderingInteractor(
         }
     }
 
-    //  Draw the player at the center.  Function takes a 2d array of sprite tiles
-    fun drawSinglePlayerCenter(playerSpriteTiles: Array<Array<Int>>) {
-
+    private fun getCenterOfScreen(): Pair<Int, Int> {
         val viewCameraOffset = runner.getCameraOffset()
         val x = (requirements.screenWidth / 2) - viewCameraOffset.first
         val y = (requirements.screenHeight / 2) - viewCameraOffset.second
+
+        return Pair(x, y)
+    }
+
+    //  Draw the player at the center.  Function takes a 2d array of sprite tiles
+    fun drawSinglePlayerCenter(playerSpriteTiles: Array<Array<Int>>) {
+
+        val center = getCenterOfScreen()
+        val x = center.first
+        val y = center.second
 
         for(i in playerSpriteTiles.indices){
             for(j in playerSpriteTiles[i].indices){
