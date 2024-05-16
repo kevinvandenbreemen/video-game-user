@@ -105,8 +105,9 @@ class DummyVideoGameController : VideoGameController {
         klog("Play Turn")
     }
 
-    override fun drawFrame() {
+    override fun drawFrame(): DisplayRaster {
         klog("Draw Frame")
+        return DisplayRaster(16, 16)
     }
 
     override fun getComposeColor(value: Byte): Color {
@@ -115,9 +116,9 @@ class DummyVideoGameController : VideoGameController {
 }
 
 @Composable
-fun GameConsole(runner: Runner, framesPerSecond: Int = 1, controller: VideoGameController) {
+fun GameConsole(framesPerSecond: Int = 1, controller: VideoGameController) {
 
-    val raster = remember { mutableStateOf(runner.newFrame()) }
+    val raster = remember { mutableStateOf(controller.drawFrame()) }
     val controlsModel = remember { ControlsModel() }
     val delayTime = 1000 / framesPerSecond.toLong()
 
@@ -173,9 +174,8 @@ fun GameConsole(runner: Runner, framesPerSecond: Int = 1, controller: VideoGameC
             if(controlsModel.isButtonPressed(Button.B)) controller.pressB()
 
             launch(Dispatchers.Default) {  //  Only do this on the main thread so that it can happen only once
-                raster.value = runner.newFrame()
                 controller.playTurn()
-                controller.drawFrame()
+                raster.value = controller.drawFrame()
             }
 
         }
@@ -314,7 +314,7 @@ fun PreviewGameConsole() {
     val runner = Runner(requirements)
     runner.drawSpriteAt(0, 50, 60)
     //runner.drawSpriteAt(1, 100, 100)
-    GameConsole(runner, 60, DummyVideoGameController())
+    GameConsole( 60, DummyVideoGameController())
 }
 
 @Composable

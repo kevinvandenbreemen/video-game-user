@@ -227,7 +227,7 @@ fun main() {
 
     val model = VideoGame2Model(requirement.screenWidth, requirement.screenHeight, requirement.spriteWidth, requirement.spriteHeight)
     val controller = VideoGame2Controller(model, runner)
-    ProgramEntryPoints.playGameInWindow(runner, controller, 60, 800)
+    ProgramEntryPoints.playGameInWindow(controller, 60, 800)
 
 
 

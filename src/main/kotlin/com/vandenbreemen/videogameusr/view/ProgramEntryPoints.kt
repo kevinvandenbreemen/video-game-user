@@ -8,7 +8,6 @@ import com.vandenbreemen.com.vandenbreemen.videogameusr.controller.VideoGameCont
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.KlogLevel
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.viddisplayrast.data.DisplayRaster
-import com.vandenbreemen.viddisplayrast.game.Runner
 
 
 class ProgramEntryPoints {
@@ -30,7 +29,7 @@ class ProgramEntryPoints {
             }
         }
 
-        fun playGameInWindow(runner: Runner, controller: VideoGameController, framesPerSecond: Int = 60, maxWidth: Int = 800) = application {
+        fun playGameInWindow(controller: VideoGameController, framesPerSecond: Int = 60, maxWidth: Int = 800) = application {
 
             val maxFPS = 60
             val fpsToUse = if(framesPerSecond > maxFPS) {
@@ -48,7 +47,7 @@ class ProgramEntryPoints {
                 state = WindowState(width = maxWidth.dp, height = height.dp)
             ) {
                 VideoGameUserTheme {
-                    GameConsole(runner, fpsToUse, controller)
+                    GameConsole(fpsToUse, controller)
                 }
             }
         }

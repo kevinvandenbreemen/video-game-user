@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 import com.vandenbreemen.com.vandenbreemen.videogameusr.controller.VideoGameController
 import com.vandenbreemen.com.vandenbreemen.videogameusr.model.ColorInteractor
 import com.vandenbreemen.viddisplayrast.data.ByteColorDataInteractor
+import com.vandenbreemen.viddisplayrast.data.DisplayRaster
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
 
@@ -13,7 +14,7 @@ class VideoGame1Controller(private val runner: Runner, requirements: GameDataReq
 
     private val model = VideoGame1Model(requirements.screenWidth, requirements.screenHeight, requirements.spriteWidth, requirements.spriteHeight)
 
-    override fun drawFrame() {
+    override fun drawFrame(): DisplayRaster {
 
         runner.drawSpriteAt(0, model.getPlayerLocation().first, model.getPlayerLocation().second)
         runner.drawSpriteAt(2, model.getEnemyLocation().first, model.getEnemyLocation().second)
@@ -25,6 +26,8 @@ class VideoGame1Controller(private val runner: Runner, requirements: GameDataReq
             val spriteIndex = it.value + 4
             runner.drawSpriteAt(spriteIndex, it.key.first, it.key.second)
         }
+
+        return runner.newFrame()
 
     }
 
