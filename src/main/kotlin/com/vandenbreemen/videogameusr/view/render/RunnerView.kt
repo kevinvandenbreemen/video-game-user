@@ -30,7 +30,7 @@ class RunnerView(private val requirements: GameDataRequirements): Runner(require
      * Move the camera left
      * @return True if the camera was moved, false if it was already at the edge
      */
-    fun moveCameraLeft(): Boolean {
+    fun moveCameraLeft(onFailure: ()->Unit): Boolean {
         if(cameraViewStart.first == 0){
             return false
         }
@@ -43,7 +43,7 @@ class RunnerView(private val requirements: GameDataRequirements): Runner(require
      * Move the camera right
      * @return True if the camera was moved, false if it was already at the edge
      */
-    fun moveCameraRight(): Boolean {
+    fun moveCameraRight(onFailure: ()->Unit): Boolean {
         if(cameraViewEnd.first == requirements.screenWidth - 1){
             return false
         }
@@ -56,8 +56,15 @@ class RunnerView(private val requirements: GameDataRequirements): Runner(require
      * Move the camera up
      * @return True if the camera was moved, false if it was already at the edge
      */
-    fun moveCameraUp(): Boolean {
+    fun moveCameraUp(onFailure: ()->Unit): Boolean {
         if(cameraViewStart.second == 0){
+
+
+            cameraViewStart = Pair(cameraViewStart.first, requirements.spriteHeight)
+            cameraViewEnd = Pair(cameraViewEnd.first, requirements.screenHeight - requirements.spriteHeight)
+
+            onFailure()
+
             return false
         }
         cameraViewStart = Pair(cameraViewStart.first, cameraViewStart.second - 1)
@@ -69,7 +76,7 @@ class RunnerView(private val requirements: GameDataRequirements): Runner(require
      * Move the camera down
      * @return True if the camera was moved, false if it was already at the edge
      */
-    fun moveCameraDown(): Boolean {
+    fun moveCameraDown(onFailure: ()->Unit): Boolean {
         if(cameraViewEnd.second == requirements.screenHeight - 1){
             return false
         }
