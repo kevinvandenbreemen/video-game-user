@@ -14,35 +14,52 @@ class LevelRenderingInteractor(
     private val cameraWidthHeight = Pair(requirements.screenWidth, requirements.screenHeight)
 
     fun moveCameraRight(){
-        //  Ensure camera width doesn't go beyond level width
-        if(cameraLocationToNearestTile.first + cameraWidthHeight.first / requirements.spriteWidth >= typicalLevelModel.widthInTiles){
-            return
-        }
-        cameraLocationToNearestTile = Pair(cameraLocationToNearestTile.first + 1, cameraLocationToNearestTile.second)
+
+        runner.moveCameraRight { //  Ensure camera width doesn't go beyond level width
+            if(cameraLocationToNearestTile.first + cameraWidthHeight.first / requirements.spriteWidth >= typicalLevelModel.widthInTiles){
+                return@moveCameraRight
+            }
+            cameraLocationToNearestTile = Pair(cameraLocationToNearestTile.first + 1, cameraLocationToNearestTile.second) }
+
     }
 
     fun moveCameraLeft(){
-        //  Ensure camera width doesn't go beyond level width
-        if(cameraLocationToNearestTile.first == 0){
-            return
+
+        runner.moveCameraLeft {
+            //  Ensure camera width doesn't go beyond level width
+            if(cameraLocationToNearestTile.first == 0){
+                return@moveCameraLeft
+            }
+            cameraLocationToNearestTile = Pair(cameraLocationToNearestTile.first - 1, cameraLocationToNearestTile.second)
         }
-        cameraLocationToNearestTile = Pair(cameraLocationToNearestTile.first - 1, cameraLocationToNearestTile.second)
+
+
     }
 
     fun moveCameraUp(){
-        //  Ensure camera height doesn't go beyond level height
-        if(cameraLocationToNearestTile.second == 0){
-            return
+
+        runner.moveCameraUp {
+
+            //  Ensure camera height doesn't go beyond level height
+            if(cameraLocationToNearestTile.second == 0){
+                return@moveCameraUp
+            }
+            cameraLocationToNearestTile = Pair(cameraLocationToNearestTile.first, cameraLocationToNearestTile.second - 1)
         }
-        cameraLocationToNearestTile = Pair(cameraLocationToNearestTile.first, cameraLocationToNearestTile.second - 1)
+
     }
 
     fun moveCameraDown(){
-        //  Ensure camera height doesn't go beyond level height
-        if(cameraLocationToNearestTile.second + cameraWidthHeight.second / requirements.spriteHeight >= typicalLevelModel.heightInTiles){
-            return
+
+        runner.moveCameraDown {
+            //  Ensure camera height doesn't go beyond level height
+            if(cameraLocationToNearestTile.second + cameraWidthHeight.second / requirements.spriteHeight >= typicalLevelModel.heightInTiles){
+                return@moveCameraDown
+            }
+            cameraLocationToNearestTile = Pair(cameraLocationToNearestTile.first, cameraLocationToNearestTile.second + 1)
         }
-        cameraLocationToNearestTile = Pair(cameraLocationToNearestTile.first, cameraLocationToNearestTile.second + 1)
+
+
     }
 
     fun moveCameraTo(x: Int, y: Int){
