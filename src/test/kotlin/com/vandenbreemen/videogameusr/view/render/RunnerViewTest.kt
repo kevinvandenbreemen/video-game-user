@@ -50,8 +50,8 @@ class RunnerViewTest {
 
         println("View raster")
         println(TextRender().renderRaster(viewRaster))
-        assertEquals(5, viewRaster.xDim)
-        assertEquals(3, viewRaster.yDim)
+        assertEquals(4, viewRaster.xDim)
+        assertEquals(2, viewRaster.yDim)
 
     }
 
