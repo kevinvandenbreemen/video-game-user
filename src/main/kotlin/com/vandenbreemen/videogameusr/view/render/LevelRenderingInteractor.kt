@@ -95,10 +95,9 @@ class LevelRenderingInteractor(
     //  Draw the player at the center.  Function takes a 2d array of sprite tiles
     fun drawSinglePlayerCenter(playerSpriteTiles: Array<Array<Int>>) {
 
-        val x = requirements.screenWidth / 2
-        val y = requirements.screenHeight / 2
-
-        //  TODO    Need to get the camera offset from center from the runnerview and use that here!
+        val viewCameraOffset = runner.getCameraOffset()
+        val x = (requirements.screenWidth / 2) - viewCameraOffset.first
+        val y = (requirements.screenHeight / 2) - viewCameraOffset.second
 
         for(i in playerSpriteTiles.indices){
             for(j in playerSpriteTiles[i].indices){

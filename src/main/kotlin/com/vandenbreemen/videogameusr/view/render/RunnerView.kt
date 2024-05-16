@@ -17,6 +17,13 @@ class RunnerView(private val requirements: GameDataRequirements): Runner(require
 
     private val renderSemaphore = Semaphore(1)
 
+    /**
+     * Gets the camera's offset from the center of the screen
+     */
+    fun getCameraOffset(): Pair<Int, Int> {
+        return Pair(requirements.spriteWidth - cameraViewStart.first, requirements.spriteHeight - cameraViewStart.second)
+    }
+
     override fun newFrame(): DisplayRaster {
 
         try {
