@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
+import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.SpriteTileGrid
 import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.ToolType
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ConfirmingButton
@@ -360,9 +361,9 @@ fun gameEditor(requirements: GameDataRequirements,
 
     val model = GameDataEditorModel(requirements, spriteIndex=spriteIndex, requirementsVariableName = requirementsVariableName, tileBasedGameWorld = tileBasedGameWorld)
     val viewModel = GameDataEditorViewModel(model)
-    val selectedTool = remember { mutableStateOf(ToolType.SpriteEditor) }
-    val selectedLevelToEdit = viewModel.levelName.collectAsState()
     val coroutineScope = rememberCoroutineScope()
+
+    val toolSelection = viewModel.toolParameters.collectAsState()
 
     Window(
         resizable = false,
@@ -381,7 +382,7 @@ fun gameEditor(requirements: GameDataRequirements,
                 scaffoldState = scaffoldState,
                 topBar = {
 
-                    val titleStr = if(selectedTool.value == ToolType.SpriteEditor) "Sprite Editor" else "Level Editor - ${selectedLevelToEdit.value}"
+                    val titleStr = "Game Editor"
 
                     TopAppBar(title = { Text(titleStr, style = MaterialTheme.typography.subtitle1) }, navigationIcon = {
                         IconButton(onClick = {
@@ -401,23 +402,38 @@ fun gameEditor(requirements: GameDataRequirements,
                 drawerContent = {
                     GameToolDrawerContent(coroutineScope, scaffoldState,
                         viewModel,
-                        selectedTool)
+                        )
                 }
             ) {
                 Column(modifier = Modifier.fillMaxSize()) {
-                    when(selectedTool.value){
-                        ToolType.SpriteEditor -> {
-                            SpriteEditorUI(model)
-                        }
-                        ToolType.LevelEditor -> {
 
-                            val levelName = selectedLevelToEdit.value ?: throw IllegalStateException("No level selected")
+                    key(toolSelection.value) {
+                        klog("UI - Tool selection changed to ${toolSelection.value}")
 
-                            LevelDesigner(LevelEditorViewModel(
-                                model.editLevel(levelName)
-                            ))
+                        toolSelection.value?.let { tool ->
+
+                            when (tool.toolType) {
+                                ToolType.SpriteEditor -> {
+                                    SpriteEditorUI(model)
+                                }
+
+                                ToolType.LevelEditor -> {
+
+                                    val levelName =
+                                        tool.levelName ?: throw IllegalStateException("No level selected")
+
+                                    klog("UI - Editing level $levelName")
+                                    LevelDesigner(
+                                        LevelEditorViewModel(
+                                            model.editLevel(levelName)
+                                        )
+                                    )
+                                }
+                            }
                         }
                     }
+
+
 
                 }
             }
@@ -433,15 +449,14 @@ fun gameEditor(requirements: GameDataRequirements,
 private fun GameToolDrawerContent(
     coroutineScope: CoroutineScope,
     scaffoldState: ScaffoldState,
-    gameDataEditorModel: GameDataEditorViewModel,
-    selectedTool: MutableState<ToolType>
+    gameDataEditorModel: GameDataEditorViewModel
 ) {
     Column(modifier = Modifier.background(MaterialTheme.colors.background).fillMaxSize()) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text("Sprite Editor", style = MaterialTheme.typography.subtitle1, modifier = Modifier.clickable {
                 coroutineScope.launch {
                     scaffoldState.drawerState.close()
-                    selectedTool.value = ToolType.SpriteEditor
+                    gameDataEditorModel.editSprites()
                 }
             })
         }
@@ -455,7 +470,6 @@ private fun GameToolDrawerContent(
                         coroutineScope.launch {
                             scaffoldState.drawerState.close()
                             gameDataEditorModel.selectLevelForEdit(levelName)
-                            selectedTool.value = ToolType.LevelEditor
                         }
                     }) {
                         Text(levelName, style = MaterialTheme.typography.caption)
@@ -481,7 +495,7 @@ fun PreviewOfComponentYourWorkingOn() {
     VideoGameUserTheme {
         GameToolDrawerContent(rememberCoroutineScope(), scaffoldState,
             viewModel,
-            mutableStateOf(ToolType.SpriteEditor))
+            )
     }
 
 }
