@@ -2,6 +2,7 @@ package com.vandenbreemen.videogameusr.game.vidgame3
 
 import androidx.compose.ui.graphics.Color
 import com.vandenbreemen.com.vandenbreemen.videogameusr.controller.VideoGameController
+import com.vandenbreemen.viddisplayrast.data.DisplayRaster
 import com.vandenbreemen.videogameusr.model.CoreDependenciesHelper
 import com.vandenbreemen.videogameusr.view.render.LevelRenderingInteractor
 import com.vandenbreemen.videogameusr.view.render.RunnerView
@@ -46,12 +47,14 @@ class VideoGame3Controller(private val videoGame3Model: VideoGame3Model, private
         model.playTurn()
     }
 
-    override fun drawFrame() {
+    override fun drawFrame(): DisplayRaster {
         levelRenderingInteractor.drawCameraView(model.background)
         levelRenderingInteractor.drawCameraView(model.grassLand)
         levelRenderingInteractor.drawCameraView(model.foregroundCastle)
 
         levelRenderingInteractor.drawSinglePlayerCenter(model.getPlayerSpriteTiles())
+
+        return runner.newFrame()
     }
 
     override fun getComposeColor(value: Byte): Color {

@@ -35,15 +35,11 @@ class VideoGame2Controller(private val model: VideoGame2Model, private val runne
         TODO("Not yet implemented")
     }
 
-    override fun getFrameForDisplay(): DisplayRaster {
-        return runner.newFrame()
-    }
-
     override fun playTurn() {
         model.playGamesTurn()
     }
 
-    override fun drawFrame() {
+    override fun drawFrame(): DisplayRaster {
         val playerLocation = model.getPlayerLocation()
         val spriteIndex = model.getPlayerSpriteIndex()
         runner.drawSpriteAt(spriteIndex, playerLocation.first, playerLocation.second)
@@ -51,6 +47,8 @@ class VideoGame2Controller(private val model: VideoGame2Model, private val runne
         model.getGroundSpriteLocations().forEach { (x, y) ->
             runner.drawSpriteAt(VideoGame2SpriteAddresses.GROUND_SPRITE_1, x, y)
         }
+
+        return runner.newFrame()
     }
 
     override fun getComposeColor(value: Byte): Color {
