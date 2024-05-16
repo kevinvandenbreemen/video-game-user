@@ -48,8 +48,8 @@ class VideoGame3Controller(private val videoGame3Model: VideoGame3Model, private
     }
 
     override fun drawFrame(): DisplayRaster {
-        levelRenderingInteractor.drawCameraView(model.background)
         levelRenderingInteractor.drawCameraView(model.grassLand)
+        levelRenderingInteractor.drawCameraView(model.background)
         levelRenderingInteractor.drawCameraView(model.foregroundCastle)
 
         levelRenderingInteractor.drawSinglePlayerCenter(model.getPlayerSpriteTiles())
