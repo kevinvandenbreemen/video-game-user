@@ -12,6 +12,6 @@ fun main() {
 
     val runner = RunnerView(model.requirements)
     val controller = VideoGame3Controller(model, runner)
-    ProgramEntryPoints.playGameInWindow(runner, controller, 60, 800)
+    ProgramEntryPoints.playGameInWindow(controller, 60, 800)
 
 }
