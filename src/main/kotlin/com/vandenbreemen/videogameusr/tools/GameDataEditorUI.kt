@@ -352,6 +352,31 @@ private fun ColorPickerUI(
     }
 }
 
+@Composable
+private fun prepareAlertDialogForErrors(viewModel: GameDataEditorViewModel) {
+    val error = viewModel.errorMessage.collectAsState()
+    key(error.value) {
+        error.value?.let {
+            AlertDialog(
+                onDismissRequest = {
+                    viewModel.onErrorDismissed()
+                },
+                title = { Text("Error") },
+                text = { Text(it) },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            viewModel.onErrorDismissed()
+                        }
+                    ) {
+                        Text("OK")
+                    }
+                }
+            )
+        }
+    }
+}
+
 fun gameEditor(requirements: GameDataRequirements,
                tileBasedGameWorld: TileBasedGameWorld,
                spriteIndex: Int, requirementsVariableName: String = "requirement") = application {
@@ -376,6 +401,8 @@ fun gameEditor(requirements: GameDataRequirements,
     ) {
 
         VideoGameUserTheme {
+
+            prepareAlertDialogForErrors(viewModel)
 
             //  Show this inside a UI with a hamburger menu on the top left
             val scaffoldState = rememberScaffoldState( rememberDrawerState(DrawerValue.Closed) )

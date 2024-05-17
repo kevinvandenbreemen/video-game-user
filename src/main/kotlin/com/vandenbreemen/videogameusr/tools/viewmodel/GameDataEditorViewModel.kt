@@ -15,6 +15,9 @@ class GameDataEditorViewModel(private val gameDataEditorModel: GameDataEditorMod
     private val _levelNames = MutableStateFlow(gameDataEditorModel.getLevelNames())
     val levelNames = _levelNames.asStateFlow()
 
+    private val _errorMessage = MutableStateFlow<String?>(null)
+    val errorMessage = _errorMessage.asStateFlow()
+
     fun getLevelNames(): List<String> {
         return gameDataEditorModel.getLevelNames()
     }
@@ -32,7 +35,19 @@ class GameDataEditorViewModel(private val gameDataEditorModel: GameDataEditorMod
     }
 
     fun addLevel(levelName: String) {
-        gameDataEditorModel.addLevel(levelName, gameDataEditorModel.levelWidthInTiles, gameDataEditorModel.levelHeightInTiles)
-        _levelNames.value = gameDataEditorModel.getLevelNames()
+        try {
+            gameDataEditorModel.addLevel(
+                levelName,
+                gameDataEditorModel.levelWidthInTiles,
+                gameDataEditorModel.levelHeightInTiles
+            )
+            _levelNames.value = gameDataEditorModel.getLevelNames()
+        } catch (e: IllegalArgumentException) {
+            _errorMessage.value = e.message
+        }
+    }
+
+    fun onErrorDismissed() {
+        _errorMessage.value = null
     }
 }
