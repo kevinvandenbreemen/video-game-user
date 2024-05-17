@@ -48,15 +48,19 @@ $requirementsVariableName.setData($spriteIndex, byteArrayOf(""")
             codeGenerationModel.setupCodeGeneratingDirectory()
 
             val codeBuilder = StringBuilder()
-            for(index in 0 until (requirements.maxBytes/(requirements.spriteWidth * requirements.spriteHeight))){
-                codeBuilder.append(generateCodeForSpriteIndex(index, "requirements"))
-                codeBuilder.append("\n\n")
-            }
+            generateSpriteSheet(codeBuilder)
 
             File(fileToWriteTo).writeText(codeBuilder.toString())
             klog("Wrote all sprites to $fileToWriteTo")
         }
 
+    }
+
+    private fun generateSpriteSheet(codeBuilder: StringBuilder) {
+        for (index in 0 until (requirements.maxBytes / (requirements.spriteWidth * requirements.spriteHeight))) {
+            codeBuilder.append(generateCodeForSpriteIndex(index, "requirements"))
+            codeBuilder.append("\n\n")
+        }
     }
 
     fun writeLevelToFile(levelModel: LevelModel) {
