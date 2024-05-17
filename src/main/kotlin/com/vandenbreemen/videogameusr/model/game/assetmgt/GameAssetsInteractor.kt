@@ -14,8 +14,17 @@ private enum class AssetReadAction {
     LEVEL
 }
 
-private data class AssetReadContext(val requirements: GameDataRequirements, val assetReadAction: AssetReadAction, val spriteIndex: Int = -1,
-                                    val spriteBytes: ByteArray? = null, val levelTiles: IntArray? = null, val levelName: String? = null, val levelWidth: Int = -1, val levelHeight: Int = -1, val world: TileBasedGameWorld? = null) {
+private data class AssetReadContext(
+    val requirements: GameDataRequirements,
+    val world: TileBasedGameWorld? = null,
+    val assetReadAction: AssetReadAction,
+    val spriteIndex: Int = -1,
+    val spriteBytes: ByteArray? = null,
+    val levelName: String? = null,
+    val levelWidth: Int = -1,
+    val levelHeight: Int = -1,
+    val levelTiles: IntArray? = null
+) {
     override fun toString(): String {
         return "CTX(action=$assetReadAction)"
     }
@@ -35,7 +44,7 @@ class GameAssetsInteractor {
             it.use { stream ->
                 Scanner(stream).use { scanner ->
 
-                    var context = AssetReadContext(requirements, AssetReadAction.NONE, world = world)
+                    var context = AssetReadContext(requirements, world = world, AssetReadAction.NONE)
 
                     while(scanner.hasNextLine()){
                         context = processLine(scanner.nextLine(), context)
@@ -49,7 +58,7 @@ class GameAssetsInteractor {
     fun loadAssetsFromFile(path: String, requirements: GameDataRequirements, world: TileBasedGameWorld) {
         klog(KlogLevel.DEBUG, "Loading assets from $path")
         File(path).useLines { lines ->
-            var context = AssetReadContext(requirements, AssetReadAction.NONE, world = world)
+            var context = AssetReadContext(requirements, world = world, AssetReadAction.NONE)
             lines.forEach { line ->
                 context = processLine(line, context)
             }
@@ -65,7 +74,13 @@ class GameAssetsInteractor {
                     //  Get the sprite index
                     val spriteIndex = line.substring(3).toInt()
 
-                    return AssetReadContext(context.requirements, AssetReadAction.SPRITE, spriteIndex, byteArrayOf(), world = context.world)
+                    return AssetReadContext(
+                        context.requirements,
+                        world = context.world,
+                        AssetReadAction.SPRITE,
+                        spriteIndex,
+                        byteArrayOf()
+                    )
                 } else if(line.startsWith("@l:")) {
                     //  Get the level name
                     val parts = line.split(":")
@@ -74,7 +89,15 @@ class GameAssetsInteractor {
                     val width = parts[2].toInt()
                     val height = parts[3].toInt()
 
-                    return AssetReadContext(context.requirements, AssetReadAction.LEVEL, levelName = levelName, levelWidth = width, levelHeight = height, world = context.world, levelTiles = intArrayOf())
+                    return AssetReadContext(
+                        context.requirements,
+                        world = context.world,
+                        AssetReadAction.LEVEL,
+                        levelName = levelName,
+                        levelWidth = width,
+                        levelHeight = height,
+                        levelTiles = intArrayOf()
+                    )
                 }
                 else {
                     klog(KlogLevel.WARN) { "Unexpected line $line" }
@@ -89,7 +112,7 @@ class GameAssetsInteractor {
                     //  Done with this sprite
                     klog(KlogLevel.DEBUG) { "Loaded sprite ${context.spriteIndex}"}
                     context.requirements.setData(context.spriteIndex, currentByteArray.toByteArray())
-                    return AssetReadContext(context.requirements, AssetReadAction.NONE, world = context.world)
+                    return AssetReadContext(context.requirements, world = context.world, AssetReadAction.NONE)
                 }
 
                 val bytes = line.split(",").mapNotNull {
@@ -100,7 +123,13 @@ class GameAssetsInteractor {
                     it.trim().toByte() }.toByteArray()
                 currentByteArray.addAll(bytes.toList())
 
-                AssetReadContext(context.requirements, AssetReadAction.SPRITE, context.spriteIndex, currentByteArray.toByteArray(), world = context.world)
+                AssetReadContext(
+                    context.requirements,
+                    world = context.world,
+                    AssetReadAction.SPRITE,
+                    context.spriteIndex,
+                    currentByteArray.toByteArray()
+                )
             }
             AssetReadAction.LEVEL -> {
                 val world = context.world!!
@@ -120,7 +149,7 @@ class GameAssetsInteractor {
                         }
                     }
 
-                    return AssetReadContext(context.requirements, AssetReadAction.NONE, world = context.world)
+                    return AssetReadContext(context.requirements, world = context.world, AssetReadAction.NONE)
                 }
 
                 val tiles = line.split(",").mapNotNull {
@@ -130,7 +159,15 @@ class GameAssetsInteractor {
                     it.trim().toInt() }.toIntArray()
                 currentLevelTiles.addAll(tiles.toList())
 
-                AssetReadContext(context.requirements, AssetReadAction.LEVEL, levelTiles = currentLevelTiles.toIntArray(), levelName = context.levelName!!, world = context.world, levelWidth = context.levelWidth, levelHeight = context.levelHeight)
+                AssetReadContext(
+                    context.requirements,
+                    world = context.world,
+                    AssetReadAction.LEVEL,
+                    levelName = context.levelName!!,
+                    levelWidth = context.levelWidth,
+                    levelHeight = context.levelHeight,
+                    levelTiles = currentLevelTiles.toIntArray()
+                )
 
             }
             else -> {
