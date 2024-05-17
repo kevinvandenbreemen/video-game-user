@@ -452,6 +452,8 @@ private fun GameToolDrawerContent(
     gameDataEditorModel: GameDataEditorViewModel
 ) {
     Column(modifier = Modifier.background(MaterialTheme.colors.background).fillMaxSize()) {
+
+        //  Sprite editor
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text("Sprite Editor", style = MaterialTheme.typography.subtitle1, modifier = Modifier.clickable {
                 coroutineScope.launch {
@@ -460,6 +462,8 @@ private fun GameToolDrawerContent(
                 }
             })
         }
+
+        //  Level editor
         Column {
             Text("Level Editor", style = MaterialTheme.typography.subtitle1)
 
