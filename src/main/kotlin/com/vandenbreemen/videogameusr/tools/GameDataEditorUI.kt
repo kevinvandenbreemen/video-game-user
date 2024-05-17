@@ -31,7 +31,6 @@ import androidx.compose.ui.window.application
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.SpriteTileGrid
 import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.ToolType
-import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ConfirmingButton
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
@@ -39,6 +38,7 @@ import com.vandenbreemen.videogameusr.tools.composables.LevelDesigner
 import com.vandenbreemen.videogameusr.tools.model.GameDataEditorModel
 import com.vandenbreemen.videogameusr.tools.viewmodel.GameDataEditorViewModel
 import com.vandenbreemen.videogameusr.tools.viewmodel.LevelEditorViewModel
+import com.vandenbreemen.videogameusr.view.common.ConfirmingButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.ceil
