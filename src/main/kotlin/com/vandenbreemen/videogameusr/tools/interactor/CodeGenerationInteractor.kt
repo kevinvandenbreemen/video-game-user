@@ -97,10 +97,13 @@ $requirementsVariableName.setData($spriteIndex, byteArrayOf(""")
      * @param  tileBasedGameWorldVariableName The name of the variable that holds the tile based game world
      * @param  levelWidth The width of each level
      * @param  levelHeight The height of each level
+     * @return  Path where everything was written to
      */
     fun generateAssetSheet(
         tileBasedGameWorld: TileBasedGameWorld,
-        requirementsVariableName: String, tileBasedGameWorldVariableName: String, levelWidth: Int, levelHeight: Int) {
+        requirementsVariableName: String, tileBasedGameWorldVariableName: String, levelWidth: Int, levelHeight: Int): String {
+
+        val path = "generated/Assets.kt"
 
         CoroutineScope(CoreDependenciesHelper.getIODispatcher()).launch {
 
@@ -120,8 +123,7 @@ $requirementsVariableName.setData($spriteIndex, byteArrayOf(""")
             //  Do the levels
             tileBasedGameWorld.getLevelNames().forEach { levelName ->
                 val levelModel = tileBasedGameWorld.getLevel(levelName)
-                codeBuilder.append("val levelModel = $tileBasedGameWorldVariableName.addLevel(\"$levelName\", $levelWidth, $levelHeight)\n")
-                codeBuilder.append("levelModel.apply {\n")
+                codeBuilder.append("$tileBasedGameWorldVariableName.addLevel(\"$levelName\", $levelWidth, $levelHeight).apply {\n")
                 for(row in 0 until levelModel.heightInTiles) {
                     codeBuilder.append("setSpritesOnRow($row, listOf(")
                     for (col in 0 until levelModel.widthInTiles) {
@@ -140,10 +142,11 @@ $requirementsVariableName.setData($spriteIndex, byteArrayOf(""")
 
             codeBuilder.append("}\n")
 
-            File("generated/Assets.kt").writeText(codeBuilder.toString())
-            klog("Wrote all assets to generated/Assets.kt")
-        }
+            File(path).writeText(codeBuilder.toString())
+            klog("Wrote all assets to $path")
 
+        }
+        return path
     }
 
 }

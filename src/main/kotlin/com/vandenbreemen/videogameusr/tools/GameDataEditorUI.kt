@@ -377,6 +377,36 @@ private fun prepareAlertDialogForErrors(viewModel: GameDataEditorViewModel) {
     }
 }
 
+@Composable
+private fun prepareAlertDialogForStatusMessages(viewModel: GameDataEditorViewModel) {
+    val status = viewModel.message.collectAsState()
+    key(status.value) {
+        status.value?.let {
+            AlertDialog(
+                onDismissRequest = {
+                    viewModel.onMessageDismissed()
+                },
+                title = { Text("Status") },
+                text = {
+                    Row {
+
+                        Text(it)
+                    }
+                       },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            viewModel.onMessageDismissed()
+                        }
+                    ) {
+                        Text("OK")
+                    }
+                }
+            )
+        }
+    }
+}
+
 fun gameEditor(requirements: GameDataRequirements,
                tileBasedGameWorld: TileBasedGameWorld,
                spriteIndex: Int, requirementsVariableName: String = "requirement") = application {
@@ -403,6 +433,7 @@ fun gameEditor(requirements: GameDataRequirements,
         VideoGameUserTheme {
 
             prepareAlertDialogForErrors(viewModel)
+            prepareAlertDialogForStatusMessages(viewModel)
 
             //  Show this inside a UI with a hamburger menu on the top left
             val scaffoldState = rememberScaffoldState( rememberDrawerState(DrawerValue.Closed) )

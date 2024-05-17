@@ -18,6 +18,9 @@ class GameDataEditorViewModel(private val gameDataEditorModel: GameDataEditorMod
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage = _errorMessage.asStateFlow()
 
+    private val _message = MutableStateFlow<String?>(null)
+    val message = _message.asStateFlow()
+
     fun getLevelNames(): List<String> {
         return gameDataEditorModel.getLevelNames()
     }
@@ -31,7 +34,8 @@ class GameDataEditorViewModel(private val gameDataEditorModel: GameDataEditorMod
     }
 
     fun dumpAssetsToFile() {
-        gameDataEditorModel.dumpAssetsToFile()
+        val path = gameDataEditorModel.dumpAssetsToFile()
+        _message.value = "Assets dumped to $path"
     }
 
     fun addLevel(levelName: String) {
@@ -49,5 +53,9 @@ class GameDataEditorViewModel(private val gameDataEditorModel: GameDataEditorMod
 
     fun onErrorDismissed() {
         _errorMessage.value = null
+    }
+
+    fun onMessageDismissed() {
+        _message.value = null
     }
 }
