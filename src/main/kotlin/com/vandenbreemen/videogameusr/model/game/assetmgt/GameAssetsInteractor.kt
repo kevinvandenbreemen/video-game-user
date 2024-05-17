@@ -108,7 +108,7 @@ class GameAssetsInteractor {
                 }
                 printWriter.print("$byte, ")
             }
-            printWriter.println()
+            printWriter.println("\n")
         }
 
         printWriter.println("@e")
