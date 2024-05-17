@@ -167,11 +167,11 @@ class GameAssetsInteractorTest {
         }
 
         val interactor = GameAssetsInteractor()
-        interactor.writeAssetsToFile("$testOutDir/testgame1.dat", gameDataRequirements, world)
+        interactor.writeAssetsToFile("$testOutDir/testgame2.dat", gameDataRequirements, world)
 
         val readInRequirements = GameDataRequirements(24, 16, 8, 8, 6400)
         val newWorld = TileBasedGameWorld(readInRequirements)
-        interactor.loadAssetsFromFile("$testOutDir/testgame1.dat", readInRequirements, newWorld)
+        interactor.loadAssetsFromFile("$testOutDir/testgame2.dat", readInRequirements, newWorld)
 
         val spriteData = readInRequirements.getSpriteData(0)
         assertArrayEquals(expectedSpriteData, spriteData)

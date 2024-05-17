@@ -166,6 +166,7 @@ class GameAssetsInteractor {
                         val tile = level.getSpriteTileAt(x, y)
                         printWriter.print("$tile, ")
                     }
+                    printWriter.println("")
                 }
                 printWriter.println("\n")
             }
