@@ -2,6 +2,7 @@ package com.vandenbreemen.videogameusr.game.vidgame4
 
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
+import com.vandenbreemen.videogameusr.model.game.assetmgt.GameAssetsInteractor
 import com.vandenbreemen.videogameusr.tools.gameEditor
 
 class VideoGame4Model {
@@ -17,6 +18,10 @@ class VideoGame4Model {
      */
     fun edit() {
         gameEditor(requirements, world, 0, "requirements")
+    }
+
+    fun load() {
+        GameAssetsInteractor().loadAssetsFromClasspath("/assets/games/game4.dat", requirements, world)
     }
 
 }

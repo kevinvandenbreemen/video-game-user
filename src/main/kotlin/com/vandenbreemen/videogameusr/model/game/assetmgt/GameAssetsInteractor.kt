@@ -51,6 +51,9 @@ class GameAssetsInteractor {
                     }
                 }
             }
+        } ?: run {
+            klog(KlogLevel.ERROR, "Could not load assets from $path")
+            throw RuntimeException("Could not load assets from $path")
         }
 
     }

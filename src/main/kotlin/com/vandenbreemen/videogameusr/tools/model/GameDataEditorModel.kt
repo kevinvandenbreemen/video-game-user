@@ -6,14 +6,21 @@ import com.vandenbreemen.com.vandenbreemen.videogameusr.model.ColorInteractor
 import com.vandenbreemen.viddisplayrast.data.ByteColorDataInteractor
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
+import com.vandenbreemen.videogameusr.model.CoreDependenciesHelper
 import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
+import com.vandenbreemen.videogameusr.model.game.assetmgt.GameAssetsInteractor
 import com.vandenbreemen.videogameusr.tools.interactor.CodeGenerationInteractor
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 class GameDataEditorModel(private val requirements: GameDataRequirements,
                           private val tileBasedGameWorld: TileBasedGameWorld,
-                          private var spriteIndex: Int, private val requirementsVariableName: String) {
+                          private var spriteIndex: Int, private val requirementsVariableName: String,
+                          private  val assetsDataFilePath: String = "generated/game.dat"
+    ) {
 
     private val codeGenerationInteractor = CodeGenerationInteractor(requirements)
+    private val gameAssetsInteractor = GameAssetsInteractor()
 
     private val runner = Runner(requirements)
     private val spriteByteArray = ByteArray(requirements.spriteWidth * requirements.spriteHeight)
@@ -218,10 +225,18 @@ class GameDataEditorModel(private val requirements: GameDataRequirements,
         refreshSprite()
     }
 
-    fun dumpAssetsToFile() {
+    fun dumpAssetsToFile(): String {
+
+        CoroutineScope(CoreDependenciesHelper.getIODispatcher()).launch {
+            gameAssetsInteractor.writeAssetsToFile(assetsDataFilePath, requirements, tileBasedGameWorld)
+        }
+
+        //  TODO    This needs to go assuming asset file format works out
         codeGenerationInteractor.generateAssetSheet(
             this.tileBasedGameWorld, this.requirementsVariableName, "gameWorld", levelWidthInTiles, levelHeightInTiles
         )
+
+        return assetsDataFilePath
     }
 
 }
