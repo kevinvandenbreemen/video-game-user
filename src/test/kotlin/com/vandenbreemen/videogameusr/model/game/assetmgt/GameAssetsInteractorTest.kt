@@ -27,6 +27,11 @@ class GameAssetsInteractorTest {
     }
 
     @Test
+    fun tearDown() {
+
+    }
+
+    @Test
     fun `should load sprites from file`() {
 
         val interactor = GameAssetsInteractor()
@@ -70,6 +75,55 @@ class GameAssetsInteractorTest {
 
         val spriteData = readInRequirements.getSpriteData(0)
         assertArrayEquals(expectedSpriteData, spriteData)
+    }
+
+    @Test
+    fun `should write level to file`() {
+        val expectedSpriteData = byteArrayOf(
+            10, 10, 0, 0, 10, 10, 11,11,
+            0, 0, 0, 0, 0, -14, 0, 0,
+            10, 10, 0, 0, 10, 10, 11,11,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            10, 10, 0, 0, 10, 10, 11,11,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            10, 10, 0, 0, 10, 10, 11,11,
+            0, 0, 0, 0, 0, 0, 0, 0,
+        )
+
+        val expectedSpriteData1 = byteArrayOf(
+            10, 10, 0, 0, 10, 10, 11,11,
+            0, 0, 0, 0, 0, -14, 0, 0,
+            10, 10, 0, 0, 10, 10, 11,11,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            10, 10, 0, 0, 10, 10, 11,11,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            10, 10, 0, 0, 10, 10, 11,11,
+            0, 0, 0, 0, 0, 0, 0, 0,
+        )
+
+        gameDataRequirements.setData(0, expectedSpriteData)
+        gameDataRequirements.setData(1, expectedSpriteData1)
+
+        //  Now set up a level with a few of the sprites
+        world.addLevel("Level 1", 100, 100).apply {
+            setSpriteTileAt(0, 0, 0)
+            setSpriteTileAt(1, 1, 1)
+            setSpriteTileAt(1, 0, 1)
+        }
+
+        val interactor = GameAssetsInteractor()
+        interactor.writeAssetsToFile("$testOutDir/testgame1.dat", gameDataRequirements, world)
+
+        val readInRequirements = GameDataRequirements(24, 16, 8, 8, 6400)
+        val newWorld = TileBasedGameWorld(readInRequirements)
+        interactor.loadAssetsFromFile("$testOutDir/testgame1.dat", readInRequirements, newWorld)
+
+        val spriteData = readInRequirements.getSpriteData(0)
+        assertArrayEquals(expectedSpriteData, spriteData)
+
+        assertEquals(1, newWorld.getLevel("Level 1").getSpriteTileAt(1, 1))
+        assertEquals(0, newWorld.getLevel("Level 1").getSpriteTileAt(0, 0))
+        assertEquals(1, newWorld.getLevel("Level 1").getSpriteTileAt(1, 0))
     }
 
 }
