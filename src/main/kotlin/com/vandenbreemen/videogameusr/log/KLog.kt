@@ -48,7 +48,7 @@ private data class Entry (
     }
 }
 
-data class KLogConfig(val level: KlogLevel)
+data class KLogConfig(val level: KlogLevel, val logImmediate: Boolean = false)
 
 private val loqQueue = Vector<Entry>()
 val logJob = CoroutineScope(dispatcher).launch {
@@ -75,6 +75,10 @@ fun klogConfig(updated: KLogConfig) {
 }
 
 private fun logOutOfBand(timestamp: Long, level: KlogLevel, message: String, throwable: Throwable? = null) {
+    if(config.logImmediate){
+        println(Entry(timestamp, level, message, throwable).toLogString())
+        return
+    }
     loqQueue.add(Entry(timestamp, level, message, throwable))
 }
 
