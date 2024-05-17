@@ -4,6 +4,8 @@ import com.vandenbreemen.com.vandenbreemen.videogameusr.log.KlogLevel
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
+import java.io.File
+import java.io.PrintWriter
 import java.util.*
 
 private enum class AssetReadAction {
@@ -42,6 +44,16 @@ class GameAssetsInteractor {
 
     }
 
+    fun loadAssetsFromFile(path: String, requirements: GameDataRequirements, world: TileBasedGameWorld) {
+        klog(KlogLevel.DEBUG, "Loading assets from $path")
+        File(path).useLines { lines ->
+            var context = AssetReadContext(requirements, AssetReadAction.NONE)
+            lines.forEach { line ->
+                context = processLine(line, context)
+            }
+        }
+    }
+
     private fun processLine(line: String, context: AssetReadContext): AssetReadContext {
         klog(KlogLevel.DEBUG) { "($context): $line"}
 
@@ -70,7 +82,7 @@ class GameAssetsInteractor {
 
                 val bytes = line.split(",").mapNotNull {
                     klog(KlogLevel.DEBUG) { "Byte: $it" }
-                    if(it.isEmpty()) {
+                    if(it.isBlank()) {
                         return@mapNotNull null
                     }
                     it.trim().toByte() }.toByteArray()
@@ -83,6 +95,23 @@ class GameAssetsInteractor {
                 context
             }
         }
+    }
+
+    fun writeAssetsToFile(pathToWriteTo: String, gameDataRequirements: GameDataRequirements, world: TileBasedGameWorld) {
+        val printWriter = PrintWriter(File(pathToWriteTo))
+        for (index in 0 until gameDataRequirements.maxBytes / (gameDataRequirements.spriteWidth * gameDataRequirements.spriteHeight)) {
+            val spriteData = gameDataRequirements.getSpriteData(index)
+            printWriter.println("@s:$index")
+            spriteData.forEachIndexed { index, byte ->
+                if(index % gameDataRequirements.spriteWidth == 0){
+                    printWriter.println()
+                }
+                printWriter.print("$byte, ")
+            }
+            printWriter.println()
+        }
+
+        printWriter.println("@e")
     }
 
 }
