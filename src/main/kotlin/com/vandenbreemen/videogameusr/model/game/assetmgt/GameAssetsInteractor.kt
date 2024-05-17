@@ -32,12 +32,14 @@ class GameAssetsInteractor {
     fun loadAssetsFromClasspath(path: String, requirements: GameDataRequirements, world: TileBasedGameWorld) {
         this::class.java.getResourceAsStream(path)?.let {
             klog(KlogLevel.DEBUG, "Loading assets from $path")
-            Scanner(it).use { scanner ->
+            it.use { stream ->
+                Scanner(stream).use { scanner ->
 
-                var context = AssetReadContext(requirements, AssetReadAction.NONE)
+                    var context = AssetReadContext(requirements, AssetReadAction.NONE)
 
-                while(scanner.hasNextLine()){
-                    context = processLine(scanner.nextLine(), context)
+                    while(scanner.hasNextLine()){
+                        context = processLine(scanner.nextLine(), context)
+                    }
                 }
             }
         }
