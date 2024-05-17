@@ -24,4 +24,8 @@ class GameDataEditorViewModel(private val gameDataEditorModel: GameDataEditorMod
     fun editSprites() {
         _toolParameters.value = ToolParameters(ToolType.SpriteEditor)
     }
+
+    fun dumpAssetsToFile() {
+        gameDataEditorModel.dumpAssetsToFile()
+    }
 }

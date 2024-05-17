@@ -36,6 +36,9 @@ class GameDataEditorModel(private val requirements: GameDataRequirements,
      */
     var paintColor: Byte = 0
 
+    private var levelWidthInTiles = 100
+    private var levelHeightInTiles = 100
+
 
     init {
 
@@ -209,6 +212,12 @@ class GameDataEditorModel(private val requirements: GameDataRequirements,
         val spriteDataAtOrigin = requirements.getSpriteData(fromIndex)
         requirements.setData(spriteIndex, spriteDataAtOrigin)
         refreshSprite()
+    }
+
+    fun dumpAssetsToFile() {
+        codeGenerationInteractor.generateAssetSheet(
+            this.tileBasedGameWorld, this.requirementsVariableName, "gameWorld", levelWidthInTiles, levelHeightInTiles
+        )
     }
 
 }
