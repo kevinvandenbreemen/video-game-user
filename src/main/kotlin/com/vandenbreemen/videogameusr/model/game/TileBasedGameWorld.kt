@@ -13,6 +13,11 @@ class TileBasedGameWorld(val requirements: GameDataRequirements) {
      * Add a level to the game
      */
     fun addLevel(name: String, widthInTiles: Int, heightInTiles: Int): LevelModel {
+
+        if(levels.containsKey(name)){
+            throw IllegalArgumentException("Level with name $name already exists")
+        }
+
         val level = LevelModel(requirements, widthInTiles, heightInTiles)
         levels[name] = level
         return level
