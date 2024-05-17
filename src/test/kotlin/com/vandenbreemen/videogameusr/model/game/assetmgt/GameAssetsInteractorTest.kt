@@ -1,12 +1,10 @@
 package com.vandenbreemen.videogameusr.model.game.assetmgt
 
-import com.vandenbreemen.com.vandenbreemen.videogameusr.log.KLogConfig
-import com.vandenbreemen.com.vandenbreemen.videogameusr.log.KlogLevel
-import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klogConfig
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
 import com.vandenbreemen.viddisplayrast.view.TextRender
 import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -22,13 +20,18 @@ class GameAssetsInteractorTest {
 
     @BeforeEach
     fun setup() {
-        klogConfig(KLogConfig(level = KlogLevel.DEBUG, logImmediate = true))
+        //  Uncomment this to get more details about what's going on
+        //klogConfig(KLogConfig(level = KlogLevel.DEBUG, logImmediate = true))
+
         File(testOutDir).mkdir()
+
     }
 
-    @Test
+    @AfterEach
     fun tearDown() {
 
+        //  Comment out to debug stuff
+        File(testOutDir).deleteRecursively()
     }
 
     @Test
