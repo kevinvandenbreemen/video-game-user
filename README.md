@@ -67,13 +67,8 @@ Anywhere in your code, as long as you have a ```requirements```, you can run the
 gameEditor(requirements, 0)
 ```
 
-The tool will allow you to edit the pixels of your sprite, providing code to encode the data for the pixels on the right hand side.
+The tool will allow you to edit the pixels of your sprites, providing code to encode the data for the pixels on the right hand side.
 
-Note that you can also specify the name of the requirements variable, for example:
-
-```
-spriteEditor(requirements, 0, "myRequirements")
-```
 
 ## Level Editor
 The tool also comes with a level editor, allowing you to define multiple levels with sprite tiles on them.  This lets you create game environments visually.
