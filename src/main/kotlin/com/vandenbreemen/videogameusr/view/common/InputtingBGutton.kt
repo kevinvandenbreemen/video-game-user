@@ -7,10 +7,14 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.Dimensions
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.VideoGameUserTheme
@@ -30,7 +34,7 @@ fun InputtingButton(label: String, instruction: String, onInput: (String)->Unit)
                 .padding(Dimensions.padding)
         ) {
             val isShowing = remember { mutableStateOf(false) }
-            val text = remember { mutableStateOf("") }
+            val focusRequester = remember { FocusRequester() }
 
             if (!isShowing.value) {
                 Button(onClick = {
@@ -43,19 +47,31 @@ fun InputtingButton(label: String, instruction: String, onInput: (String)->Unit)
                     text.value = it
                 }, label = {
                     Text(instruction)
-                })
+                }, modifier = Modifier.focusRequester(focusRequester))
+
+                // Request focus when TextField becomes visible
+                LaunchedEffect(isShowing.value) {
+                    focusRequester.requestFocus()
+                }
+
                 Spacer(modifier = Modifier.width(Dimensions.padding))
-                Button(onClick = {
+                Button(
+                    enabled = text.value.isNotBlank(),
+                    onClick = {
                     isShowing.value = false
                     onInput(text.value)
+                        text.value = ""
                 }) {
-                    Text("Enter", style = MaterialTheme.typography.caption)
+                    Text("Enter", style = MaterialTheme.typography.caption.copy(color = Color.Green))
                 }
                 Spacer(modifier = Modifier.width(Dimensions.padding))
-                Button(onClick = {
+                Button(
+                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondary),
+                    onClick = {
+                    text.value = ""
                     isShowing.value = false
                 }) {
-                    Text("Cancel", style = MaterialTheme.typography.caption)
+                    Text("Cancel", style = MaterialTheme.typography.caption.copy(color=MaterialTheme.colors.onSecondary))
                 }
             }
         }

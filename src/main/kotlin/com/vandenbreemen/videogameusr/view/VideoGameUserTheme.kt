@@ -9,6 +9,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.platform.Font
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 val robotoFontFamily = FontFamily(Font("/Roboto-Regular.ttf"))
@@ -47,14 +48,19 @@ private val DarkColorPalette = darkColors(
 private val LightColorPalette = lightColors(
     primary = Color(0xFFD3D3D3),  // Light Gray
     primaryVariant = Color(0xFFA9A9A9),  // Dark Gray
-    secondary = Color(0xFFFFFF00),  // Yellow
+    secondary = Color(0xFFAA8BC4),  // Yellow
     background = Color(0xFFF5F5F5),  // White Smoke
     surface = Color(0xFFBEBEBE),  // Gray
     onPrimary = Color.Black,
-    onSecondary = Color.Black,
+    onSecondary = Color(0xFFFBE3F2),
     onBackground = Color.Black,
     onSurface = Color.Black,
 )
+
+object Dimensions {
+    val padding = 10.dp
+    val borderPadding = 5.dp
+}
 
 @Composable
 fun VideoGameUserTheme(darkTheme: Boolean = true, content: @Composable() () -> Unit) {

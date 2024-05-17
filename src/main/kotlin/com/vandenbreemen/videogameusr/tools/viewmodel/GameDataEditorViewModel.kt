@@ -1,5 +1,6 @@
 package com.vandenbreemen.videogameusr.tools.viewmodel
 
+import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.ToolType
 import com.vandenbreemen.videogameusr.tools.model.GameDataEditorModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,5 +28,9 @@ class GameDataEditorViewModel(private val gameDataEditorModel: GameDataEditorMod
 
     fun dumpAssetsToFile() {
         gameDataEditorModel.dumpAssetsToFile()
+    }
+
+    fun addLevel(levelName: String) {
+        klog("Create level name=$levelName")
     }
 }

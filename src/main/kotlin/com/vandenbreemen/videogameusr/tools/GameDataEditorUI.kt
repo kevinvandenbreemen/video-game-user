@@ -31,6 +31,7 @@ import androidx.compose.ui.window.application
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.SpriteTileGrid
 import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.ToolType
+import com.vandenbreemen.com.vandenbreemen.videogameusr.view.Dimensions
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
@@ -39,6 +40,7 @@ import com.vandenbreemen.videogameusr.tools.model.GameDataEditorModel
 import com.vandenbreemen.videogameusr.tools.viewmodel.GameDataEditorViewModel
 import com.vandenbreemen.videogameusr.tools.viewmodel.LevelEditorViewModel
 import com.vandenbreemen.videogameusr.view.common.ConfirmingButton
+import com.vandenbreemen.videogameusr.view.common.InputtingButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.ceil
@@ -465,6 +467,22 @@ private fun GameToolDrawerContent(
             })
         }
 
+        //  Level Creator
+        Column(modifier = Modifier.border(1.dp, MaterialTheme.colors.onBackground,
+                shape = MaterialTheme.shapes.medium
+            ).padding(Dimensions.borderPadding,
+            )) {
+
+            Text("Add Level", style = MaterialTheme.typography.subtitle1)
+            InputtingButton( "Add Level", "Enter level name", onInput = {
+                coroutineScope.launch {
+                    scaffoldState.drawerState.close()
+                    gameDataEditorModel.addLevel(it)
+                }
+            })
+
+        }
+
         //  Level editor
         Column {
             Text("Level Editor", style = MaterialTheme.typography.subtitle1)
@@ -483,6 +501,16 @@ private fun GameToolDrawerContent(
                 }
             }
 
+        }
+
+        //  Code Dumper
+        Row {
+            Text("Dump Assets to File", style = MaterialTheme.typography.subtitle1.copy(color = Color.Green), modifier = Modifier.clickable {
+                coroutineScope.launch {
+                    scaffoldState.drawerState.close()
+                    gameDataEditorModel.dumpAssetsToFile()
+                }
+            })
         }
     }
 }
