@@ -476,7 +476,6 @@ private fun GameToolDrawerContent(
             Text("Add Level", style = MaterialTheme.typography.subtitle1)
             InputtingButton( "Add Level", "Enter level name", onInput = {
                 coroutineScope.launch {
-                    scaffoldState.drawerState.close()
                     gameDataEditorModel.addLevel(it)
                 }
             })
@@ -487,9 +486,11 @@ private fun GameToolDrawerContent(
         Column {
             Text("Level Editor", style = MaterialTheme.typography.subtitle1)
 
+            val availableLevelNames = gameDataEditorModel.levelNames.collectAsState()
+
             //  Buttons for each of the levels
             Column(modifier=Modifier.border(1.dp, Color.Black).padding(5.dp)) {
-                for(levelName in gameDataEditorModel.getLevelNames()) {
+                for(levelName in availableLevelNames.value) {
                     Button(onClick = {
                         coroutineScope.launch {
                             scaffoldState.drawerState.close()

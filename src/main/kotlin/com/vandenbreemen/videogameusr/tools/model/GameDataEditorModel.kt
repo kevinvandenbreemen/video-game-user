@@ -36,8 +36,8 @@ class GameDataEditorModel(private val requirements: GameDataRequirements,
      */
     var paintColor: Byte = 0
 
-    private var levelWidthInTiles = 100
-    private var levelHeightInTiles = 100
+    val levelWidthInTiles = 100
+    val levelHeightInTiles = 100
 
 
     init {
@@ -203,6 +203,10 @@ class GameDataEditorModel(private val requirements: GameDataRequirements,
 
     fun getLevelNames(): List<String> {
         return tileBasedGameWorld.getLevelNames()
+    }
+
+    fun addLevel(name: String, widthTiles: Int, heightTiles: Int) {
+        tileBasedGameWorld.addLevel(name, widthTiles, heightTiles)
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.vandenbreemen.videogameusr.tools.viewmodel
 
-import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.ToolType
 import com.vandenbreemen.videogameusr.tools.model.GameDataEditorModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,6 +12,8 @@ class GameDataEditorViewModel(private val gameDataEditorModel: GameDataEditorMod
     val _toolParameters: MutableStateFlow<ToolParameters?> = MutableStateFlow(ToolParameters(ToolType.SpriteEditor))
     val toolParameters = _toolParameters.asStateFlow()
 
+    private val _levelNames = MutableStateFlow(gameDataEditorModel.getLevelNames())
+    val levelNames = _levelNames.asStateFlow()
 
     fun getLevelNames(): List<String> {
         return gameDataEditorModel.getLevelNames()
@@ -31,6 +32,7 @@ class GameDataEditorViewModel(private val gameDataEditorModel: GameDataEditorMod
     }
 
     fun addLevel(levelName: String) {
-        klog("Create level name=$levelName")
+        gameDataEditorModel.addLevel(levelName, gameDataEditorModel.levelWidthInTiles, gameDataEditorModel.levelHeightInTiles)
+        _levelNames.value = gameDataEditorModel.getLevelNames()
     }
 }
