@@ -126,4 +126,68 @@ class GameAssetsInteractorTest {
         assertEquals(1, newWorld.getLevel("Level 1").getSpriteTileAt(1, 0))
     }
 
+    @Test
+    fun `should store multiple levels to file`() {
+        val expectedSpriteData = byteArrayOf(
+            10, 10, 0, 0, 10, 10, 11,11,
+            0, 0, 0, 0, 0, -14, 0, 0,
+            10, 10, 0, 0, 10, 10, 11,11,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            10, 10, 0, 0, 10, 10, 11,11,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            10, 10, 0, 0, 10, 10, 11,11,
+            0, 0, 0, 0, 0, 0, 0, 0,
+        )
+
+        val expectedSpriteData1 = byteArrayOf(
+            10, 10, 0, 0, 10, 10, 11,11,
+            0, 0, 0, 0, 0, -14, 0, 0,
+            10, 10, 0, 0, 10, 10, 11,11,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            10, 10, 0, 0, 10, 10, 11,11,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            10, 10, 0, 0, 10, 10, 11,11,
+            0, 0, 0, 0, 0, 0, 0, 0,
+        )
+
+        gameDataRequirements.setData(0, expectedSpriteData)
+        gameDataRequirements.setData(1, expectedSpriteData1)
+
+        //  Now set up a level with a few of the sprites
+        world.addLevel("Level 1", 100, 100).apply {
+            setSpriteTileAt(0, 0, 0)
+            setSpriteTileAt(1, 1, 1)
+            setSpriteTileAt(1, 0, 1)
+        }
+
+        world.addLevel("Level 2", 100, 120).apply {
+            setSpriteTileAt(0, 0, 1)
+            setSpriteTileAt(8, 21, 0)
+            setSpriteTileAt(2, 0, 1)
+        }
+
+        val interactor = GameAssetsInteractor()
+        interactor.writeAssetsToFile("$testOutDir/testgame1.dat", gameDataRequirements, world)
+
+        val readInRequirements = GameDataRequirements(24, 16, 8, 8, 6400)
+        val newWorld = TileBasedGameWorld(readInRequirements)
+        interactor.loadAssetsFromFile("$testOutDir/testgame1.dat", readInRequirements, newWorld)
+
+        val spriteData = readInRequirements.getSpriteData(0)
+        assertArrayEquals(expectedSpriteData, spriteData)
+
+        assertEquals(1, newWorld.getLevel("Level 1").getSpriteTileAt(1, 1))
+        assertEquals(0, newWorld.getLevel("Level 1").getSpriteTileAt(0, 0))
+        assertEquals(1, newWorld.getLevel("Level 1").getSpriteTileAt(1, 0))
+        assertEquals(-1, newWorld.getLevel("Level 1").getSpriteTileAt(19, 3))
+        assertEquals(100, newWorld.getLevel("Level 1").widthInTiles)
+        assertEquals(100, newWorld.getLevel("Level 1").heightInTiles)
+
+        assertEquals(1, newWorld.getLevel("Level 2").getSpriteTileAt(0, 0))
+        assertEquals(0, newWorld.getLevel("Level 2").getSpriteTileAt(8, 21))
+        assertEquals(1, newWorld.getLevel("Level 2").getSpriteTileAt(2, 0))
+        assertEquals(100, newWorld.getLevel("Level 2").widthInTiles)
+        assertEquals(120, newWorld.getLevel("Level 2").heightInTiles)
+    }
+
 }
