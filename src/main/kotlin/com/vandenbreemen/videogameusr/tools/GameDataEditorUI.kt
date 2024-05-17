@@ -83,7 +83,7 @@ fun SpriteEditorUI(model: GameDataEditorModel) {
         }
         Column(
             modifier = Modifier.weight(0.6f).fillMaxSize().background(
-                Color.Gray
+                MaterialTheme.colors.surface
             )
         ) {
 
@@ -137,7 +137,7 @@ private fun SpritePixelEditor(
 
 
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text("Sprite Data Editor", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold))
+        Text("Sprite Data Editor", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold, color = MaterialTheme.colors.onSurface))
         Spacer(modifier = Modifier.width(10.dp))
         Button(onClick = {
             spriteArray.value = model.mirrorHorizontal()
@@ -195,7 +195,7 @@ private fun SpritePixelEditor(
     }
 
     //  Top panel
-    Canvas(modifier = Modifier.fillMaxSize().pointerInput(Unit) {
+    Canvas(modifier = Modifier.fillMaxSize().background(Color.Black).pointerInput(Unit) {
         detectTapGestures { offset ->
             tapState.value = offset
             sizeWidthHeight.value = Pair(size.width, size.height)
@@ -384,7 +384,9 @@ fun gameEditor(requirements: GameDataRequirements,
 
                     val titleStr = "Game Editor"
 
-                    TopAppBar(title = { Text(titleStr, style = MaterialTheme.typography.subtitle1) }, navigationIcon = {
+                    TopAppBar(
+                        backgroundColor = MaterialTheme.colors.primary,
+                        title = { Text(titleStr, style = MaterialTheme.typography.subtitle1) }, navigationIcon = {
                         IconButton(onClick = {
                             coroutineScope.launch {
                                 scaffoldState.drawerState.open()

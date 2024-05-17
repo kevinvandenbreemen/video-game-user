@@ -36,9 +36,9 @@ fun SpriteTileGrid(model: GameDataEditorModel, width: Int = 100,
     val spriteHeightOnScreen = (model.spriteHeight * reqSpriteWidthToRowWidthRatio).dp
 
     Column(Modifier.padding(5.dp)) {
-        Text(title, style = MaterialTheme.typography.subtitle2)
+        Text(title, style = MaterialTheme.typography.subtitle2.copy(color = MaterialTheme.colors.onSurface))
         //  Scroll this
-        LazyColumn(modifier = Modifier.border(1.dp, Color.Black).background(Color.Gray)) {
+        LazyColumn(modifier = Modifier.border(1.dp, MaterialTheme.colors.onBackground).background(Color.Black)) {
             items((range.first..range.second step tilesPerRow).toList()) { i ->
                 Row(modifier = Modifier.width(width.dp).height(spriteHeightOnScreen).padding(0.dp)) {
                     for(j in i until i + tilesPerRow){

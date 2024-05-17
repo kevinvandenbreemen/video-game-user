@@ -33,16 +33,15 @@ val RobotoTypography = Typography(
 val VideoGameUserTypography = RobotoTypography
 
 private val DarkColorPalette = darkColors(
-    //  CABBD0
-    primary = Color(0xFFAA8BC4),
-    primaryVariant = Color(0xFFC189D0),
-    secondary = Color(0xFFCABBD0),
-    background = Color(0xFF92777F),
-    surface = Color(0xFFAF9198),
-    onPrimary = Color(0xFFFAE3D6),
-    onSecondary = Color(0xFF9E7CCA),
-    onBackground = Color(0xFFFBE2F2),
-    onSurface = Color(0xFFFAE3D6),
+    primary = Color(0xFF606060),
+    primaryVariant = Color(0xFF404040),
+    secondary = Color(0xFF808080),
+    background = Color(0xFF303030),
+    surface = Color(0xFF505050),
+    onPrimary = Color.White,
+    onSecondary = Color.White,
+    onBackground = Color.White,
+    onSurface = Color.White,
 )
 
 private val LightColorPalette = lightColors(
