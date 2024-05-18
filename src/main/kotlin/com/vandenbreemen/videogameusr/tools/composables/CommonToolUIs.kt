@@ -1,4 +1,4 @@
-package com.vandenbreemen.com.vandenbreemen.videogameusr.tools
+package com.vandenbreemen.videogameusr.tools.composables
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
