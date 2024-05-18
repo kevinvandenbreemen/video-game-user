@@ -73,14 +73,14 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
             SpriteTileGrid(model, 100,
                 title = if(isPickingSpriteToCopyFrom.value) "Select tile to Copy" else "All Tile Assets",
                 onSelectSpriteIndex = {
-                if(isPickingSpriteToCopyFrom.value) {
-                    model.copySprite(it)
-                    isPickingSpriteToCopyFrom.value = false
-                    return@SpriteTileGrid
-                }
-                model.selectSpriteIndex(it)
-                spriteIndex.value = it
-            })
+                    if(isPickingSpriteToCopyFrom.value) {
+                        model.copySprite(it)
+                        isPickingSpriteToCopyFrom.value = false
+                        return@SpriteTileGrid
+                    }
+                    model.selectSpriteIndex(it)
+                    spriteIndex.value = it
+                })
         }
         Column(
             modifier = Modifier.weight(0.6f).fillMaxSize().background(
