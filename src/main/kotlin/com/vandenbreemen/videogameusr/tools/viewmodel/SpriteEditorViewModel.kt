@@ -12,5 +12,10 @@ class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel
     private val _paintColor: MutableStateFlow<Byte> = MutableStateFlow(0)
     val paintColor = _paintColor.asStateFlow()
 
+    fun setPaintColorByte(it: Byte) {
+        gameDataEditorModel.paintColor = it
+        _paintColor.value = it
+    }
+
 
 }

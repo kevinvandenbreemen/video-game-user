@@ -91,7 +91,7 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
         ) {
 
             Column(modifier = Modifier.weight(0.6f)) {
-                SpritePixelEditor(viewModel, model, isErasing, isEyeDropping, paintColorByte, spriteArray, spriteCode, spriteIndex, isPickingSpriteToCopyFrom)
+                SpritePixelEditor(viewModel, model, isErasing, isEyeDropping, spriteArray, spriteCode, spriteIndex, isPickingSpriteToCopyFrom)
             }
 
 
@@ -130,7 +130,6 @@ private fun SpritePixelEditor(
     model: GameDataEditorModel,
     isErasing: MutableState<Boolean>,
     isEyeDropping: MutableState<Boolean>,
-    paintColorByte: MutableState<Byte>,
     spriteArray: MutableState<ByteArray>,
     spriteCode: MutableState<String>,
     spriteIndex: MutableState<Int>,
@@ -194,7 +193,7 @@ private fun SpritePixelEditor(
             model.setPixel(x, y, 0)
         } else if (isEyeDropping.value) {
             model.getPixel(x, y)?.let {
-                paintColorByte.value = it
+                viewModel.setPaintColorByte(it)
                 isEyeDropping.value = false
             }
         } else {
