@@ -39,6 +39,7 @@ import com.vandenbreemen.videogameusr.tools.composables.LevelDesigner
 import com.vandenbreemen.videogameusr.tools.model.GameDataEditorModel
 import com.vandenbreemen.videogameusr.tools.viewmodel.GameDataEditorViewModel
 import com.vandenbreemen.videogameusr.tools.viewmodel.LevelEditorViewModel
+import com.vandenbreemen.videogameusr.tools.viewmodel.SpriteEditorViewModel
 import com.vandenbreemen.videogameusr.view.common.ConfirmingButton
 import com.vandenbreemen.videogameusr.view.common.InputtingButton
 import kotlinx.coroutines.CoroutineScope
@@ -59,7 +60,7 @@ import kotlin.math.ceil
  * @param model Model for the sprite editor
  */
 @Composable
-fun SpriteEditorUI(model: GameDataEditorModel) {
+fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel) {
 
     val spriteArray = remember { mutableStateOf(model.getSpriteByteArray()) }
     val paintColorByte = remember { mutableStateOf(model.paintColor) }
@@ -90,7 +91,7 @@ fun SpriteEditorUI(model: GameDataEditorModel) {
         ) {
 
             Column(modifier = Modifier.weight(0.6f)) {
-                SpritePixelEditor(model, isErasing, isEyeDropping, paintColorByte, spriteArray, spriteCode, spriteIndex, isPickingSpriteToCopyFrom)
+                SpritePixelEditor(viewModel, model, isErasing, isEyeDropping, paintColorByte, spriteArray, spriteCode, spriteIndex, isPickingSpriteToCopyFrom)
             }
 
 
@@ -125,6 +126,7 @@ fun SpriteEditorUI(model: GameDataEditorModel) {
 
 @Composable
 private fun SpritePixelEditor(
+    viewModel: SpriteEditorViewModel,
     model: GameDataEditorModel,
     isErasing: MutableState<Boolean>,
     isEyeDropping: MutableState<Boolean>,
@@ -483,7 +485,7 @@ fun gameEditor(requirements: GameDataRequirements,
 
                             when (tool.toolType) {
                                 ToolType.SpriteEditor -> {
-                                    SpriteEditorUI(model)
+                                    SpriteEditorUI(model, SpriteEditorViewModel(model))
                                 }
 
                                 ToolType.LevelEditor -> {
