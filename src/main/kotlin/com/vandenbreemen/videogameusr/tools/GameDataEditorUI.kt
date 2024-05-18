@@ -140,19 +140,26 @@ private fun SpritePixelEditor(
 
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text("Sprite Data Editor", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold, color = MaterialTheme.colors.onSurface))
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.width(Dimensions.padding))
         Button(onClick = {
             spriteArray.value = model.mirrorHorizontal()
             spriteCode.value = model.generateSpriteSourceCode()
         }) {
             Text("Flip Horiz", style = MaterialTheme.typography.button)
         }
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.width(Dimensions.padding))
+        Button(onClick = {
+            spriteArray.value = model.mirrorVertical()
+            spriteCode.value = model.generateSpriteSourceCode()
+        }) {
+            Text("Flip Vert", style = MaterialTheme.typography.button)
+        }
+        Spacer(modifier = Modifier.width(Dimensions.padding))
         ConfirmingButton("Clear Sprite", "This will erase all your work", {
             spriteArray.value = model.clearSprite()
             spriteCode.value = model.generateSpriteSourceCode()
         }, {})
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.width(Dimensions.padding))
         ConfirmingButton("Copy to Current", "This will overwrite the current sprite", {
             isPickingSpriteToCopyFrom.value = true
         }, {})

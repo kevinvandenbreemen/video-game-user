@@ -239,4 +239,23 @@ class GameDataEditorModel(private val requirements: GameDataRequirements,
         return assetsDataFilePath
     }
 
+    fun mirrorVertical(): ByteArray {
+        val mirrored = ByteArray(spriteByteArray.size)
+        for(y in 0 until spriteHeight){
+            for(x in 0 until spriteWidth){
+                mirrored[y * spriteWidth + x] = spriteByteArray[(spriteHeight - y - 1) * spriteWidth + x]
+            }
+        }
+
+        //  Update the bytes in here
+        this.spriteByteArray.forEachIndexed { index, byte ->
+            this.spriteByteArray[index] = mirrored[index]
+        }
+
+        requirements.setData(spriteIndex, spriteByteArray.clone())
+        refreshSprite()
+
+        return this.spriteByteArray
+    }
+
 }
