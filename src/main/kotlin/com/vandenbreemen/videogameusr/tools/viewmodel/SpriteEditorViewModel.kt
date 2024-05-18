@@ -15,6 +15,9 @@ class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel
     private val _isErasing: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isErasing = _isErasing.asStateFlow()
 
+    private val _isEyeDropping: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val isEyeDropping = _isEyeDropping.asStateFlow()
+
     fun setPaintColorByte(it: Byte) {
         gameDataEditorModel.paintColor = it
         _paintColor.value = it
@@ -28,5 +31,12 @@ class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel
         _isErasing.value = isErasing
     }
 
+    fun setEyeDropping(isEyeDropping: Boolean) {
+        _isEyeDropping.value = isEyeDropping
+    }
+
+    fun toggleEyeDropping() {
+        _isEyeDropping.value = !_isEyeDropping.value
+    }
 
 }
