@@ -1,5 +1,6 @@
 package com.vandenbreemen.videogameusr.tools.viewmodel
 
+import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.videogameusr.tools.model.GameDataEditorModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -74,6 +75,22 @@ class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel
         gameDataEditorModel.setPixel(x, y, color)
         _spriteArray.value = gameDataEditorModel.getSpriteByteArray()
         _spriteCode.value = gameDataEditorModel.generateSpriteSourceCode()
+    }
+
+    fun tapPixel(x: Int, y: Int) {
+        klog("vm Tapping pixel at $x, $y (paintColor=${_paintColor.value})")
+        if(_isErasing.value) {
+            setPixel(x, y, 0)
+        }
+        else if(_isEyeDropping.value) {
+            gameDataEditorModel.getPixel(x, y)?.let {
+                setPaintColorByte(it)
+            }
+            setEyeDropping(false)
+        }
+        else {
+            setPixel(x, y, _paintColor.value)
+        }
     }
 
 }

@@ -61,9 +61,6 @@ import kotlin.math.ceil
  */
 @Composable
 fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel) {
-
-    val spriteArray = remember { mutableStateOf(model.getSpriteByteArray()) }
-    val paintColorByte = remember { mutableStateOf(model.paintColor) }
     val spriteCode = remember { mutableStateOf(model.generateSpriteSourceCode()) }
     val spriteIndex = viewModel.spriteIndex.collectAsState()
     val isPickingSpriteToCopyFrom = remember { mutableStateOf(false) }
@@ -102,7 +99,7 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
             
             Column(modifier = Modifier.weight(0.4f)) {
                 Text("Color Picker", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold))
-                ColorPickerUI(viewModel, paintColorByte, model)
+                ColorPickerUI(viewModel, model)
             }
         }
         Column(modifier = Modifier.weight(0.3f).fillMaxSize().background(Color.Black)) {
@@ -131,8 +128,6 @@ private fun SpritePixelEditor(
 ) {
     val sizeWidthHeight = remember { mutableStateOf(Pair(0, 0)) }
     val tapState = remember { mutableStateOf(Offset.Zero) }
-    val isErasing = viewModel.isErasing.collectAsState()
-    val isEyeDropping = viewModel.isEyeDropping.collectAsState()
     val spriteArray = viewModel.spriteArray.collectAsState()
 
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -175,18 +170,13 @@ private fun SpritePixelEditor(
         val x = (tapState.value.x / pixelWidthInCanvas).toInt()
         val y = (tapState.value.y / pixelHeightInCanvas).toInt()
 
-        if (isErasing.value) {
-            model.setPixel(x, y, 0)
-        } else if (isEyeDropping.value) {
-            model.getPixel(x, y)?.let {
-                viewModel.setPaintColorByte(it)
-                viewModel.setEyeDropping(false)
-            }
-        } else {
-            model.setPixel(x, y, model.paintColor)
-        }
+        viewModel.tapPixel(x, y)
 
         spriteCode.value = model.generateSpriteSourceCode()
+    }
+
+    key(spriteArray.value) {
+        klog("UI - Sprite array changed to ${spriteArray.value.toTypedArray().toList().toString()}")
     }
 
     //  Top panel
@@ -226,16 +216,12 @@ private fun SpritePixelEditor(
 @Composable
 private fun ColorPickerUI(
     spriteEditorViewModel: SpriteEditorViewModel,
-    paintColorByte: MutableState<Byte>,
     model: GameDataEditorModel
 ) {
 
     val isErasing = spriteEditorViewModel.isErasing.collectAsState()
     val isEyeDropping = spriteEditorViewModel.isEyeDropping.collectAsState()
-
-    LaunchedEffect(paintColorByte.value) {  //  Force a redraw if the user picks a color
-        model.paintColor = paintColorByte.value
-    }
+    val paintColorByte = spriteEditorViewModel.paintColor.collectAsState()
 
     val numColorChannelSteps = 4
 
@@ -250,7 +236,7 @@ private fun ColorPickerUI(
 
 
             Button(onClick = {
-                paintColorByte.value = 0
+                spriteEditorViewModel.setPaintColorByte(0)
                 spriteEditorViewModel.setErasing(false)
             }, modifier = Modifier.width(70.dp).height(45.dp).padding(5.dp)) {
                 Text("Reset Color",  style = MaterialTheme.typography.button)
@@ -285,7 +271,7 @@ private fun ColorPickerUI(
                     Button(
                         colors = ButtonDefaults.buttonColors(backgroundColor = color, contentColor = Color.White),
                         onClick = {
-                            paintColorByte.value = model.setBrightness(paintColorByte.value, i)
+                            spriteEditorViewModel.setPaintColorByte(model.setBrightness(paintColorByte.value, i))
                             spriteEditorViewModel.setErasing(false)
                         }, modifier = Modifier.fillMaxWidth().background(color)
                     ) {
@@ -302,7 +288,7 @@ private fun ColorPickerUI(
                     Button(
                         colors = ButtonDefaults.buttonColors(backgroundColor = color, contentColor = Color.White),
                         onClick = {
-                            paintColorByte.value = model.setRed(paintColorByte.value, i)
+                            spriteEditorViewModel.setPaintColorByte(model.setRed(paintColorByte.value, i))
                             spriteEditorViewModel.setErasing(false)
                         }, modifier = Modifier.fillMaxWidth().background(color)
                     ) {
@@ -318,7 +304,7 @@ private fun ColorPickerUI(
                     Button(
                         colors = ButtonDefaults.buttonColors(backgroundColor = color, contentColor = Color.White),
                         onClick = {
-                            paintColorByte.value = model.setGreen(paintColorByte.value, i)
+                            spriteEditorViewModel.setPaintColorByte(model.setGreen(paintColorByte.value, i))
                             spriteEditorViewModel.setErasing(false)
                         }, modifier = Modifier.fillMaxWidth().background(color)
                     ) {
@@ -334,7 +320,7 @@ private fun ColorPickerUI(
                     Button(
                         colors = ButtonDefaults.buttonColors(backgroundColor = color, contentColor = Color.White),
                         onClick = {
-                            paintColorByte.value = model.setBlue(paintColorByte.value, i)
+                            spriteEditorViewModel.setPaintColorByte(model.setBlue(paintColorByte.value, i))
                             spriteEditorViewModel.setErasing(false)
                         }, modifier = Modifier.fillMaxWidth().background(color)
                     ) {
