@@ -65,7 +65,7 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
     val spriteArray = remember { mutableStateOf(model.getSpriteByteArray()) }
     val paintColorByte = remember { mutableStateOf(model.paintColor) }
     val spriteCode = remember { mutableStateOf(model.generateSpriteSourceCode()) }
-    val spriteIndex = remember { mutableStateOf(model.currentSpriteIndex) }
+    val spriteIndex = viewModel.spriteIndex.collectAsState()
     val isPickingSpriteToCopyFrom = remember { mutableStateOf(false) }
 
     Row(modifier = Modifier.fillMaxSize()) {
@@ -79,7 +79,7 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
                         return@SpriteTileGrid
                     }
                     model.selectSpriteIndex(it)
-                    spriteIndex.value = it
+                    viewModel.setSpriteIndex(it)
                 })
         }
         Column(
@@ -89,7 +89,7 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
         ) {
 
             Column(modifier = Modifier.weight(0.6f)) {
-                SpritePixelEditor(viewModel, model, spriteArray, spriteCode, spriteIndex, isPickingSpriteToCopyFrom)
+                SpritePixelEditor(viewModel, model, spriteCode, isPickingSpriteToCopyFrom)
             }
 
 
@@ -126,48 +126,37 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
 private fun SpritePixelEditor(
     viewModel: SpriteEditorViewModel,
     model: GameDataEditorModel,
-    spriteArray: MutableState<ByteArray>,
     spriteCode: MutableState<String>,
-    spriteIndex: MutableState<Int>,
     isPickingSpriteToCopyFrom: MutableState<Boolean>
 ) {
     val sizeWidthHeight = remember { mutableStateOf(Pair(0, 0)) }
     val tapState = remember { mutableStateOf(Offset.Zero) }
     val isErasing = viewModel.isErasing.collectAsState()
     val isEyeDropping = viewModel.isEyeDropping.collectAsState()
+    val spriteArray = viewModel.spriteArray.collectAsState()
 
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text("Sprite Data Editor", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold, color = MaterialTheme.colors.onSurface))
         Spacer(modifier = Modifier.width(Dimensions.padding))
         Button(onClick = {
-            spriteArray.value = model.mirrorHorizontal()
-            spriteCode.value = model.generateSpriteSourceCode()
+            viewModel.mirrorHorizontal()
         }) {
             Text("Flip Horiz", style = MaterialTheme.typography.button)
         }
         Spacer(modifier = Modifier.width(Dimensions.padding))
         Button(onClick = {
-            spriteArray.value = model.mirrorVertical()
-            spriteCode.value = model.generateSpriteSourceCode()
+            viewModel.mirrorVertical()
         }) {
             Text("Flip Vert", style = MaterialTheme.typography.button)
         }
         Spacer(modifier = Modifier.width(Dimensions.padding))
         ConfirmingButton("Clear Sprite", "This will erase all your work", {
-            spriteArray.value = model.clearSprite()
-            spriteCode.value = model.generateSpriteSourceCode()
+            viewModel.clearSprite()
         }, {})
         Spacer(modifier = Modifier.width(Dimensions.padding))
         ConfirmingButton("Copy to Current", "This will overwrite the current sprite", {
             isPickingSpriteToCopyFrom.value = true
         }, {})
-    }
-
-    //  Handle picking a different sprite to edit here!
-    LaunchedEffect(spriteIndex.value) {
-        model.selectSpriteIndex(spriteIndex.value)
-        spriteArray.value = model.getSpriteByteArray()
-        spriteCode.value = model.generateSpriteSourceCode()
     }
 
     //  Handle updates to the sprite here
@@ -197,7 +186,6 @@ private fun SpritePixelEditor(
             model.setPixel(x, y, model.paintColor)
         }
 
-        spriteArray.value = model.getSpriteByteArray()
         spriteCode.value = model.generateSpriteSourceCode()
     }
 

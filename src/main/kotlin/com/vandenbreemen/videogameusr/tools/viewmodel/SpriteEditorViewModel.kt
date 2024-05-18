@@ -18,6 +18,12 @@ class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel
     private val _isEyeDropping: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isEyeDropping = _isEyeDropping.asStateFlow()
 
+    private val _spriteIndex: MutableStateFlow<Int> = MutableStateFlow(0)
+    val spriteIndex = _spriteIndex.asStateFlow()
+
+    private val _spriteCode: MutableStateFlow<String> = MutableStateFlow("")
+    val spriteCode = _spriteCode.asStateFlow()
+
     fun setPaintColorByte(it: Byte) {
         gameDataEditorModel.paintColor = it
         _paintColor.value = it
@@ -37,6 +43,37 @@ class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel
 
     fun toggleEyeDropping() {
         _isEyeDropping.value = !_isEyeDropping.value
+    }
+
+    fun setSpriteIndex(index: Int) {
+        gameDataEditorModel.selectSpriteIndex(index)
+        _spriteIndex.value = index
+        _spriteArray.value = gameDataEditorModel.getSpriteByteArray()
+        _spriteCode.value = gameDataEditorModel.generateSpriteSourceCode()
+    }
+
+    fun mirrorHorizontal() {
+        gameDataEditorModel.mirrorHorizontal()
+        _spriteArray.value = gameDataEditorModel.getSpriteByteArray()
+        _spriteCode.value = gameDataEditorModel.generateSpriteSourceCode()
+    }
+
+    fun mirrorVertical() {
+        gameDataEditorModel.mirrorVertical()
+        _spriteArray.value = gameDataEditorModel.getSpriteByteArray()
+        _spriteCode.value = gameDataEditorModel.generateSpriteSourceCode()
+    }
+
+    fun clearSprite() {
+        gameDataEditorModel.clearSprite()
+        _spriteArray.value = gameDataEditorModel.getSpriteByteArray()
+        _spriteCode.value = gameDataEditorModel.generateSpriteSourceCode()
+    }
+
+    fun setPixel(x: Int, y: Int, color: Byte) {
+        gameDataEditorModel.setPixel(x, y, color)
+        _spriteArray.value = gameDataEditorModel.getSpriteByteArray()
+        _spriteCode.value = gameDataEditorModel.generateSpriteSourceCode()
     }
 
 }
