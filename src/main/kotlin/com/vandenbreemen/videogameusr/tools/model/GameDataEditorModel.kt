@@ -258,4 +258,12 @@ class GameDataEditorModel(private val requirements: GameDataRequirements,
         return this.spriteByteArray
     }
 
+    fun fill(value: Byte) {
+        spriteByteArray.forEachIndexed { index, byte ->
+            spriteByteArray[index] = value
+        }
+        requirements.setData(spriteIndex, spriteByteArray.clone())
+        refreshSprite()
+    }
+
 }

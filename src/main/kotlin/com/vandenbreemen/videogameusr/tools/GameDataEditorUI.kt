@@ -139,6 +139,13 @@ private fun SideToolPanel(
                     style = MaterialTheme.typography.button
                 )
             }
+
+            //  Fill tool
+            Button(onClick = {
+                viewModel.fill()
+            }, modifier = Modifier.padding(Dimensions.padding)) {
+                Text("Fill \uD83D\uDD74", style = MaterialTheme.typography.button)
+            }
         }
     }
 }

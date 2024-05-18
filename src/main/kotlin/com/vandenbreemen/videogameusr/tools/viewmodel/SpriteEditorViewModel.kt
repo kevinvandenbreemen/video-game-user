@@ -99,4 +99,10 @@ class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel
         _spriteCode.value = gameDataEditorModel.generateSpriteSourceCode()
     }
 
+    fun fill() {
+        gameDataEditorModel.fill(_paintColor.value)
+        _spriteArray.value = gameDataEditorModel.getSpriteByteArray()
+        _spriteCode.value = gameDataEditorModel.generateSpriteSourceCode()
+    }
+
 }
