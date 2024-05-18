@@ -61,8 +61,6 @@ import kotlin.math.ceil
  */
 @Composable
 fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel) {
-    val spriteCode = remember { mutableStateOf(model.generateSpriteSourceCode()) }
-    val spriteIndex = viewModel.spriteIndex.collectAsState()
     val isPickingSpriteToCopyFrom = remember { mutableStateOf(false) }
 
     Row(modifier = Modifier.fillMaxSize()) {
@@ -70,13 +68,13 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
             SpriteTileGrid(model, 100,
                 title = if(isPickingSpriteToCopyFrom.value) "Select tile to Copy" else "All Tile Assets",
                 onSelectSpriteIndex = {
+                    klog("UI - Selected sprite index $it")
                     if(isPickingSpriteToCopyFrom.value) {
                         klog("UI - Copying sprite")
                         viewModel.copySprite(it)
                         isPickingSpriteToCopyFrom.value = false
                         return@SpriteTileGrid
                     }
-                    model.selectSpriteIndex(it)
                     viewModel.setSpriteIndex(it)
                 })
         }
@@ -87,7 +85,7 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
         ) {
 
             Column(modifier = Modifier.weight(0.6f)) {
-                SpritePixelEditor(viewModel, model, spriteCode, isPickingSpriteToCopyFrom)
+                SpritePixelEditor(viewModel, model, isPickingSpriteToCopyFrom)
             }
 
 
@@ -104,14 +102,10 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
             }
         }
         Column(modifier = Modifier.weight(0.3f).fillMaxSize().background(Color.Black)) {
-            //  Show the sourcecode for creating the sprite
-            LaunchedEffect(spriteIndex.value) {
-                spriteCode.value = model.generateSpriteSourceCode()
-            }
             val scrollState = rememberScrollState()
             Text("Source Code", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
 
-            TextField(value = spriteCode.value, onValueChange = {  }, readOnly = true,
+            TextField(value = "Soon to be repurposed", onValueChange = {  }, readOnly = true,
                 textStyle = TextStyle(fontSize = 8.sp, color = Color.Green, fontFamily = FontFamily.Monospace),
                 modifier = Modifier.fillMaxSize().verticalScroll(scrollState))
 
@@ -124,15 +118,15 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
 private fun SpritePixelEditor(
     viewModel: SpriteEditorViewModel,
     model: GameDataEditorModel,
-    spriteCode: MutableState<String>,
     isPickingSpriteToCopyFrom: MutableState<Boolean>
 ) {
     val sizeWidthHeight = remember { mutableStateOf(Pair(0, 0)) }
     val tapState = remember { mutableStateOf(Offset.Zero) }
     val spriteArray = viewModel.spriteArray.collectAsState()
+    val spriteIndex = viewModel.spriteIndex.collectAsState()
 
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text("Sprite Data Editor", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold, color = MaterialTheme.colors.onSurface))
+        Text("Sprite Data Editor (${spriteIndex.value})", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold, color = MaterialTheme.colors.onSurface))
         Spacer(modifier = Modifier.width(Dimensions.padding))
         Button(onClick = {
             viewModel.mirrorHorizontal()
@@ -172,12 +166,6 @@ private fun SpritePixelEditor(
         val y = (tapState.value.y / pixelHeightInCanvas).toInt()
 
         viewModel.tapPixel(x, y)
-
-        spriteCode.value = model.generateSpriteSourceCode()
-    }
-
-    key(spriteArray.value) {
-        klog("UI - Sprite array changed to ${spriteArray.value.toTypedArray().toList().toString()}")
     }
 
     //  Top panel
