@@ -51,6 +51,7 @@ import kotlin.math.ceil
  * Major Components:
  * 1.  Sprite Editor Application proper [gameEditor]
  * 1.  Sprite Pixel Editor [SpritePixelEditor]
+ * 1.  Side panel with tools etc [SideToolPanel]
  * 2.  Level Editor [LevelDesigner]
  * 2.  Color Picker [ColorPickerUI]
  * 3.  Grid of other tiles [SpriteTileGrid]
@@ -107,25 +108,37 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
         Column(modifier = Modifier.weight(0.3f).fillMaxSize()) {
             Text("Tools", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
 
-            Column {
-                Row {
-                    Button(onClick = {
-                        viewModel.toggleErasing()
-                        viewModel.setEyeDropping(false)
-                    }, modifier = Modifier.padding(Dimensions.padding)) {
-                        Text(if(isErasing.value) "Eraser ✏\uFE0F" else "Eraser",  style = MaterialTheme.typography.button)
-                    }
-                    Button(onClick = {
-                        viewModel.setEyeDropping(true)
-                        viewModel.setErasing(false)
-                    }, modifier = Modifier.padding(Dimensions.padding)) {
-                        Text(if(isEyeDropping.value) "Eye Dropper 👁️" else "Eye Dropper",  style = MaterialTheme.typography.button)
-                    }
-                }
+            SideToolPanel(viewModel, isErasing, isEyeDropping)
+
+
+
+        }
+    }
+}
+
+@Composable
+private fun SideToolPanel(
+    viewModel: SpriteEditorViewModel,
+    isErasing: State<Boolean>,
+    isEyeDropping: State<Boolean>
+) {
+    Column {
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center ){
+            Button(onClick = {
+                viewModel.toggleErasing()
+                viewModel.setEyeDropping(false)
+            }, modifier = Modifier.padding(Dimensions.padding)) {
+                Text(if (isErasing.value) "Eraser ✏\uFE0F" else "Eraser", style = MaterialTheme.typography.button)
             }
-
-
-
+            Button(onClick = {
+                viewModel.setEyeDropping(true)
+                viewModel.setErasing(false)
+            }, modifier = Modifier.padding(Dimensions.padding)) {
+                Text(
+                    if (isEyeDropping.value) "Eye Dropper 👁️" else "Eye Dropper",
+                    style = MaterialTheme.typography.button
+                )
+            }
         }
     }
 }
