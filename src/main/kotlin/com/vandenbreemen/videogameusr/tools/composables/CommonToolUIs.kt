@@ -57,10 +57,10 @@ fun SpriteTileGrid(model: GameDataEditorModel, width: Int = 100,
                             //  Detect user tapping on this
 
 
-                            val width = size.width
+                            val sizeWidth = size.width
                             val height = size.height
 
-                            val pixelWidthInCanvas = ceil((width / model.spriteWidth).toDouble()).toFloat()
+                            val pixelWidthInCanvas = ceil((sizeWidth / model.spriteWidth).toDouble()).toFloat()
                             val pixelHeightInCanvas = ceil((height / model.spriteHeight).toDouble()).toFloat()
 
                             for (y in 0 until model.spriteHeight) {
