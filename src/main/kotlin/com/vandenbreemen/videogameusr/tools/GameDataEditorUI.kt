@@ -1,7 +1,10 @@
 package com.vandenbreemen.videogameusr.tools
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -17,14 +20,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
@@ -62,6 +62,8 @@ import kotlin.math.ceil
 @Composable
 fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel) {
     val isPickingSpriteToCopyFrom = remember { mutableStateOf(false) }
+
+    val isErasing = viewModel.isErasing.collectAsState()
 
     Row(modifier = Modifier.fillMaxSize()) {
         Column(Modifier.weight(0.1f)) {
@@ -101,13 +103,15 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
                 ColorPickerUI(viewModel, model)
             }
         }
-        Column(modifier = Modifier.weight(0.3f).fillMaxSize().background(Color.Black)) {
-            val scrollState = rememberScrollState()
-            Text("Source Code", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
+        Column(modifier = Modifier.weight(0.3f).fillMaxSize()) {
+            Text("Tools", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
 
-            TextField(value = "Soon to be repurposed", onValueChange = {  }, readOnly = true,
-                textStyle = TextStyle(fontSize = 8.sp, color = Color.Green, fontFamily = FontFamily.Monospace),
-                modifier = Modifier.fillMaxSize().verticalScroll(scrollState))
+            Button(onClick = {
+                viewModel.toggleErasing()
+                viewModel.setEyeDropping(false)
+            }, modifier = Modifier.width(70.dp).height(45.dp).padding(5.dp)) {
+                Text(if(isErasing.value) "Eraser ✏\uFE0F" else "Eraser",  style = MaterialTheme.typography.button)
+            }
 
         }
     }
@@ -231,12 +235,7 @@ private fun ColorPickerUI(
                 Text("Reset Color",  style = MaterialTheme.typography.button)
             }
 
-            Button(onClick = {
-                spriteEditorViewModel.toggleErasing()
-                spriteEditorViewModel.setEyeDropping(false)
-            }, modifier = Modifier.width(70.dp).height(45.dp).padding(5.dp)) {
-                Text(if(isErasing.value) "Eraser ✏\uFE0F" else "Eraser",  style = MaterialTheme.typography.button)
-            }
+
 
             //  Eyedropper button
             Button(onClick = {
