@@ -12,9 +12,20 @@ class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel
     private val _paintColor: MutableStateFlow<Byte> = MutableStateFlow(0)
     val paintColor = _paintColor.asStateFlow()
 
+    private val _isErasing: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val isErasing = _isErasing.asStateFlow()
+
     fun setPaintColorByte(it: Byte) {
         gameDataEditorModel.paintColor = it
         _paintColor.value = it
+    }
+
+    fun toggleErasing() {
+        _isErasing.value = !_isErasing.value
+    }
+
+    fun setErasing(isErasing: Boolean) {
+        _isErasing.value = isErasing
     }
 
 

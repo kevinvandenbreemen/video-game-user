@@ -91,7 +91,7 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
         ) {
 
             Column(modifier = Modifier.weight(0.6f)) {
-                SpritePixelEditor(viewModel, model, isErasing, isEyeDropping, spriteArray, spriteCode, spriteIndex, isPickingSpriteToCopyFrom)
+                SpritePixelEditor(viewModel, model, isEyeDropping, spriteArray, spriteCode, spriteIndex, isPickingSpriteToCopyFrom)
             }
 
 
@@ -104,7 +104,7 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
             
             Column(modifier = Modifier.weight(0.4f)) {
                 Text("Color Picker", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold))
-                ColorPickerUI(paintColorByte, isErasing, isEyeDropping, model)
+                ColorPickerUI(viewModel, paintColorByte, isEyeDropping, model)
             }
         }
         Column(modifier = Modifier.weight(0.3f).fillMaxSize().background(Color.Black)) {
@@ -128,7 +128,6 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
 private fun SpritePixelEditor(
     viewModel: SpriteEditorViewModel,
     model: GameDataEditorModel,
-    isErasing: MutableState<Boolean>,
     isEyeDropping: MutableState<Boolean>,
     spriteArray: MutableState<ByteArray>,
     spriteCode: MutableState<String>,
@@ -137,7 +136,7 @@ private fun SpritePixelEditor(
 ) {
     val sizeWidthHeight = remember { mutableStateOf(Pair(0, 0)) }
     val tapState = remember { mutableStateOf(Offset.Zero) }
-
+    val isErasing = viewModel.isErasing.collectAsState()
 
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text("Sprite Data Editor", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold, color = MaterialTheme.colors.onSurface))
@@ -240,11 +239,13 @@ private fun SpritePixelEditor(
 
 @Composable
 private fun ColorPickerUI(
+    spriteEditorViewModel: SpriteEditorViewModel,
     paintColorByte: MutableState<Byte>,
-    isErasing: MutableState<Boolean>,
     isEyeDropping: MutableState<Boolean>,
     model: GameDataEditorModel
 ) {
+
+    val isErasing = spriteEditorViewModel.isErasing.collectAsState()
 
     LaunchedEffect(paintColorByte.value) {  //  Force a redraw if the user picks a color
         model.paintColor = paintColorByte.value
@@ -264,13 +265,13 @@ private fun ColorPickerUI(
 
             Button(onClick = {
                 paintColorByte.value = 0
-                isErasing.value = false
+                spriteEditorViewModel.setErasing(false)
             }, modifier = Modifier.width(70.dp).height(45.dp).padding(5.dp)) {
                 Text("Reset Color",  style = MaterialTheme.typography.button)
             }
 
             Button(onClick = {
-                isErasing.value = !isErasing.value
+                spriteEditorViewModel.toggleErasing()
                 isEyeDropping.value = false
             }, modifier = Modifier.width(70.dp).height(45.dp).padding(5.dp)) {
                 Text(if(isErasing.value) "Eraser ✏\uFE0F" else "Eraser",  style = MaterialTheme.typography.button)
@@ -279,7 +280,7 @@ private fun ColorPickerUI(
             //  Eyedropper button
             Button(onClick = {
                 isEyeDropping.value = !isEyeDropping.value
-                isErasing.value = false
+                spriteEditorViewModel.setErasing(false)
             }, modifier = Modifier.width(80.dp).height(55.dp).padding(5.dp)) {
                 Text(if(isEyeDropping.value) "Eye Dropper 👁️" else "Eye Dropper",  style = MaterialTheme.typography.button)
             }
@@ -299,7 +300,7 @@ private fun ColorPickerUI(
                         colors = ButtonDefaults.buttonColors(backgroundColor = color, contentColor = Color.White),
                         onClick = {
                             paintColorByte.value = model.setBrightness(paintColorByte.value, i)
-                            isErasing.value = false
+                            spriteEditorViewModel.setErasing(false)
                         }, modifier = Modifier.fillMaxWidth().background(color)
                     ) {
                         Text("$i", style = MaterialTheme.typography.button)
@@ -316,7 +317,7 @@ private fun ColorPickerUI(
                         colors = ButtonDefaults.buttonColors(backgroundColor = color, contentColor = Color.White),
                         onClick = {
                             paintColorByte.value = model.setRed(paintColorByte.value, i)
-                            isErasing.value = false
+                            spriteEditorViewModel.setErasing(false)
                         }, modifier = Modifier.fillMaxWidth().background(color)
                     ) {
                         Text("$i", style = MaterialTheme.typography.button)
@@ -332,7 +333,7 @@ private fun ColorPickerUI(
                         colors = ButtonDefaults.buttonColors(backgroundColor = color, contentColor = Color.White),
                         onClick = {
                             paintColorByte.value = model.setGreen(paintColorByte.value, i)
-                            isErasing.value = false
+                            spriteEditorViewModel.setErasing(false)
                         }, modifier = Modifier.fillMaxWidth().background(color)
                     ) {
                         Text("$i", style =MaterialTheme.typography.button)
@@ -348,7 +349,7 @@ private fun ColorPickerUI(
                         colors = ButtonDefaults.buttonColors(backgroundColor = color, contentColor = Color.White),
                         onClick = {
                             paintColorByte.value = model.setBlue(paintColorByte.value, i)
-                            isErasing.value = false
+                            spriteEditorViewModel.setErasing(false)
                         }, modifier = Modifier.fillMaxWidth().background(color)
                     ) {
                         Text("$i", style = MaterialTheme.typography.button)
