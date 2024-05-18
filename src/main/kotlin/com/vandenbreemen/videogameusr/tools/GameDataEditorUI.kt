@@ -71,7 +71,8 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
                 title = if(isPickingSpriteToCopyFrom.value) "Select tile to Copy" else "All Tile Assets",
                 onSelectSpriteIndex = {
                     if(isPickingSpriteToCopyFrom.value) {
-                        model.copySprite(it)
+                        klog("UI - Copying sprite")
+                        viewModel.copySprite(it)
                         isPickingSpriteToCopyFrom.value = false
                         return@SpriteTileGrid
                     }
