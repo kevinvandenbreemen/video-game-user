@@ -62,6 +62,7 @@ import kotlin.math.ceil
 @Composable
 fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel) {
     val isPickingSpriteToCopyFrom = remember { mutableStateOf(false) }
+    val isEyeDropping = viewModel.isEyeDropping.collectAsState()
 
     val isErasing = viewModel.isErasing.collectAsState()
 
@@ -106,12 +107,24 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
         Column(modifier = Modifier.weight(0.3f).fillMaxSize()) {
             Text("Tools", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
 
-            Button(onClick = {
-                viewModel.toggleErasing()
-                viewModel.setEyeDropping(false)
-            }, modifier = Modifier.width(70.dp).height(45.dp).padding(5.dp)) {
-                Text(if(isErasing.value) "Eraser ✏\uFE0F" else "Eraser",  style = MaterialTheme.typography.button)
+            Column {
+                Row {
+                    Button(onClick = {
+                        viewModel.toggleErasing()
+                        viewModel.setEyeDropping(false)
+                    }, modifier = Modifier.padding(Dimensions.padding)) {
+                        Text(if(isErasing.value) "Eraser ✏\uFE0F" else "Eraser",  style = MaterialTheme.typography.button)
+                    }
+                    Button(onClick = {
+                        viewModel.setEyeDropping(true)
+                        viewModel.setErasing(false)
+                    }, modifier = Modifier.padding(Dimensions.padding)) {
+                        Text(if(isEyeDropping.value) "Eye Dropper 👁️" else "Eye Dropper",  style = MaterialTheme.typography.button)
+                    }
+                }
             }
+
+
 
         }
     }
@@ -212,8 +225,6 @@ private fun ColorPickerUI(
     model: GameDataEditorModel
 ) {
 
-    val isErasing = spriteEditorViewModel.isErasing.collectAsState()
-    val isEyeDropping = spriteEditorViewModel.isEyeDropping.collectAsState()
     val paintColorByte = spriteEditorViewModel.paintColor.collectAsState()
 
     val numColorChannelSteps = 4
@@ -233,16 +244,6 @@ private fun ColorPickerUI(
                 spriteEditorViewModel.setErasing(false)
             }, modifier = Modifier.width(70.dp).height(45.dp).padding(5.dp)) {
                 Text("Reset Color",  style = MaterialTheme.typography.button)
-            }
-
-
-
-            //  Eyedropper button
-            Button(onClick = {
-                spriteEditorViewModel.toggleEyeDropping()
-                spriteEditorViewModel.setErasing(false)
-            }, modifier = Modifier.width(80.dp).height(55.dp).padding(5.dp)) {
-                Text(if(isEyeDropping.value) "Eye Dropper 👁️" else "Eye Dropper",  style = MaterialTheme.typography.button)
             }
         }
 
