@@ -48,8 +48,7 @@ fun SpriteTileGrid(model: GameDataEditorModel, width: Int = 100,
                         val spriteArray = model.getSpriteTileGridArray(j)
                         Canvas(modifier = Modifier.size(width = spriteWidthOnScreen, height = spriteHeightOnScreen).padding(0.dp)
                             .pointerInput(Unit) {
-                                detectTapGestures { offset ->
-
+                                detectTapGestures {
                                     onSelectSpriteIndex(j)
                                 }
                             }) {
