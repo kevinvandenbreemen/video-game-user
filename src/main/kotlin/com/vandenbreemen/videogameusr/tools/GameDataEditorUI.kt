@@ -102,8 +102,7 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
 
             //  Determine the available colors -- for now 16 colors out of the 128 possible byte values evenly spaced
             
-            Column(modifier = Modifier.weight(0.4f)) {
-                Text("Color Picker", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold))
+            Column(modifier = Modifier.weight(0.35f)) {
                 ColorPickerUI(viewModel, model)
             }
         }
@@ -254,93 +253,54 @@ private fun ColorPickerUI(
 
     val paintColorByte = spriteEditorViewModel.paintColor.collectAsState()
 
-    val numColorChannelSteps = 4
+    val weightConst = (1.0f / 16f).toFloat()
 
-    Column {
-        Row(verticalAlignment = Alignment.CenterVertically){
-            Column(modifier=Modifier.border(1.dp, Color.Black).padding(5.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Selected Color", style = MaterialTheme.typography.caption)
+    Column(modifier = Modifier.fillMaxSize().padding(Dimensions.padding)) {
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(0.1f)){
+            Column(modifier=Modifier.weight(0.3f).border(1.dp, Color.Black).padding(5.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                 //  Draw a box with the selected color
                 val color = model.getComposeColor(paintColorByte.value)
-                Box(modifier = Modifier.height(20.dp).width(60.dp).background(color))
+                Box(modifier = Modifier.fillMaxSize().background(color))
             }
 
 
             Button(onClick = {
                 spriteEditorViewModel.setPaintColorByte(0)
                 spriteEditorViewModel.setErasing(false)
-            }, modifier = Modifier.width(70.dp).height(45.dp).padding(5.dp)) {
-                Text("Reset Color",  style = MaterialTheme.typography.button)
+            }, modifier = Modifier.weight(0.3f).padding(5.dp)) {
+                Text("Reset",  style = MaterialTheme.typography.caption)
             }
         }
 
-        Row {
+        Spacer(modifier = Modifier.height(Dimensions.padding))
 
-            //  First the brightness column:
-            Column(Modifier.weight(0.25f), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Brightness")
-                for (i in 0 until numColorChannelSteps) {
+        //  Show the color picker
+        Column(modifier = Modifier.weight(0.7f)) {
 
-                    //  Grayscale color to signify a brightness
-                    val colorByte = model.byteColorDataInteractor.getColorByte(i, i, i, i)
-                    val color = model.getComposeColor(colorByte)
-                    Button(
-                        colors = ButtonDefaults.buttonColors(backgroundColor = color, contentColor = Color.White),
-                        onClick = {
-                            spriteEditorViewModel.setPaintColorByte(model.setBrightness(paintColorByte.value, i))
-                            spriteEditorViewModel.setErasing(false)
-                        }, modifier = Modifier.fillMaxWidth().background(color)
-                    ) {
-                        Text("$i", style = MaterialTheme.typography.button)
-                    }
+            //  16 rows and 16 columns
+            for (i in 0 until 16) {
+                Row(modifier=Modifier.weight(weightConst)) {
+                    for (j in 0 until 16) {
+                        val colorByte = (i * 16 + j).toByte()
+                        val color = model.getComposeColor(colorByte)
 
-                }
-            }
-            Column(Modifier.weight(0.25f), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Red")
-                for (i in 0 until numColorChannelSteps) {
-                    val colorByte = model.byteColorDataInteractor.getColorByte(0, i, 0, 0)
-                    val color = model.getComposeColor(colorByte)
-                    Button(
-                        colors = ButtonDefaults.buttonColors(backgroundColor = color, contentColor = Color.White),
-                        onClick = {
-                            spriteEditorViewModel.setPaintColorByte(model.setRed(paintColorByte.value, i))
+                        //  button with the same color as the compose color
+
+                        Card(modifier=Modifier.clickable {
+                            spriteEditorViewModel.setPaintColorByte(colorByte)
                             spriteEditorViewModel.setErasing(false)
-                        }, modifier = Modifier.fillMaxWidth().background(color)
-                    ) {
-                        Text("$i", style = MaterialTheme.typography.button)
-                    }
-                }
-            }
-            Column(Modifier.weight(0.25f), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Green")
-                for (i in 0 until numColorChannelSteps) {
-                    val colorByte = model.byteColorDataInteractor.getColorByte(0, 0, i, 0)
-                    val color = model.getComposeColor(colorByte)
-                    Button(
-                        colors = ButtonDefaults.buttonColors(backgroundColor = color, contentColor = Color.White),
-                        onClick = {
-                            spriteEditorViewModel.setPaintColorByte(model.setGreen(paintColorByte.value, i))
-                            spriteEditorViewModel.setErasing(false)
-                        }, modifier = Modifier.fillMaxWidth().background(color)
-                    ) {
-                        Text("$i", style =MaterialTheme.typography.button)
-                    }
-                }
-            }
-            Column(Modifier.weight(0.25f), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Blue")
-                for (i in 0 until numColorChannelSteps) {
-                    val colorByte = model.byteColorDataInteractor.getColorByte(0, 0, 0, i)
-                    val color = model.getComposeColor(colorByte)
-                    Button(
-                        colors = ButtonDefaults.buttonColors(backgroundColor = color, contentColor = Color.White),
-                        onClick = {
-                            spriteEditorViewModel.setPaintColorByte(model.setBlue(paintColorByte.value, i))
-                            spriteEditorViewModel.setErasing(false)
-                        }, modifier = Modifier.fillMaxWidth().background(color)
-                    ) {
-                        Text("$i", style = MaterialTheme.typography.button)
+                        }.weight(weightConst).fillMaxHeight(), backgroundColor = color, elevation = 5.dp, shape = MaterialTheme.shapes.medium, contentColor = Color.Black
+                        ) {
+
+                        }
+
+//                        Button(onClick = {
+//                            spriteEditorViewModel.setPaintColorByte(colorByte)
+//                            spriteEditorViewModel.setErasing(false)
+//                        }, modifier = Modifier.weight(weightConst).background(color)) {
+//                            Text("")
+//                        }
+
                     }
                 }
             }
