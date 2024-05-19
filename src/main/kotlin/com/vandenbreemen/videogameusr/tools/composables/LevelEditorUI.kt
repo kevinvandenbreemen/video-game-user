@@ -1,14 +1,15 @@
 package com.vandenbreemen.videogameusr.tools.composables
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
@@ -45,9 +46,89 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
         Column(modifier = Modifier.weight(.88f).clip(MaterialTheme.shapes.medium).fillMaxSize()) {
             //  The level editor
             Card(modifier = Modifier.padding(Dimensions.padding).fillMaxSize(), elevation = Dimensions.elevation){
-                LevelEditorView(levelEditorViewModel)
+
+                val buttonSectionHeightWgt = 0.08f
+
+                Row {
+                    Column(modifier=Modifier.weight(buttonSectionHeightWgt).fillMaxSize()) {
+                        Spacer(modifier = Modifier.weight(0.5f))
+                        LeftButton {  }
+                        Spacer(modifier = Modifier.weight(0.5f))
+                    }
+
+                    Column(modifier=Modifier.weight(1 - (2*buttonSectionHeightWgt)).fillMaxSize()) {
+                        Row(modifier=Modifier.weight(buttonSectionHeightWgt), horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically) {
+                            Spacer(modifier = Modifier.weight(0.5f))
+                            //  Up button
+                            UpButton {  }
+                            Spacer(modifier = Modifier.weight(0.5f))
+                        }
+
+                        Row(modifier=Modifier.weight(1 - (2*buttonSectionHeightWgt)).clip(MaterialTheme.shapes.medium).fillMaxSize(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                            LevelEditorView(levelEditorViewModel)
+                        }
+
+
+                        Row(modifier=Modifier.weight(buttonSectionHeightWgt), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                            Spacer(modifier = Modifier.weight(0.5f))
+                            //  Down button
+                            DownButton {  }
+                            Spacer(modifier = Modifier.weight(0.5f))
+                        }
+                    }
+
+                    Column(modifier=Modifier.weight(buttonSectionHeightWgt).fillMaxSize()) {
+                        Spacer(modifier = Modifier.weight(0.5f))
+                        RightButton { }
+                        Spacer(modifier = Modifier.weight(0.5f))
+                    }
+                }
+
+
+
             }
         }
+    }
+}
+
+@Composable
+private fun UpButton(onPress: ()->Unit) {
+    Card(shape = CircleShape, elevation = Dimensions.elevation, modifier = Modifier.padding(Dimensions.padding)) {
+        Text("^", style = MaterialTheme.typography.h6, modifier = Modifier.padding(Dimensions.padding).clip(CircleShape).clickable {
+            onPress()
+        })
+
+    }
+}
+
+@Composable
+private fun DownButton(onPress: ()->Unit) {
+    Card(shape = CircleShape, elevation = Dimensions.elevation, modifier = Modifier.padding(Dimensions.padding)) {
+        Text("v", style = MaterialTheme.typography.h6, modifier = Modifier.padding(Dimensions.padding).clip(CircleShape).clickable {
+            onPress()
+        })
+
+    }
+}
+
+@Composable
+private fun LeftButton(onPress: ()->Unit) {
+    Card(shape = CircleShape, elevation = Dimensions.elevation, modifier = Modifier.padding(Dimensions.padding)) {
+        Text("<", style = MaterialTheme.typography.h6, modifier = Modifier.padding(Dimensions.padding).clip(CircleShape).clickable {
+            onPress()
+        })
+
+    }
+}
+
+@Composable
+private fun RightButton(onPress: ()->Unit) {
+    Card(shape = CircleShape, elevation = Dimensions.elevation, modifier = Modifier.padding(Dimensions.padding)) {
+        Text(">", style = MaterialTheme.typography.h6, modifier = Modifier.padding(Dimensions.padding).clip(CircleShape).clickable {
+            onPress()
+        })
+
     }
 }
 
