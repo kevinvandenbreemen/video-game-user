@@ -110,40 +110,33 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
 
 @Composable
 private fun UpButton(onPress: ()->Unit) {
-    Card(shape = CircleShape, elevation = Dimensions.elevation, modifier = Modifier.padding(Dimensions.padding)) {
-        Text("^", style = MaterialTheme.typography.h6, modifier = Modifier.padding(Dimensions.padding).clip(CircleShape).clickable {
-            onPress()
-        })
-
-    }
+    buildScrollCircleButton("^", onPress)
 }
 
 @Composable
 private fun DownButton(onPress: ()->Unit) {
-    Card(shape = CircleShape, elevation = Dimensions.elevation, modifier = Modifier.padding(Dimensions.padding)) {
-        Text("v", style = MaterialTheme.typography.h6, modifier = Modifier.padding(Dimensions.padding).clip(CircleShape).clickable {
-            onPress()
-        })
-
-    }
+    buildScrollCircleButton("v", onPress)
 }
 
 @Composable
 private fun LeftButton(onPress: ()->Unit) {
-    Card(shape = CircleShape, elevation = Dimensions.elevation, modifier = Modifier.padding(Dimensions.padding)) {
-        Text("<", style = MaterialTheme.typography.h6, modifier = Modifier.padding(Dimensions.padding).clip(CircleShape).clickable {
-            onPress()
-        })
-
-    }
+    buildScrollCircleButton("<", onPress)
 }
 
 @Composable
 private fun RightButton(onPress: ()->Unit) {
+    buildScrollCircleButton(">", onPress)
+}
+
+@Composable
+private fun buildScrollCircleButton(symbol: String, onPress: () -> Unit) {
     Card(shape = CircleShape, elevation = Dimensions.elevation, modifier = Modifier.padding(Dimensions.padding)) {
-        Text(">", style = MaterialTheme.typography.h6, modifier = Modifier.padding(Dimensions.padding).clip(CircleShape).clickable {
-            onPress()
-        })
+        Text(
+            symbol,
+            style = MaterialTheme.typography.h6,
+            modifier = Modifier.padding(Dimensions.padding).clip(CircleShape).clickable {
+                onPress()
+            })
     }
 }
 
