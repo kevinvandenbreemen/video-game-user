@@ -17,7 +17,9 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.vandenbreemen.com.vandenbreemen.videogameusr.view.Dimensions
 import com.vandenbreemen.videogameusr.tools.model.GameDataEditorModel
 import kotlin.math.ceil
 
@@ -39,7 +41,10 @@ fun SpriteTileGrid(model: GameDataEditorModel,
     val spriteHeightOnScreen = (model.spriteHeight * reqSpriteWidthToRowWidthRatio).dp
 
     Column(Modifier.clip(MaterialTheme.shapes.small).fillMaxSize().padding(5.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(title, style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold))
+        Text(title, style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold),
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth().padding(Dimensions.borderPadding)
+            )
         //  Scroll this
         LazyColumn(modifier = Modifier.clip(MaterialTheme.shapes.small).background(Color.Black)) {
             items((range.first..range.second step tilesPerRow).toList()) { i ->

@@ -73,19 +73,21 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
     val spriteIndex = viewModel.spriteIndex.collectAsState()
 
     Row(modifier = Modifier.fillMaxSize()) {
-        Column(Modifier.weight(0.1f)) {
-            SpriteTileGrid(model,
-                title = if(isPickingSpriteToCopyFrom.value) "Select Tile" else "Tiles",
-                onSelectSpriteIndex = {
-                    klog(KlogLevel.DEBUG, "UI - Selected sprite index $it")
-                    if(isPickingSpriteToCopyFrom.value) {
-                        klog(KlogLevel.DEBUG, "UI - Copying sprite")
-                        viewModel.copySprite(it)
-                        isPickingSpriteToCopyFrom.value = false
-                        return@SpriteTileGrid
-                    }
-                    viewModel.setSpriteIndex(it)
-                })
+        Column(Modifier.weight(0.12f)) {
+            Card(modifier = Modifier.padding(Dimensions.padding).fillMaxSize(), elevation = Dimensions.elevation) {
+                SpriteTileGrid(model,
+                    title = if (isPickingSpriteToCopyFrom.value) "Select Tile" else "Tiles",
+                    onSelectSpriteIndex = {
+                        klog(KlogLevel.DEBUG, "UI - Selected sprite index $it")
+                        if (isPickingSpriteToCopyFrom.value) {
+                            klog(KlogLevel.DEBUG, "UI - Copying sprite")
+                            viewModel.copySprite(it)
+                            isPickingSpriteToCopyFrom.value = false
+                            return@SpriteTileGrid
+                        }
+                        viewModel.setSpriteIndex(it)
+                    })
+            }
         }
         Column(
             modifier = Modifier.weight(0.6f).fillMaxSize()
@@ -123,7 +125,7 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
                 ColorPickerUI(viewModel, model)
             }
         }
-        Column(modifier = Modifier.weight(0.3f).fillMaxSize()) {
+        Column(modifier = Modifier.weight(0.28f).fillMaxSize()) {
             SideToolPanel(spriteHash.value, viewModel, isErasing, isEyeDropping, isPickingSpriteToCopyFrom)
         }
     }
