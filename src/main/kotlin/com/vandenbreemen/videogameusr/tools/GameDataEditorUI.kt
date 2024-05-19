@@ -70,6 +70,7 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
     val isEyeDropping = viewModel.isEyeDropping.collectAsState()
     val spriteHash = viewModel.spriteBytesHashString.collectAsState()
     val isErasing = viewModel.isErasing.collectAsState()
+    val spriteIndex = viewModel.spriteIndex.collectAsState()
 
     Row(modifier = Modifier.fillMaxSize()) {
         Column(Modifier.weight(0.1f)) {
@@ -91,7 +92,7 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
         ) {
 
             Card(modifier = Modifier.weight(0.6f).clip(MaterialTheme.shapes.medium).padding(Dimensions.padding), elevation = Dimensions.elevation) {
-                SpritePixelEditor(viewModel, model, )
+                SpritePixelEditor(viewModel, model, spriteIndex.value)
             }
 
 
@@ -191,6 +192,7 @@ private fun SideToolPanel(
 private fun SpritePixelEditor(
     viewModel: SpriteEditorViewModel,
     model: GameDataEditorModel,
+    spriteIndex: Int,
 ) {
     val sizeWidthHeight = remember { mutableStateOf(Pair(0, 0)) }
     val tapState = remember { mutableStateOf(Offset.Zero) }
