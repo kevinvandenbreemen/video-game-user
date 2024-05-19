@@ -19,6 +19,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -267,7 +268,7 @@ private fun ColorPickerUI(
         Spacer(modifier = Modifier.height(Dimensions.padding))
 
         //  Show the color picker
-        Column(modifier = Modifier.weight(0.7f)) {
+        Column(modifier = Modifier.weight(0.7f).background(Color.Black)) {
 
             //  16 rows and 16 columns
             for (i in 0 until 16) {
@@ -283,7 +284,13 @@ private fun ColorPickerUI(
                             spriteEditorViewModel.setErasing(false)
                         }.weight(weightConst).fillMaxHeight(), backgroundColor = color, elevation = 5.dp, shape = MaterialTheme.shapes.medium, contentColor = Color.Black
                         ) {
-                            //  Nothing needed here
+                            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+
+                                val selectedColor = if(color.luminance() > 0.5f) Color.Black else Color.White
+                                Text(if(spriteEditorViewModel.paintColor.value == colorByte) "o" else ""
+                                    , style = MaterialTheme.typography.caption.copy(fontSize = 10.sp), color = selectedColor)
+                            }
+
                         }
 
                     }
