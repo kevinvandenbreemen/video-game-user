@@ -87,13 +87,11 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
                 })
         }
         Column(
-            modifier = Modifier.weight(0.6f).fillMaxSize().background(
-                MaterialTheme.colors.surface
-            )
+            modifier = Modifier.weight(0.6f).fillMaxSize()
         ) {
 
             Card(modifier = Modifier.weight(0.6f).clip(MaterialTheme.shapes.medium).padding(Dimensions.padding), elevation = Dimensions.elevation) {
-                SpritePixelEditor(viewModel, model, isPickingSpriteToCopyFrom)
+                SpritePixelEditor(viewModel, model, )
             }
 
 
@@ -111,7 +109,7 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
         Column(modifier = Modifier.weight(0.3f).fillMaxSize()) {
             Text("Tools", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
 
-            SideToolPanel(spriteHash.value, viewModel, isErasing, isEyeDropping)
+            SideToolPanel(spriteHash.value, viewModel, isErasing, isEyeDropping, isPickingSpriteToCopyFrom)
         }
     }
 }
@@ -121,40 +119,70 @@ private fun SideToolPanel(
     spriteHash: String,
     viewModel: SpriteEditorViewModel,
     isErasing: State<Boolean>,
-    isEyeDropping: State<Boolean>
+    isEyeDropping: State<Boolean>,
+    isPickingSpriteToCopyFrom: MutableState<Boolean>
 ) {
-    Column {
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center ){
-            Button(onClick = {
-                viewModel.toggleErasing()
-                viewModel.setEyeDropping(false)
-            }, modifier = Modifier.padding(Dimensions.padding)) {
-                Text(if (isErasing.value) "Eraser ✏\uFE0F" else "Eraser", style = MaterialTheme.typography.button)
-            }
-            Button(onClick = {
-                viewModel.toggleEyeDropping()
-                viewModel.setErasing(false)
-            }, modifier = Modifier.padding(Dimensions.padding)) {
-                Text(
-                    if (isEyeDropping.value) "Eye Dropper 👁️" else "Eye Dropper",
-                    style = MaterialTheme.typography.button
-                )
+    Card(modifier = Modifier.fillMaxSize(), elevation = Dimensions.elevation) {
+        Column(modifier = Modifier.padding(Dimensions.padding)) {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                Button(onClick = {
+                    viewModel.toggleErasing()
+                    viewModel.setEyeDropping(false)
+                }, modifier = Modifier.padding(Dimensions.padding)) {
+                    Text(if (isErasing.value) "Eraser ✏\uFE0F" else "Eraser", style = MaterialTheme.typography.button)
+                }
+                Button(onClick = {
+                    viewModel.toggleEyeDropping()
+                    viewModel.setErasing(false)
+                }, modifier = Modifier.padding(Dimensions.padding)) {
+                    Text(
+                        if (isEyeDropping.value) "Eye Dropper 👁️" else "Eye Dropper",
+                        style = MaterialTheme.typography.button
+                    )
+                }
+
+                //  Fill tool
+                Button(onClick = {
+                    viewModel.fill()
+                }, modifier = Modifier.padding(Dimensions.padding)) {
+                    Text("Fill \uD83D\uDD74", style = MaterialTheme.typography.button)
+                }
             }
 
-            //  Fill tool
-            Button(onClick = {
-                viewModel.fill()
-            }, modifier = Modifier.padding(Dimensions.padding)) {
-                Text("Fill \uD83D\uDD74", style = MaterialTheme.typography.button)
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+                Button(onClick = {
+                    viewModel.mirrorHorizontal()
+                }) {
+                    Text("Flip Horiz", style = MaterialTheme.typography.button)
+                }
+                Spacer(modifier = Modifier.width(Dimensions.padding))
+                Button(onClick = {
+                    viewModel.mirrorVertical()
+                }) {
+                    Text("Flip Vert", style = MaterialTheme.typography.button)
+                }
+
             }
+
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+                ConfirmingButton("Clear Sprite", "This will erase all your work", {
+                    viewModel.clearSprite()
+                }, {})
+                Spacer(modifier = Modifier.width(Dimensions.padding))
+                ConfirmingButton("Copy to Current", "This will overwrite the current sprite", {
+                    isPickingSpriteToCopyFrom.value = true
+                }, {})
+            }
+
+            Spacer(modifier = Modifier.weight(0.9f))
+
+            klog(KlogLevel.DEBUG, "UI - Displaying sprite hash")
+            //  Create sha4 of the sprite byte array!
+            Text(
+                "Sprite Hash: $spriteHash",
+                style = MaterialTheme.typography.caption.copy(fontSize = 5.sp), modifier = Modifier.fillMaxWidth()
+            )
         }
-
-        Spacer(modifier = Modifier.weight(0.9f))
-
-        klog(KlogLevel.DEBUG, "UI - Displaying sprite hash")
-        //  Create sha4 of the sprite byte array!
-        Text("Sprite Hash: $spriteHash",
-            style = MaterialTheme.typography.caption.copy(fontSize = 5.sp), modifier = Modifier.fillMaxWidth())
     }
 }
 
@@ -163,36 +191,11 @@ private fun SideToolPanel(
 private fun SpritePixelEditor(
     viewModel: SpriteEditorViewModel,
     model: GameDataEditorModel,
-    isPickingSpriteToCopyFrom: MutableState<Boolean>
 ) {
     val sizeWidthHeight = remember { mutableStateOf(Pair(0, 0)) }
     val tapState = remember { mutableStateOf(Offset.Zero) }
     val spriteArray = viewModel.spriteArray.collectAsState()
-    val spriteIndex = viewModel.spriteIndex.collectAsState()
 
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Text("Sprite Data Editor (${spriteIndex.value})", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold, color = MaterialTheme.colors.onSurface))
-        Spacer(modifier = Modifier.width(Dimensions.padding))
-        Button(onClick = {
-            viewModel.mirrorHorizontal()
-        }) {
-            Text("Flip Horiz", style = MaterialTheme.typography.button)
-        }
-        Spacer(modifier = Modifier.width(Dimensions.padding))
-        Button(onClick = {
-            viewModel.mirrorVertical()
-        }) {
-            Text("Flip Vert", style = MaterialTheme.typography.button)
-        }
-        Spacer(modifier = Modifier.width(Dimensions.padding))
-        ConfirmingButton("Clear Sprite", "This will erase all your work", {
-            viewModel.clearSprite()
-        }, {})
-        Spacer(modifier = Modifier.width(Dimensions.padding))
-        ConfirmingButton("Copy to Current", "This will overwrite the current sprite", {
-            isPickingSpriteToCopyFrom.value = true
-        }, {})
-    }
 
     //  Handle updates to the sprite here
     LaunchedEffect(tapState.value, sizeWidthHeight.value) {
