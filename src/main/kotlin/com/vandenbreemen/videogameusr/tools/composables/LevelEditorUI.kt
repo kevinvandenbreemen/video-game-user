@@ -1,6 +1,5 @@
 package com.vandenbreemen.videogameusr.tools.composables
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
@@ -20,14 +19,6 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.IntSize
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.Dimensions
-import com.vandenbreemen.com.vandenbreemen.videogameusr.view.VideoGameUserTheme
-import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
-import com.vandenbreemen.videogameusr.model.CoreDependenciesHelper
-import com.vandenbreemen.videogameusr.model.game.LevelModel
-import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
-import com.vandenbreemen.videogameusr.tools.interactor.CodeGenerationInteractor
-import com.vandenbreemen.videogameusr.tools.model.GameDataEditorModel
-import com.vandenbreemen.videogameusr.tools.model.LevelEditorModel
 import com.vandenbreemen.videogameusr.tools.viewmodel.LevelEditorViewModel
 import kotlin.math.ceil
 
@@ -179,21 +170,4 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
 
     }
 
-}
-
-@Composable
-@Preview
-fun PreviewOfWhatYourWorkingOn() {
-
-    val requirements = GameDataRequirements(8, 8, 8, 8, 1024)
-    val levelModel = LevelModel(requirements, 1000, 100)
-    val levelEditorModel = LevelEditorModel(requirements, levelModel, GameDataEditorModel(requirements,
-        TileBasedGameWorld(requirements), 0, "requirements"),
-        CoreDependenciesHelper.getColorInteractor(), CodeGenerationInteractor(requirements), "Level 1"
-    )
-    val levelEditorViewModel = LevelEditorViewModel(levelEditorModel)
-
-    VideoGameUserTheme {
-        LevelEditorView(levelEditorViewModel)
-    }
 }
