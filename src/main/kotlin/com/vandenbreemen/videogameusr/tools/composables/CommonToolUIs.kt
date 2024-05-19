@@ -11,6 +11,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -24,18 +25,19 @@ object WhereToFindEverythingInCommonToolsUI {
 }
 
 @Composable
-fun SpriteTileGrid(model: GameDataEditorModel, width: Int = 100,
+fun SpriteTileGrid(model: GameDataEditorModel,
                    title:String = "All Tile Assets",
                    onSelectSpriteIndex: (Int)-> Unit) {
     val range = model.getSpriteTileGridRange()
     val tilesPerRow = model.tilesPerRowOnSpriteTileGrid
 
+    val width = 100
     val reqSpriteWidthToRowWidthRatio = (width / model.tilesPerRowOnSpriteTileGrid) / model.spriteWidth
 
     val spriteWidthOnScreen = (model.spriteWidth * reqSpriteWidthToRowWidthRatio).dp
     val spriteHeightOnScreen = (model.spriteHeight * reqSpriteWidthToRowWidthRatio).dp
 
-    Column(Modifier.padding(5.dp)) {
+    Column(Modifier.clip(MaterialTheme.shapes.small).fillMaxSize().padding(5.dp)) {
         Text(title, style = MaterialTheme.typography.subtitle2.copy(color = MaterialTheme.colors.onSurface))
         //  Scroll this
         LazyColumn(modifier = Modifier.border(1.dp, MaterialTheme.colors.onBackground).background(Color.Black)) {

@@ -73,7 +73,7 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
 
     Row(modifier = Modifier.fillMaxSize()) {
         Column(Modifier.weight(0.1f)) {
-            SpriteTileGrid(model, 100,
+            SpriteTileGrid(model,
                 title = if(isPickingSpriteToCopyFrom.value) "Select tile to Copy" else "All Tile Assets",
                 onSelectSpriteIndex = {
                     klog(KlogLevel.DEBUG, "UI - Selected sprite index $it")
