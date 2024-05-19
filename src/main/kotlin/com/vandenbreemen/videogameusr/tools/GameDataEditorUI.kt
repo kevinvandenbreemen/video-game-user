@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
@@ -256,50 +257,71 @@ private fun ColorPickerUI(
 
     val weightConst = (1.0f / 16f).toFloat()
 
-    Column(modifier = Modifier.fillMaxSize().padding(Dimensions.padding).background(Color.Black)) {
-        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(0.1f)){
-            Column(modifier=Modifier.weight(0.3f).border(1.dp, MaterialTheme.colors.onSurface, MaterialTheme.shapes.medium)
-                .padding(Dimensions.padding), horizontalAlignment = Alignment.CenterHorizontally) {
-                //  Draw a box with the selected color
-                val color = model.getComposeColor(paintColorByte.value)
-                Box(modifier = Modifier.fillMaxSize().background(color))
-            }
-        }
-
-        Spacer(modifier = Modifier.height(Dimensions.padding))
-
-        //  Show the color picker
-        Column(modifier = Modifier.weight(0.7f).background(Color.Black).border(1.dp, MaterialTheme.colors.onSurface,
-            MaterialTheme.shapes.medium
-            ).padding(Dimensions.padding)) {
-
-            //  16 rows and 16 columns
-            for (i in 0 until 16) {
-                Row(modifier=Modifier.weight(weightConst)) {
-                    for (j in 0 until 16) {
-                        val colorByte = (i * 16 + j).toByte()
-                        val color = model.getComposeColor(colorByte)
-
-                        //  button with the same color as the compose color
-
-                        Card(modifier=Modifier.clickable {
-                            spriteEditorViewModel.setPaintColorByte(colorByte)
-                            spriteEditorViewModel.setErasing(false)
-                        }.weight(weightConst).fillMaxHeight(), backgroundColor = color, elevation = 5.dp, shape = MaterialTheme.shapes.medium, contentColor = Color.Black
-                        ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-
-                                val selectedColor = if(color.luminance() > 0.5f) Color.Black else Color.White
-                                Text(if(spriteEditorViewModel.paintColor.value == colorByte) "o" else ""
-                                    , style = MaterialTheme.typography.caption.copy(fontSize = 10.sp), color = selectedColor)
-                            }
-
-                        }
-
-                    }
+    Card(modifier = Modifier.fillMaxSize().padding(Dimensions.padding), shape = MaterialTheme.shapes.medium,
+        elevation = Dimensions.elevation
+        ) {
+        Column(modifier = Modifier.fillMaxSize().padding(Dimensions.padding)) {
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(0.1f)) {
+                Column(
+                    modifier = Modifier.weight(0.3f)
+                        .border(1.dp, MaterialTheme.colors.onSurface, MaterialTheme.shapes.medium)
+                        .padding(Dimensions.padding), horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    //  Draw a box with the selected color
+                    val color = model.getComposeColor(paintColorByte.value)
+                    Box(modifier = Modifier.clip(MaterialTheme.shapes.medium).fillMaxSize().background(color))
                 }
             }
 
+            Spacer(modifier = Modifier.height(Dimensions.padding))
+
+            //  Show the color picker
+            Column(
+                modifier = Modifier.weight(0.7f).clip(MaterialTheme.shapes.medium).background(Color.Black).border(
+                    1.dp, MaterialTheme.colors.onSurface,
+                    MaterialTheme.shapes.medium
+                ).padding(Dimensions.padding)
+            ) {
+
+                //  16 rows and 16 columns
+                for (i in 0 until 16) {
+                    Row(modifier = Modifier.weight(weightConst)) {
+                        for (j in 0 until 16) {
+                            val colorByte = (i * 16 + j).toByte()
+                            val color = model.getComposeColor(colorByte)
+
+                            //  button with the same color as the compose color
+
+                            Card(
+                                modifier = Modifier.clickable {
+                                    spriteEditorViewModel.setPaintColorByte(colorByte)
+                                    spriteEditorViewModel.setErasing(false)
+                                }.padding(1.dp).weight(weightConst).fillMaxHeight(),
+                                backgroundColor = color,
+                                elevation = Dimensions.elevation,
+                                shape = MaterialTheme.shapes.small,
+                                contentColor = Color.Black
+                            ) {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+
+                                    val selectedColor = if (color.luminance() > 0.5f) Color.Black else Color.White
+                                    Text(
+                                        if (spriteEditorViewModel.paintColor.value == colorByte) "o" else "",
+                                        style = MaterialTheme.typography.caption.copy(fontSize = 10.sp),
+                                        color = selectedColor
+                                    )
+                                }
+
+                            }
+
+                        }
+                    }
+                }
+
+            }
         }
     }
 }
