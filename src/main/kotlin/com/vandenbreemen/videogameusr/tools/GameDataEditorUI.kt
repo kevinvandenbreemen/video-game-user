@@ -91,8 +91,24 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
             modifier = Modifier.weight(0.6f).fillMaxSize()
         ) {
 
-            Card(modifier = Modifier.weight(0.6f).clip(MaterialTheme.shapes.medium).padding(Dimensions.padding), elevation = Dimensions.elevation) {
-                SpritePixelEditor(viewModel, model, spriteIndex.value)
+            Card(Modifier.weight(0.6f).clip(MaterialTheme.shapes.medium).padding(Dimensions.padding),
+                elevation = Dimensions.elevation) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(
+                    Dimensions.padding
+                ).fillMaxSize()) {
+                    Text(
+                        "Sprite ${spriteIndex.value}",
+                        style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Card(
+                        modifier = Modifier.weight(0.6f).clip(MaterialTheme.shapes.medium).padding(Dimensions.padding),
+                        elevation = Dimensions.elevation
+                    ) {
+                        SpritePixelEditor(viewModel, model, spriteIndex.value)
+                    }
+                }
             }
 
 
