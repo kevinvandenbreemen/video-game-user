@@ -124,8 +124,6 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
             }
         }
         Column(modifier = Modifier.weight(0.3f).fillMaxSize()) {
-            Text("Tools", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
-
             SideToolPanel(spriteHash.value, viewModel, isErasing, isEyeDropping, isPickingSpriteToCopyFrom)
         }
     }
@@ -139,7 +137,7 @@ private fun SideToolPanel(
     isEyeDropping: State<Boolean>,
     isPickingSpriteToCopyFrom: MutableState<Boolean>
 ) {
-    Card(modifier = Modifier.fillMaxSize(), elevation = Dimensions.elevation) {
+    Card(modifier = Modifier.padding(Dimensions.padding).fillMaxSize(), elevation = Dimensions.elevation) {
         Column(modifier = Modifier.padding(Dimensions.padding)) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 Button(onClick = {
