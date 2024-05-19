@@ -49,6 +49,9 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
                 SpriteTileGrid(levelEditorViewModel.getSpriteEditorModel(), "Tiles", selectedSpriteIndex::value::set)
             }
         }
+
+        val scrollAmount = 50f
+
         Column(modifier = Modifier.weight(.88f).clip(MaterialTheme.shapes.medium).fillMaxSize()) {
             //  The level editor
             Card(modifier = Modifier.padding(Dimensions.padding).fillMaxSize(), elevation = Dimensions.elevation){
@@ -59,7 +62,7 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
                     Column(modifier=Modifier.weight(buttonSectionHeightWgt).fillMaxSize()) {
                         Spacer(modifier = Modifier.weight(0.5f))
                         LeftButton {
-                            coroutineScope.launch { horizontalScrollState.scrollBy(-1f) }
+                            coroutineScope.launch { horizontalScrollState.scrollBy(-scrollAmount) }
                         }
                         Spacer(modifier = Modifier.weight(0.5f))
                     }
@@ -69,7 +72,7 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
                             verticalAlignment = Alignment.CenterVertically) {
                             Spacer(modifier = Modifier.weight(0.5f))
                             //  Up button
-                            UpButton { coroutineScope.launch { verticalScrollState.scrollBy(-1f) } }
+                            UpButton { coroutineScope.launch { verticalScrollState.scrollBy(-scrollAmount) } }
                             Spacer(modifier = Modifier.weight(0.5f))
                         }
 
@@ -86,7 +89,7 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
                             Spacer(modifier = Modifier.weight(0.5f))
                             //  Down button
                             DownButton {
-                                coroutineScope.launch { verticalScrollState.scrollBy(1f) }
+                                coroutineScope.launch { verticalScrollState.scrollBy(scrollAmount) }
                             }
                             Spacer(modifier = Modifier.weight(0.5f))
                         }
@@ -95,7 +98,7 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
                     Column(modifier=Modifier.weight(buttonSectionHeightWgt).fillMaxSize()) {
                         Spacer(modifier = Modifier.weight(0.5f))
                         RightButton {
-                            coroutineScope.launch { horizontalScrollState.scrollBy(1f) }
+                            coroutineScope.launch { horizontalScrollState.scrollBy(scrollAmount) }
                         }
                         Spacer(modifier = Modifier.weight(0.5f))
                     }
