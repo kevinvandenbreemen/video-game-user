@@ -4,6 +4,7 @@ import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.videogameusr.tools.model.GameDataEditorModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.security.MessageDigest
 
 class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel) {
 
@@ -24,6 +25,13 @@ class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel
 
     private val _spriteCode: MutableStateFlow<String> = MutableStateFlow("")
     val spriteCode = _spriteCode.asStateFlow()
+
+    private val _spriteBytesHashString: MutableStateFlow<String> = MutableStateFlow("")
+
+    /**
+     * Something to help you propagate updates to unrelated UI components faster without needing to break encapsulation
+     */
+    val spriteBytesHashString = _spriteBytesHashString.asStateFlow()
 
     fun setPaintColorByte(it: Byte) {
         gameDataEditorModel.paintColor = it
@@ -53,28 +61,34 @@ class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel
         _spriteCode.value = gameDataEditorModel.generateSpriteSourceCode()
     }
 
+    private fun updateSpriteBytes(byteArray: ByteArray) {
+        _spriteArray.value = byteArray
+        _spriteCode.value = gameDataEditorModel.generateSpriteSourceCode()
+
+        //  Update the hash
+        val md = MessageDigest.getInstance("SHA-256")
+        val hashBytes = md.digest(byteArray)
+        _spriteBytesHashString.value =  hashBytes.joinToString("") { "%02x".format(it) }
+    }
+
     fun mirrorHorizontal() {
         gameDataEditorModel.mirrorHorizontal()
-        _spriteArray.value = gameDataEditorModel.getSpriteByteArray()
-        _spriteCode.value = gameDataEditorModel.generateSpriteSourceCode()
+        updateSpriteBytes(gameDataEditorModel.getSpriteByteArray())
     }
 
     fun mirrorVertical() {
         gameDataEditorModel.mirrorVertical()
-        _spriteArray.value = gameDataEditorModel.getSpriteByteArray()
-        _spriteCode.value = gameDataEditorModel.generateSpriteSourceCode()
+        updateSpriteBytes(gameDataEditorModel.getSpriteByteArray())
     }
 
     fun clearSprite() {
         gameDataEditorModel.clearSprite()
-        _spriteArray.value = gameDataEditorModel.getSpriteByteArray()
-        _spriteCode.value = gameDataEditorModel.generateSpriteSourceCode()
+        updateSpriteBytes(gameDataEditorModel.getSpriteByteArray())
     }
 
     fun setPixel(x: Int, y: Int, color: Byte) {
         gameDataEditorModel.setPixel(x, y, color)
-        _spriteArray.value = gameDataEditorModel.getSpriteByteArray()
-        _spriteCode.value = gameDataEditorModel.generateSpriteSourceCode()
+        updateSpriteBytes(gameDataEditorModel.getSpriteByteArray())
     }
 
     fun tapPixel(x: Int, y: Int) {

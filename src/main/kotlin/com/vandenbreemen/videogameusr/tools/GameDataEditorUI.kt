@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
@@ -64,7 +65,7 @@ import kotlin.math.ceil
 fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel) {
     val isPickingSpriteToCopyFrom = remember { mutableStateOf(false) }
     val isEyeDropping = viewModel.isEyeDropping.collectAsState()
-
+    val spriteHash = viewModel.spriteBytesHashString.collectAsState()
     val isErasing = viewModel.isErasing.collectAsState()
 
     Row(modifier = Modifier.fillMaxSize()) {
@@ -108,16 +109,14 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
         Column(modifier = Modifier.weight(0.3f).fillMaxSize()) {
             Text("Tools", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
 
-            SideToolPanel(viewModel, isErasing, isEyeDropping)
-
-
-
+            SideToolPanel(spriteHash.value, viewModel, isErasing, isEyeDropping)
         }
     }
 }
 
 @Composable
 private fun SideToolPanel(
+    spriteHash: String,
     viewModel: SpriteEditorViewModel,
     isErasing: State<Boolean>,
     isEyeDropping: State<Boolean>
@@ -147,6 +146,13 @@ private fun SideToolPanel(
                 Text("Fill \uD83D\uDD74", style = MaterialTheme.typography.button)
             }
         }
+
+        Spacer(modifier = Modifier.weight(0.9f))
+
+        klog("UI - Displaying sprite hash")
+        //  Create sha4 of the sprite byte array!
+        Text("Sprite Hash: $spriteHash",
+            style = MaterialTheme.typography.caption.copy(fontSize = 5.sp), modifier = Modifier.fillMaxWidth())
     }
 }
 
