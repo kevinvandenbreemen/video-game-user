@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
+import com.vandenbreemen.com.vandenbreemen.videogameusr.log.KlogLevel
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.ToolType
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.Dimensions
@@ -73,9 +74,9 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
             SpriteTileGrid(model, 100,
                 title = if(isPickingSpriteToCopyFrom.value) "Select tile to Copy" else "All Tile Assets",
                 onSelectSpriteIndex = {
-                    klog("UI - Selected sprite index $it")
+                    klog(KlogLevel.DEBUG, "UI - Selected sprite index $it")
                     if(isPickingSpriteToCopyFrom.value) {
-                        klog("UI - Copying sprite")
+                        klog(KlogLevel.DEBUG, "UI - Copying sprite")
                         viewModel.copySprite(it)
                         isPickingSpriteToCopyFrom.value = false
                         return@SpriteTileGrid
@@ -149,7 +150,7 @@ private fun SideToolPanel(
 
         Spacer(modifier = Modifier.weight(0.9f))
 
-        klog("UI - Displaying sprite hash")
+        klog(KlogLevel.DEBUG, "UI - Displaying sprite hash")
         //  Create sha4 of the sprite byte array!
         Text("Sprite Hash: $spriteHash",
             style = MaterialTheme.typography.caption.copy(fontSize = 5.sp), modifier = Modifier.fillMaxWidth())
@@ -466,7 +467,7 @@ fun gameEditor(requirements: GameDataRequirements,
                 Column(modifier = Modifier.fillMaxSize()) {
 
                     key(toolSelection.value) {
-                        klog("UI - Tool selection changed to ${toolSelection.value}")
+                        klog(KlogLevel.DEBUG, "UI - Tool selection changed to ${toolSelection.value}")
 
                         toolSelection.value?.let { tool ->
 
@@ -480,7 +481,7 @@ fun gameEditor(requirements: GameDataRequirements,
                                     val levelName =
                                         tool.levelName ?: throw IllegalStateException("No level selected")
 
-                                    klog("UI - Editing level $levelName")
+                                    klog(KlogLevel.DEBUG, "UI - Editing level $levelName")
                                     LevelDesigner(
                                         LevelEditorViewModel(
                                             model.editLevel(levelName)

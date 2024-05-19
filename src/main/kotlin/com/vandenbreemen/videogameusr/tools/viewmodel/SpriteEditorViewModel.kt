@@ -1,5 +1,6 @@
 package com.vandenbreemen.videogameusr.tools.viewmodel
 
+import com.vandenbreemen.com.vandenbreemen.videogameusr.log.KlogLevel
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.videogameusr.tools.model.GameDataEditorModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -87,7 +88,7 @@ class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel
     }
 
     fun tapPixel(x: Int, y: Int) {
-        klog("vm Tapping pixel at $x, $y (paintColor=${_paintColor.value})")
+        klog(KlogLevel.DEBUG, "vm Tapping pixel at $x, $y (paintColor=${_paintColor.value})")
         if(_isErasing.value) {
             setPixel(x, y, 0)
         }
