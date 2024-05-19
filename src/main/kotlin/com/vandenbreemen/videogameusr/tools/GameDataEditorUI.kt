@@ -262,14 +262,6 @@ private fun ColorPickerUI(
                 val color = model.getComposeColor(paintColorByte.value)
                 Box(modifier = Modifier.fillMaxSize().background(color))
             }
-
-
-            Button(onClick = {
-                spriteEditorViewModel.setPaintColorByte(0)
-                spriteEditorViewModel.setErasing(false)
-            }, modifier = Modifier.weight(0.3f).padding(5.dp)) {
-                Text("Reset",  style = MaterialTheme.typography.caption)
-            }
         }
 
         Spacer(modifier = Modifier.height(Dimensions.padding))
@@ -291,15 +283,8 @@ private fun ColorPickerUI(
                             spriteEditorViewModel.setErasing(false)
                         }.weight(weightConst).fillMaxHeight(), backgroundColor = color, elevation = 5.dp, shape = MaterialTheme.shapes.medium, contentColor = Color.Black
                         ) {
-
+                            //  Nothing needed here
                         }
-
-//                        Button(onClick = {
-//                            spriteEditorViewModel.setPaintColorByte(colorByte)
-//                            spriteEditorViewModel.setErasing(false)
-//                        }, modifier = Modifier.weight(weightConst).background(color)) {
-//                            Text("")
-//                        }
 
                     }
                 }
