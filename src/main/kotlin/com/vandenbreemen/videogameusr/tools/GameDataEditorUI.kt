@@ -256,9 +256,10 @@ private fun ColorPickerUI(
 
     val weightConst = (1.0f / 16f).toFloat()
 
-    Column(modifier = Modifier.fillMaxSize().padding(Dimensions.padding)) {
+    Column(modifier = Modifier.fillMaxSize().padding(Dimensions.padding).background(Color.Black)) {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(0.1f)){
-            Column(modifier=Modifier.weight(0.3f).border(1.dp, Color.Black).padding(5.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(modifier=Modifier.weight(0.3f).border(1.dp, MaterialTheme.colors.onSurface, MaterialTheme.shapes.medium)
+                .padding(Dimensions.padding), horizontalAlignment = Alignment.CenterHorizontally) {
                 //  Draw a box with the selected color
                 val color = model.getComposeColor(paintColorByte.value)
                 Box(modifier = Modifier.fillMaxSize().background(color))
@@ -268,7 +269,9 @@ private fun ColorPickerUI(
         Spacer(modifier = Modifier.height(Dimensions.padding))
 
         //  Show the color picker
-        Column(modifier = Modifier.weight(0.7f).background(Color.Black)) {
+        Column(modifier = Modifier.weight(0.7f).background(Color.Black).border(1.dp, MaterialTheme.colors.onSurface,
+            MaterialTheme.shapes.medium
+            ).padding(Dimensions.padding)) {
 
             //  16 rows and 16 columns
             for (i in 0 until 16) {
