@@ -23,9 +23,6 @@ class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel
     private val _spriteIndex: MutableStateFlow<Int> = MutableStateFlow(0)
     val spriteIndex = _spriteIndex.asStateFlow()
 
-    private val _spriteCode: MutableStateFlow<String> = MutableStateFlow("")
-    val spriteCode = _spriteCode.asStateFlow()
-
     private val _spriteBytesHashString: MutableStateFlow<String> = MutableStateFlow("")
 
     /**
@@ -58,12 +55,10 @@ class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel
         gameDataEditorModel.selectSpriteIndex(index)
         _spriteIndex.value = index
         _spriteArray.value = gameDataEditorModel.getSpriteByteArray()
-        _spriteCode.value = gameDataEditorModel.generateSpriteSourceCode()
     }
 
     private fun updateSpriteBytes(byteArray: ByteArray) {
         _spriteArray.value = byteArray
-        _spriteCode.value = gameDataEditorModel.generateSpriteSourceCode()
 
         //  Update the hash
         val md = MessageDigest.getInstance("SHA-256")
