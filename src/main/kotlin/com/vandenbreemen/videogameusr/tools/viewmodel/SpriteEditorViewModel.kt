@@ -109,14 +109,12 @@ class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel
 
     fun copySprite(from: Int) {
         gameDataEditorModel.copySprite(from)
-        _spriteArray.value = gameDataEditorModel.getSpriteByteArray()
-        _spriteCode.value = gameDataEditorModel.generateSpriteSourceCode()
+        updateSpriteBytes(gameDataEditorModel.getSpriteByteArray())
     }
 
     fun fill() {
         gameDataEditorModel.fill(_paintColor.value)
-        _spriteArray.value = gameDataEditorModel.getSpriteByteArray()
-        _spriteCode.value = gameDataEditorModel.generateSpriteSourceCode()
+        updateSpriteBytes(gameDataEditorModel.getSpriteByteArray())
     }
 
 }
