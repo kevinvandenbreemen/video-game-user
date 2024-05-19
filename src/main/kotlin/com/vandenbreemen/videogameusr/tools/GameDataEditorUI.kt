@@ -130,7 +130,7 @@ private fun SideToolPanel(
                 Text(if (isErasing.value) "Eraser ✏\uFE0F" else "Eraser", style = MaterialTheme.typography.button)
             }
             Button(onClick = {
-                viewModel.setEyeDropping(true)
+                viewModel.toggleEyeDropping()
                 viewModel.setErasing(false)
             }, modifier = Modifier.padding(Dimensions.padding)) {
                 Text(
