@@ -60,6 +60,7 @@ private val LightColorPalette = lightColors(
 object Dimensions {
     val padding = 10.dp
     val borderPadding = 5.dp
+    val elevation = 5.dp
 }
 
 @Composable
