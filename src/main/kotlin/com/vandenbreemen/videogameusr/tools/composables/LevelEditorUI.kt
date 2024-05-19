@@ -1,8 +1,8 @@
 package com.vandenbreemen.videogameusr.tools.composables
 
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
@@ -18,9 +18,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.Dimensions
 import com.vandenbreemen.videogameusr.tools.viewmodel.LevelEditorViewModel
+import kotlinx.coroutines.launch
 import kotlin.math.ceil
 
 /**
@@ -31,6 +33,10 @@ import kotlin.math.ceil
 @Composable
 fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
     Row(modifier = Modifier.fillMaxSize()) {
+
+        val verticalScrollState = rememberScrollState()
+        val horizontalScrollState = rememberScrollState()
+        val coroutineScope = rememberCoroutineScope()
 
         val selectedSpriteIndex = remember { mutableStateOf( levelEditorViewModel.currentSelectedSpriteIndex ) }
         LaunchedEffect(selectedSpriteIndex.value) {
@@ -52,7 +58,9 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
                 Row {
                     Column(modifier=Modifier.weight(buttonSectionHeightWgt).fillMaxSize()) {
                         Spacer(modifier = Modifier.weight(0.5f))
-                        LeftButton {  }
+                        LeftButton {
+                            coroutineScope.launch { horizontalScrollState.scrollBy(-1f) }
+                        }
                         Spacer(modifier = Modifier.weight(0.5f))
                     }
 
@@ -61,26 +69,34 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
                             verticalAlignment = Alignment.CenterVertically) {
                             Spacer(modifier = Modifier.weight(0.5f))
                             //  Up button
-                            UpButton {  }
+                            UpButton { coroutineScope.launch { verticalScrollState.scrollBy(-1f) } }
                             Spacer(modifier = Modifier.weight(0.5f))
                         }
 
                         Row(modifier=Modifier.weight(1 - (2*buttonSectionHeightWgt)).clip(MaterialTheme.shapes.medium).fillMaxSize(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
-                            LevelEditorView(levelEditorViewModel)
+
+                            //  Put this inside a viewport
+                            Box(modifier = Modifier.fillMaxWidth().fillMaxHeight().verticalScroll(verticalScrollState).horizontalScroll(horizontalScrollState)) {
+                                LevelEditorView(levelEditorViewModel)
+                            }
                         }
 
 
                         Row(modifier=Modifier.weight(buttonSectionHeightWgt), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
                             Spacer(modifier = Modifier.weight(0.5f))
                             //  Down button
-                            DownButton {  }
+                            DownButton {
+                                coroutineScope.launch { verticalScrollState.scrollBy(1f) }
+                            }
                             Spacer(modifier = Modifier.weight(0.5f))
                         }
                     }
 
                     Column(modifier=Modifier.weight(buttonSectionHeightWgt).fillMaxSize()) {
                         Spacer(modifier = Modifier.weight(0.5f))
-                        RightButton { }
+                        RightButton {
+                            coroutineScope.launch { horizontalScrollState.scrollBy(1f) }
+                        }
                         Spacer(modifier = Modifier.weight(0.5f))
                     }
                 }
@@ -128,7 +144,6 @@ private fun RightButton(onPress: ()->Unit) {
         Text(">", style = MaterialTheme.typography.h6, modifier = Modifier.padding(Dimensions.padding).clip(CircleShape).clickable {
             onPress()
         })
-
     }
 }
 
@@ -176,7 +191,8 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
 
 
     //  Show a grid of squares corresponding to the zoom etc
-    Canvas(modifier = Modifier.fillMaxSize().pointerInput(Unit) {
+    Canvas(modifier = Modifier.width((levelEditorViewModel.levelWidth * levelEditorViewModel.spriteWidth).dp)
+        .height((levelEditorViewModel.levelHeight * levelEditorViewModel.spriteHeight).dp).pointerInput(Unit) {
 
         //  Detect user tapping on a tile and set its sprite
         detectTapGestures {
