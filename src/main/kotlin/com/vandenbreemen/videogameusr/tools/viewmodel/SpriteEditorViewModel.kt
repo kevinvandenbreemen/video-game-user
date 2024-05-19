@@ -81,7 +81,7 @@ class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel
         updateSpriteBytes(gameDataEditorModel.getSpriteByteArray())
     }
 
-    fun setPixel(x: Int, y: Int, color: Byte) {
+    private fun setPixel(x: Int, y: Int, color: Byte) {
         gameDataEditorModel.setPixel(x, y, color)
         updateSpriteBytes(gameDataEditorModel.getSpriteByteArray())
     }
