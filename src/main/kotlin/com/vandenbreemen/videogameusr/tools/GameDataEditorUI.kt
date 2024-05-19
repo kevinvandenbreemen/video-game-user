@@ -92,7 +92,7 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
             )
         ) {
 
-            Column(modifier = Modifier.weight(0.6f)) {
+            Card(modifier = Modifier.weight(0.6f).clip(MaterialTheme.shapes.medium).padding(Dimensions.padding), elevation = Dimensions.elevation) {
                 SpritePixelEditor(viewModel, model, isPickingSpriteToCopyFrom)
             }
 
