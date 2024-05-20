@@ -34,7 +34,10 @@ class ProgramEntryPoints {
                 state = WindowState(width = maxWidth.dp, height = height.dp)
             ) {
                 VideoGameUserTheme {
-                    GameConsole(fpsToUse, controller)
+                    Column(modifier= Modifier.fillMaxSize()) {
+                        GameConsole(fpsToUse, controller)
+                    }
+
                 }
             }
         }

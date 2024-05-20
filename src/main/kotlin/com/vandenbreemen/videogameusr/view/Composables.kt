@@ -11,7 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
@@ -122,15 +124,15 @@ fun GameConsole(framesPerSecond: Int = 1, controller: VideoGameController) {
     val controlsModel = remember { ControlsModel() }
     val delayTime = 1000 / framesPerSecond.toLong()
 
-    Column(Modifier.background(Color.Gray).fillMaxSize().padding(10.dp)) {
+    Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
 
         //  The "screen"
-        Column(Modifier.weight(0.5f).padding(5.dp)) {
+        Column(Modifier.weight(0.8f).fillMaxSize().clip(MaterialTheme.shapes.medium)) {
             RasterDisplay(raster.value, controller)
         }
 
         //  The "controls"
-        Column(Modifier.weight(.1f).background(Color.Green).padding(2.dp)) {
+        Column(Modifier.weight(.2f).background(Color.Green).padding(2.dp)) {
 
             ControlDeck(
                 controlsModel,
