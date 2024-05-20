@@ -49,6 +49,9 @@ levelModel.setSpritesOnRow(0, listOf(
 ))
 ```
 
+### Rendering a Tile Based Game
+You can quickly render a scene in a level using a ```LevelRenderingInteractor```.  This type provides you with a camera that you move around "over" the level to display a specific section of it that's in the screen right now.
+
 ## Defining your Game's Logic
 Game logic is typically written in a game model.  The game model is then interacted with by an object implementing the ```VideoGameController``` interface.
 
