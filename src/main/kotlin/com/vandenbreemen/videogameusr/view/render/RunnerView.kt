@@ -17,6 +17,8 @@ class RunnerView(private val requirements: GameDataRequirements): Runner(require
 
     private val renderSemaphore = Semaphore(1)
 
+    private var cameraIncrement = 1
+
     /**
      * Gets the camera's offset from the center of the screen
      */
@@ -48,7 +50,7 @@ class RunnerView(private val requirements: GameDataRequirements): Runner(require
     fun moveCameraLeft(onFailure: ()->Unit) {
         try {
             renderSemaphore.acquire()
-            if (cameraViewStart.first == 0) {
+            if (cameraViewStart.first == 0 || cameraViewStart.first - cameraIncrement < 0) {
 
                 cameraViewStart = Pair(requirements.spriteWidth, cameraViewStart.second)
                 cameraViewEnd = Pair(requirements.screenWidth - requirements.spriteWidth, cameraViewEnd.second)
@@ -57,8 +59,8 @@ class RunnerView(private val requirements: GameDataRequirements): Runner(require
 
                 return
             }
-            cameraViewStart = Pair(cameraViewStart.first - 1, cameraViewStart.second)
-            cameraViewEnd = Pair(cameraViewEnd.first - 1, cameraViewEnd.second)
+            cameraViewStart = Pair(cameraViewStart.first - cameraIncrement, cameraViewStart.second)
+            cameraViewEnd = Pair(cameraViewEnd.first - cameraIncrement, cameraViewEnd.second)
         } finally {
             renderSemaphore.release()
         }
@@ -71,7 +73,7 @@ class RunnerView(private val requirements: GameDataRequirements): Runner(require
     fun moveCameraRight(onFailure: ()->Unit) {
         try {
             renderSemaphore.acquire()
-            if(cameraViewEnd.first == requirements.screenWidth - 1){
+            if(cameraViewEnd.first == requirements.screenWidth - 1 || cameraViewEnd.first + cameraIncrement >= requirements.screenWidth - 1){
 
                 cameraViewStart = Pair(requirements.spriteWidth, cameraViewStart.second)
                 cameraViewEnd = Pair(requirements.screenWidth - requirements.spriteWidth, cameraViewEnd.second)
@@ -80,11 +82,15 @@ class RunnerView(private val requirements: GameDataRequirements): Runner(require
 
                 return
             }
-            cameraViewStart = Pair(cameraViewStart.first + 1, cameraViewStart.second)
-            cameraViewEnd = Pair(cameraViewEnd.first + 1, cameraViewEnd.second)
+            cameraViewStart = Pair(cameraViewStart.first + cameraIncrement, cameraViewStart.second)
+            cameraViewEnd = Pair(cameraViewEnd.first + cameraIncrement, cameraViewEnd.second)
         } finally {
             renderSemaphore.release()
         }
+    }
+
+    fun setCameraIncrement(increment: Int){
+        cameraIncrement = increment
     }
 
     /**
@@ -94,15 +100,15 @@ class RunnerView(private val requirements: GameDataRequirements): Runner(require
     fun moveCameraUp(onFailure: ()->Unit) {
         try {
             renderSemaphore.acquire()
-            if (cameraViewStart.second == 0) {
+            if (cameraViewStart.second == 0 || cameraViewStart.second - cameraIncrement < 0) {
                 cameraViewStart = Pair(cameraViewStart.first, requirements.spriteHeight)
                 cameraViewEnd = Pair(cameraViewEnd.first, requirements.screenHeight - requirements.spriteHeight)
 
                 onFailure()
                 return
             }
-            cameraViewStart = Pair(cameraViewStart.first, cameraViewStart.second - 1)
-            cameraViewEnd = Pair(cameraViewEnd.first, cameraViewEnd.second - 1)
+            cameraViewStart = Pair(cameraViewStart.first, cameraViewStart.second - cameraIncrement)
+            cameraViewEnd = Pair(cameraViewEnd.first, cameraViewEnd.second - cameraIncrement)
         } finally {
             renderSemaphore.release()
         }
@@ -115,7 +121,7 @@ class RunnerView(private val requirements: GameDataRequirements): Runner(require
     fun moveCameraDown(onFailure: ()->Unit) {
         try {
             renderSemaphore.acquire()
-            if (cameraViewEnd.second == requirements.screenHeight - 1) {
+            if (cameraViewEnd.second == requirements.screenHeight - 1 || cameraViewEnd.second + cameraIncrement >= requirements.screenHeight - 1) {
 
                 cameraViewStart = Pair(cameraViewStart.first, requirements.spriteHeight)
                 cameraViewEnd = Pair(cameraViewEnd.first, requirements.screenHeight - requirements.spriteHeight)
@@ -124,8 +130,8 @@ class RunnerView(private val requirements: GameDataRequirements): Runner(require
 
                 return
             }
-            cameraViewStart = Pair(cameraViewStart.first, cameraViewStart.second + 1)
-            cameraViewEnd = Pair(cameraViewEnd.first, cameraViewEnd.second + 1)
+            cameraViewStart = Pair(cameraViewStart.first, cameraViewStart.second + cameraIncrement)
+            cameraViewEnd = Pair(cameraViewEnd.first, cameraViewEnd.second + cameraIncrement)
         } finally {
             renderSemaphore.release()
         }
