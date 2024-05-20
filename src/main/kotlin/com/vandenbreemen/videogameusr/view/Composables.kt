@@ -129,37 +129,40 @@ fun GameConsole(framesPerSecond: Int = 1, controller: VideoGameController) {
     Column(Modifier.fillMaxSize().background(MaterialTheme.colors.surface), horizontalAlignment = Alignment.CenterHorizontally) {
 
         //  The "screen"
-        Column(Modifier.weight(0.8f).fillMaxSize().clip(MaterialTheme.shapes.medium)) {
-            RasterDisplay(raster.value, controller)
+        Card(modifier=Modifier.weight(0.8f).padding(Dimensions.padding), elevation = Dimensions.elevation) {
+            Column(Modifier.fillMaxSize().clip(MaterialTheme.shapes.medium)) {
+                RasterDisplay(raster.value, controller)
+            }
         }
 
         //  The "controls"
-        Column(Modifier.weight(.2f).background(MaterialTheme.colors.onSurface).padding(Dimensions.padding)) {
+        Card (modifier=Modifier.weight(0.2f).padding(Dimensions.padding).clip(MaterialTheme.shapes.medium), elevation = Dimensions.elevation) {
+            Column(Modifier.weight(.2f).background(MaterialTheme.colors.onSurface)) {
 
-            ControlDeck(
-                controlsModel,
-                onUp = {
-                    controller.moveUp()
-                },
-                onDown = {
-                    controller.moveDown()
-                },
-                onLeft = {
-                    controller.moveLeft()
-                },
-                onRight = {
-                    controller.moveRight()
-                },
-                onA = {
-                    controller.pressA()
-                },
-                onB = {
-                    controller.pressB()
-                }
-            )
+                ControlDeck(
+                    controlsModel,
+                    onUp = {
+                        controller.moveUp()
+                    },
+                    onDown = {
+                        controller.moveDown()
+                    },
+                    onLeft = {
+                        controller.moveLeft()
+                    },
+                    onRight = {
+                        controller.moveRight()
+                    },
+                    onA = {
+                        controller.pressA()
+                    },
+                    onB = {
+                        controller.pressB()
+                    }
+                )
 
+            }
         }
-
 
     }
 
