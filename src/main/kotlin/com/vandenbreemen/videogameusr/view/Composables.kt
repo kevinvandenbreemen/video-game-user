@@ -137,7 +137,7 @@ fun GameConsole(framesPerSecond: Int = 1, controller: VideoGameController) {
 
         //  The "controls"
         Card (modifier=Modifier.weight(0.2f).padding(Dimensions.padding).clip(MaterialTheme.shapes.medium), elevation = Dimensions.elevation) {
-            Column(Modifier.weight(.2f).background(MaterialTheme.colors.onSurface)) {
+            Column(Modifier.background(MaterialTheme.colors.onSurface)) {
 
                 ControlDeck(
                     controlsModel,
