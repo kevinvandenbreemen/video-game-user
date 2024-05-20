@@ -78,3 +78,10 @@ While the tool's code supports code generation I am slowly phasing this out sinc
 
 
 > **Tip**:  To generate an asset sheet for the sprites/levels you have made simply open up the hamburger menu and select "Dump Assets to File." 
+
+# Game Development Recipes
+Because I'm having a hard time staying on top of documenting things, I'm going to make a series of how to mini articles as I try to make more proof of concept games to learn more about game development.
+
+## How Can I place the Screen View to a specific location in a TileBasedGameWorld / Level?
+You can use the LevelRenderingInteractor.  Call ```moveCameraTo(10, 233)``` for example on it
+
