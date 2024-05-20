@@ -4,6 +4,7 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -20,8 +21,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.*
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vandenbreemen.com.vandenbreemen.videogameusr.controller.VideoGameController
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
@@ -124,7 +123,7 @@ fun GameConsole(framesPerSecond: Int = 1, controller: VideoGameController) {
     val controlsModel = remember { ControlsModel() }
     val delayTime = 1000 / framesPerSecond.toLong()
 
-    Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(Modifier.fillMaxSize().background(MaterialTheme.colors.surface), horizontalAlignment = Alignment.CenterHorizontally) {
 
         //  The "screen"
         Column(Modifier.weight(0.8f).fillMaxSize().clip(MaterialTheme.shapes.medium)) {
@@ -132,7 +131,7 @@ fun GameConsole(framesPerSecond: Int = 1, controller: VideoGameController) {
         }
 
         //  The "controls"
-        Column(Modifier.weight(.2f).background(Color.Green).padding(2.dp)) {
+        Column(Modifier.weight(.2f).background(MaterialTheme.colors.onSurface).padding(Dimensions.padding)) {
 
             ControlDeck(
                 controlsModel,
@@ -191,9 +190,9 @@ private fun ControlDeck(
     onUp: ()->Unit, onDown: ()->Unit, onLeft: ()->Unit, onRight: ()->Unit, onA: ()->Unit, onB: ()->Unit) {
 
     val focusRequester = remember { FocusRequester() }
-    val buttonStyle = TextStyle(color = MaterialTheme.colors.onSurface, fontSize = 10.sp)
+    val buttonStyle = MaterialTheme.typography.caption.copy(color = MaterialTheme.colors.onSurface, fontSize = 10.sp)
 
-    Row(modifier=Modifier
+    Row(modifier=Modifier.fillMaxSize()
         .focusRequester(focusRequester)
         .onKeyEvent { keyEvent ->
 
@@ -221,25 +220,30 @@ private fun ControlDeck(
     }) {
         //  Buttons
 
-        Column(Modifier.weight(0.5f)) {
-            Spacer(Modifier.weight(0.5f))
+        Column(Modifier.weight(0.3f), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
             Row {
                 Spacer(Modifier.weight(0.5f))
-                Button(onClick = {
+                Button(
+                    modifier = Modifier.clip(CircleShape),
+                    onClick = {
                     onUp()
                 }) {
-                    Text("\uD83D\uDD3C\uFE0F", style = buttonStyle)
+                    Text("\uD83D\uDD3C\uFE0F", style = buttonStyle, modifier = Modifier.clip(CircleShape))
                 }
                 Spacer(Modifier.weight(0.5f))
             }
             Row {
-                Button(onClick = {
+                Button(
+                    modifier = Modifier.clip(CircleShape),
+                    onClick = {
                     onLeft()
                 }) {
                     Text("◀\uFE0F", style = buttonStyle)
                 }
                 Spacer(Modifier.weight(0.5f))
-                Button(onClick = {
+                Button(
+                    modifier = Modifier.clip(CircleShape),
+                    onClick = {
                     onRight()
                 }) {
                     Text("\u25B6\uFE0F", style = buttonStyle)
@@ -247,14 +251,15 @@ private fun ControlDeck(
             }
             Row {
                 Spacer(Modifier.weight(0.5f))
-                Button(onClick = {
+                Button(
+                    modifier = Modifier.clip(CircleShape),
+                    onClick = {
                     onDown()
                 }) {
                     Text("\uD83D\uDD3D\uFE0F", style = buttonStyle)
                 }
                 Spacer(Modifier.weight(0.5f))
             }
-            Spacer(Modifier.weight(0.5f))
         }
 
         Spacer(Modifier.weight(0.3f))
