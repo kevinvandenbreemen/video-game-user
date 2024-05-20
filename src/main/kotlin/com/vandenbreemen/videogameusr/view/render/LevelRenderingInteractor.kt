@@ -69,11 +69,6 @@ class LevelRenderingInteractor(
         cameraLocationToNearestTile = Pair(x, y)
     }
 
-    //  Get the camera location
-    fun getCameraLocation(): Pair<Int, Int> {
-        return cameraLocationToNearestTile
-    }
-
     fun drawCameraView(levelModel: LevelModel) {
         val x = cameraLocationToNearestTile.first
         val y = cameraLocationToNearestTile.second
