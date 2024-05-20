@@ -226,36 +226,42 @@ private fun ControlDeck(
             true
     }) {
         //  Buttons
+        Card(modifier = Modifier.background(MaterialTheme.colors.surface).weight(0.2f).clip(CircleShape)
+            , elevation = Dimensions.elevation) {
+            Column(
+                Modifier.wrapContentSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Row {
+                    Spacer(Modifier.weight(0.5f))
 
-        Column(Modifier.weight(0.2f), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-            Row {
-                Spacer(Modifier.weight(0.5f))
+                    CircleButton("\uD83D\uDD3C\uFE0F") {
+                        onUp()
+                    }
 
-                CircleButton("\uD83D\uDD3C\uFE0F") {
-                    onUp()
+
+                    Spacer(Modifier.weight(0.5f))
                 }
+                Row {
 
+                    CircleButton("\u25C0\uFE0F") {
+                        onLeft()
+                    }
+                    Spacer(Modifier.width(10.dp))
 
-                Spacer(Modifier.weight(0.5f))
-            }
-            Row {
-
-                CircleButton("\u25C0\uFE0F") {
-                    onLeft()
+                    CircleButton("\u25B6\uFE0F") {
+                        onRight()
+                    }
                 }
-                Spacer(Modifier.weight(0.5f))
+                Row {
+                    Spacer(Modifier.weight(0.5f))
 
-                CircleButton("\u25B6\uFE0F") {
-                    onRight()
+                    CircleButton("\uD83D\uDD3D\uFE0F") {
+                        onDown()
+                    }
+                    Spacer(Modifier.weight(0.5f))
                 }
-            }
-            Row {
-                Spacer(Modifier.weight(0.5f))
-
-                CircleButton("\uD83D\uDD3D\uFE0F") {
-                    onDown()
-                }
-                Spacer(Modifier.weight(0.5f))
             }
         }
 
@@ -289,11 +295,11 @@ private fun ControlDeck(
 
 @Composable
 fun CircleButton(text: String, onClick: ()->Unit) {
-    Card(elevation = Dimensions.elevation, modifier = Modifier.size(30.dp).clip(CircleShape).background(MaterialTheme.colors.background).clickable {
+    Card(elevation = Dimensions.elevation, modifier = Modifier.size(25.dp).clip(CircleShape).background(MaterialTheme.colors.background).clickable {
         onClick()
     }) {
         Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-            Text(text, style = MaterialTheme.typography.caption.copy(color = MaterialTheme.colors.background, fontSize = 14.sp), modifier = Modifier.clip(CircleShape)
+            Text(text, style = MaterialTheme.typography.caption.copy(color = MaterialTheme.colors.background, fontSize = 12.sp), modifier = Modifier.clip(CircleShape)
                 .background(MaterialTheme.colors.background)
             )
         }
