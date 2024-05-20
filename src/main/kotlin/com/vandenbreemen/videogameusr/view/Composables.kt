@@ -3,9 +3,11 @@ package com.vandenbreemen.com.vandenbreemen.videogameusr.view
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
+import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -21,6 +23,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.*
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vandenbreemen.com.vandenbreemen.videogameusr.controller.VideoGameController
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
@@ -220,43 +223,33 @@ private fun ControlDeck(
     }) {
         //  Buttons
 
-        Column(Modifier.weight(0.3f), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+        Column(Modifier.weight(0.2f), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
             Row {
                 Spacer(Modifier.weight(0.5f))
-                Button(
-                    modifier = Modifier.clip(CircleShape),
-                    onClick = {
+
+                CircleButton("\uD83D\uDD3C\uFE0F") {
                     onUp()
-                }) {
-                    Text("\uD83D\uDD3C\uFE0F", style = buttonStyle, modifier = Modifier.clip(CircleShape))
                 }
+
+
                 Spacer(Modifier.weight(0.5f))
             }
             Row {
-                Button(
-                    modifier = Modifier.clip(CircleShape),
-                    onClick = {
+
+                CircleButton("\u25C0\uFE0F") {
                     onLeft()
-                }) {
-                    Text("◀\uFE0F", style = buttonStyle)
                 }
                 Spacer(Modifier.weight(0.5f))
-                Button(
-                    modifier = Modifier.clip(CircleShape),
-                    onClick = {
+
+                CircleButton("\u25B6\uFE0F") {
                     onRight()
-                }) {
-                    Text("\u25B6\uFE0F", style = buttonStyle)
                 }
             }
             Row {
                 Spacer(Modifier.weight(0.5f))
-                Button(
-                    modifier = Modifier.clip(CircleShape),
-                    onClick = {
+
+                CircleButton("\uD83D\uDD3D\uFE0F") {
                     onDown()
-                }) {
-                    Text("\uD83D\uDD3D\uFE0F", style = buttonStyle)
                 }
                 Spacer(Modifier.weight(0.5f))
             }
@@ -287,6 +280,32 @@ private fun ControlDeck(
 
     LaunchedEffect(focusRequester) {
         focusRequester.requestFocus()
+    }
+}
+
+@Composable
+fun CircleButton(text: String, onClick: ()->Unit) {
+    Card(elevation = Dimensions.elevation, modifier = Modifier.size(30.dp).clip(CircleShape).background(MaterialTheme.colors.background).clickable {
+        onClick()
+    }) {
+        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+            Text(text, style = MaterialTheme.typography.caption.copy(color = MaterialTheme.colors.background, fontSize = 14.sp), modifier = Modifier.clip(CircleShape)
+                .background(MaterialTheme.colors.background)
+            )
+        }
+
+    }
+}
+
+@Preview
+@Composable
+fun PreviewCircleButton() {
+    VideoGameUserTheme {
+        Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.secondary)) {
+            CircleButton("\uD83D\uDD3C\uFE0F") {  }
+        }
+
+
     }
 }
 
