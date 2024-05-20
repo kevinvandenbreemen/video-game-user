@@ -9,9 +9,19 @@ class VideoGame4Model {
 
     //  100 possible sprite tiles
     //  SNES style
-    private val requirements = GameDataRequirements(256, 224, 8, 8, 6400 )
+    val requirements = GameDataRequirements(256, 224, 8, 8, 6400 )
 
     private val world = TileBasedGameWorld(requirements)
+
+    /**
+     * The actual level that stores the majority of the objects in the game
+     */
+    val level by lazy {  world.getLevel("Main Background") }
+
+    val allLevelsInRenderingOrder by lazy { listOf(
+        world.getLevel("Floor Tiles"),
+        world.getLevel("Main Background")
+    ) }
 
     /**
      * Triggers the game editor for the game.  Use only for development purposes
