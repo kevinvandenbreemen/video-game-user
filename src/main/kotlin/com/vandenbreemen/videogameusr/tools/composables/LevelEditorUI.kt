@@ -46,7 +46,7 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
         Column(modifier = Modifier.weight(.12f)) {
             Card(modifier = Modifier.padding(Dimensions.padding).fillMaxSize(), elevation = Dimensions.elevation) {
                 //  The tile selector
-                SpriteTileGrid(levelEditorViewModel.getSpriteEditorModel(), "Tiles", selectedSpriteIndex::value::set)
+                SpriteTileGrid(levelEditorViewModel.getSpriteEditorModel(), "Tiles", highlightSelected = true, selectedSpriteIndex::value::set)
             }
         }
 
