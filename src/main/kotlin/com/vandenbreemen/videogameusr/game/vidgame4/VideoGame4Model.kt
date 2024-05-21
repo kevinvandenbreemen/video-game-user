@@ -11,6 +11,8 @@ class VideoGame4Model {
     //  SNES style
     val requirements = GameDataRequirements(256, 224, 8, 8, 6400 )
 
+    val cameraIncrementInGame = 2
+
     private val world = TileBasedGameWorld(requirements)
 
     /**

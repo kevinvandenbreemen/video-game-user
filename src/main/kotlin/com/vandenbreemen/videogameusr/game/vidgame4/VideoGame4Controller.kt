@@ -9,6 +9,10 @@ import com.vandenbreemen.videogameusr.view.render.RunnerView
 
 class VideoGame4Controller(private val model: VideoGame4Model,  private val runner: RunnerView): VideoGameController {
 
+    init {
+        runner.setCameraIncrement(model.cameraIncrementInGame)
+    }
+
     private val colorInteractor = CoreDependenciesHelper.getColorInteractor()
     private val renderingInteractor = LevelRenderingInteractor(model.requirements, runner, model.level).also {
         //  Set the initial location in the game
