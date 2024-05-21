@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.com.vandenbreemen.videogameusr.view.Dimensions
 import com.vandenbreemen.videogameusr.tools.viewmodel.LevelEditorViewModel
@@ -37,6 +38,8 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
         val verticalScrollState = rememberScrollState()
         val horizontalScrollState = rememberScrollState()
         val coroutineScope = rememberCoroutineScope()
+
+        val lastSelectedTileValue = levelEditorViewModel.lastSelectedTileStateFlow.collectAsState()
 
         val selectedSpriteIndex = remember { mutableStateOf( levelEditorViewModel.currentSelectedSpriteIndex ) }
         LaunchedEffect(selectedSpriteIndex.value) {
@@ -92,6 +95,21 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
                                 coroutineScope.launch { verticalScrollState.scrollBy(scrollAmount) }
                             }
                             Spacer(modifier = Modifier.weight(0.5f))
+                            Card(elevation = Dimensions.elevation, modifier = Modifier.height(28.dp)) {
+                                Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally,
+                                    modifier = Modifier.padding(Dimensions.padding)
+                                    ) {
+                                    val coordStr = if (lastSelectedTileValue.value.first > 0) {
+                                        "(${lastSelectedTileValue.value.first}, ${lastSelectedTileValue.value.second})"
+                                    } else {
+                                        "None"
+                                    }
+                                    Text(
+                                        "COORD:  $coordStr",
+                                        style = MaterialTheme.typography.caption.copy(fontSize = 8.sp)
+                                    )
+                                }
+                            }
                         }
                     }
 

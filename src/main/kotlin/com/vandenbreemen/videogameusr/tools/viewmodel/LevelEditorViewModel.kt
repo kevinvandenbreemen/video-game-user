@@ -29,6 +29,9 @@ class LevelEditorViewModel(private val levelEditorModel: LevelEditorModel) {
     val spriteWidth: Int get() = levelEditorModel.spriteWidth
     val spriteHeight: Int get() = levelEditorModel.spriteHeight
 
+    private val lastSelectedTile = MutableStateFlow(Pair(-1, -1))
+    val lastSelectedTileStateFlow = lastSelectedTile.asStateFlow()
+
     init {
         updateLevelCoordinateToTileGrid()
     }
@@ -66,6 +69,7 @@ class LevelEditorViewModel(private val levelEditorModel: LevelEditorModel) {
             klog("Invalid tile location $x, $y, max x=$levelWidth, max y=$levelHeight - ignoring")
             return
         }
+        lastSelectedTile.value = Pair(x, y)
         levelEditorModel.setSpriteTileAt(x, y, spriteIndex)
         levelEditorModel.writeCodeToFile()
         updateLevelCoordinateToTileGrid()
