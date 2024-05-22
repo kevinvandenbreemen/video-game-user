@@ -99,7 +99,7 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
                                 Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally,
                                     modifier = Modifier.padding(Dimensions.padding)
                                     ) {
-                                    val coordStr = if (lastSelectedTileValue.value.first > 0) {
+                                    val coordStr = if (lastSelectedTileValue.value.first > -1) {
                                         "(${lastSelectedTileValue.value.first}, ${lastSelectedTileValue.value.second})"
                                     } else {
                                         "None"
