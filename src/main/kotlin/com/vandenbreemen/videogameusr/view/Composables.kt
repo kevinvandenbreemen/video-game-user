@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vandenbreemen.com.vandenbreemen.videogameusr.controller.VideoGameController
 import com.vandenbreemen.viddisplayrast.data.DisplayRaster
+import com.vandenbreemen.videogameusr.model.CoreDependenciesHelper
 import com.vandenbreemen.videogameusr.view.render.CanvasRasterRender
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -57,7 +58,7 @@ fun GameConsole(framesPerSecond: Int = 1, controller: VideoGameController) {
     val controlsModel = remember { ControlsModel() }
     val delayTime = 1000 / framesPerSecond.toLong()
 
-    val canvasRasterRender = CanvasRasterRender()
+    val canvasRasterRender = CoreDependenciesHelper.getCanvasRasterRender()
 
     Column(Modifier.fillMaxSize().background(MaterialTheme.colors.surface), horizontalAlignment = Alignment.CenterHorizontally) {
 
@@ -260,5 +261,5 @@ fun PreviewRasterDisplay() {
     val raster = DisplayRaster(16, 16)
     raster.setPixel(8, 8, 100)
     raster.setPixel(9, 8, 100)
-    RasterDisplay(raster, CanvasRasterRender())
+    RasterDisplay(raster, CoreDependenciesHelper.getCanvasRasterRender())
 }

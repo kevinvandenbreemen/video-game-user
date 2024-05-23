@@ -3,6 +3,7 @@ package com.vandenbreemen.videogameusr.model
 import com.vandenbreemen.com.vandenbreemen.videogameusr.model.ColorInteractor
 import com.vandenbreemen.viddisplayrast.data.ByteColorDataInteractor
 import com.vandenbreemen.videogameusr.tools.model.CodeGenerationModel
+import com.vandenbreemen.videogameusr.view.render.CanvasRasterRender
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
@@ -22,6 +23,10 @@ object CoreDependenciesHelper {
 
     fun getIODispatcher(): CoroutineDispatcher {
         return Dispatchers.IO
+    }
+
+    fun getCanvasRasterRender(): CanvasRasterRender {
+        return CanvasRasterRender(getColorInteractor())
     }
 
 }

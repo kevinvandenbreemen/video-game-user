@@ -3,18 +3,14 @@ package com.vandenbreemen.videogameusr.view.render
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import com.vandenbreemen.com.vandenbreemen.videogameusr.model.ColorInteractor
 import com.vandenbreemen.viddisplayrast.data.DisplayRaster
 import com.vandenbreemen.viddisplayrast.view.RasterRender
-import com.vandenbreemen.videogameusr.model.CoreDependenciesHelper
 import kotlin.math.ceil
 
-class CanvasRasterRender: RasterRender<DrawScope> {
+class CanvasRasterRender(private val colorInteractor: ColorInteractor): RasterRender<DrawScope> {
 
     private var currentScope: DrawScope? = null
-
-
-    //  XXX If this works then have CoreDepHelper also return one of these!!!
-    private val colorInteractor = CoreDependenciesHelper.getColorInteractor()
 
     fun setCurrentDrawScope(scope: DrawScope) {
         currentScope = scope
