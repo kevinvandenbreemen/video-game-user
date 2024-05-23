@@ -16,8 +16,8 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.vandenbreemen.com.vandenbreemen.videogameusr.view.Dimensions
-import com.vandenbreemen.com.vandenbreemen.videogameusr.view.VideoGameUserTheme
+import com.vandenbreemen.videogameusr.view.Dimensions
+import com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 
 @Composable
 fun InputtingButton(label: String, instruction: String, onInput: (String)->Unit) {

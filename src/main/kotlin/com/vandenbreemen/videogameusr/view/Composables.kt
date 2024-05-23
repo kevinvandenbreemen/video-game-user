@@ -1,4 +1,4 @@
-package com.vandenbreemen.com.vandenbreemen.videogameusr.view
+package com.vandenbreemen.videogameusr.view
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
@@ -70,7 +70,8 @@ fun GameConsole(framesPerSecond: Int = 1, controller: VideoGameController) {
 
         //  The "controls"
         Card (modifier=Modifier.weight(0.2f).padding(Dimensions.padding).background(MaterialTheme.colors.surface).clip(MaterialTheme.shapes.medium),
-            elevation = Dimensions.elevation) {
+            elevation = Dimensions.elevation
+        ) {
             Column(Modifier.background(MaterialTheme.colors.surface).padding(Dimensions.padding).fillMaxSize()) {
 
                 ControlDeck(
@@ -160,7 +161,8 @@ private fun ControlDeck(
     }) {
         //  Buttons
         Card(modifier = Modifier.background(MaterialTheme.colors.surface).weight(0.2f).clip(CircleShape)
-            , elevation = Dimensions.elevation) {
+            , elevation = Dimensions.elevation
+        ) {
             Column(
                 Modifier.wrapContentSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,

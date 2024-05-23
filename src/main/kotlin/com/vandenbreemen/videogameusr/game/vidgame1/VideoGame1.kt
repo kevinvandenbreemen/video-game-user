@@ -1,9 +1,9 @@
 package com.vandenbreemen.com.vandenbreemen.videogameusr.game.controller
 
 import com.vandenbreemen.com.vandenbreemen.videogameusr.game.vidgame1.VideoGame1Controller
-import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ProgramEntryPoints
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
+import com.vandenbreemen.videogameusr.view.ProgramEntryPoints
 
 fun main() {
 

@@ -22,8 +22,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.vandenbreemen.com.vandenbreemen.videogameusr.view.Dimensions
 import com.vandenbreemen.videogameusr.tools.model.GameDataEditorModel
+import com.vandenbreemen.videogameusr.view.Dimensions
 import kotlin.math.ceil
 
 object WhereToFindEverythingInCommonToolsUI {

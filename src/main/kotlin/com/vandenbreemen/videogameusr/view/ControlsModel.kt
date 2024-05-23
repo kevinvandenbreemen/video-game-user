@@ -1,4 +1,4 @@
-package com.vandenbreemen.com.vandenbreemen.videogameusr.view
+package com.vandenbreemen.videogameusr.view
 
 import java.util.concurrent.ConcurrentHashMap
 

@@ -34,8 +34,6 @@ import androidx.compose.ui.window.application
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.KlogLevel
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.ToolType
-import com.vandenbreemen.com.vandenbreemen.videogameusr.view.Dimensions
-import com.vandenbreemen.com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
 import com.vandenbreemen.videogameusr.tools.composables.LevelDesigner
@@ -44,6 +42,8 @@ import com.vandenbreemen.videogameusr.tools.model.GameDataEditorModel
 import com.vandenbreemen.videogameusr.tools.viewmodel.GameDataEditorViewModel
 import com.vandenbreemen.videogameusr.tools.viewmodel.LevelEditorViewModel
 import com.vandenbreemen.videogameusr.tools.viewmodel.SpriteEditorViewModel
+import com.vandenbreemen.videogameusr.view.Dimensions
+import com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 import com.vandenbreemen.videogameusr.view.common.ConfirmingButton
 import com.vandenbreemen.videogameusr.view.common.InputtingButton
 import kotlinx.coroutines.CoroutineScope
@@ -523,7 +523,8 @@ private fun GameToolDrawerContent(
         //  Level Creator
         Column(modifier = Modifier.border(1.dp, MaterialTheme.colors.onBackground,
                 shape = MaterialTheme.shapes.medium
-            ).padding(Dimensions.borderPadding,
+            ).padding(
+            Dimensions.borderPadding,
             )) {
 
             Text("Add Level", style = MaterialTheme.typography.subtitle1)

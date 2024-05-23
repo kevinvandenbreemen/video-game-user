@@ -1,6 +1,6 @@
 package com.vandenbreemen.videogameusr.game.vidgame3
 
-import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ProgramEntryPoints
+import com.vandenbreemen.videogameusr.view.ProgramEntryPoints
 import com.vandenbreemen.videogameusr.view.render.RunnerView
 
 fun main() {

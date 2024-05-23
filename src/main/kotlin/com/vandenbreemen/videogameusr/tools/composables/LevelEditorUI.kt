@@ -21,8 +21,8 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
-import com.vandenbreemen.com.vandenbreemen.videogameusr.view.Dimensions
 import com.vandenbreemen.videogameusr.tools.viewmodel.LevelEditorViewModel
+import com.vandenbreemen.videogameusr.view.Dimensions
 import kotlinx.coroutines.launch
 import kotlin.math.ceil
 

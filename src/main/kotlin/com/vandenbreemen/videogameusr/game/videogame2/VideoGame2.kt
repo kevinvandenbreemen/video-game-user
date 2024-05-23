@@ -1,10 +1,10 @@
 package com.vandenbreemen.com.vandenbreemen.videogameusr.game.videogame2
 
-import com.vandenbreemen.com.vandenbreemen.videogameusr.view.ProgramEntryPoints
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
 import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
 import com.vandenbreemen.videogameusr.tools.gameEditor
+import com.vandenbreemen.videogameusr.view.ProgramEntryPoints
 
 object VideoGame2SpriteAddresses {
 

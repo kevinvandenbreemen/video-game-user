@@ -1,4 +1,4 @@
-package com.vandenbreemen.com.vandenbreemen.videogameusr.view
+package com.vandenbreemen.videogameusr.view
 
 import androidx.compose.material.Typography
 import androidx.compose.material.darkColors
