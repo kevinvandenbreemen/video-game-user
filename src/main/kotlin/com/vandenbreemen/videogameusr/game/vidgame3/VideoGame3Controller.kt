@@ -1,11 +1,12 @@
 package com.vandenbreemen.videogameusr.game.vidgame3
 
-import com.vandenbreemen.com.vandenbreemen.videogameusr.controller.VideoGameController
 import com.vandenbreemen.viddisplayrast.data.DisplayRaster
+import com.vandenbreemen.videogameusr.controller.VideoGameController
 import com.vandenbreemen.videogameusr.view.render.LevelRenderingInteractor
 import com.vandenbreemen.videogameusr.view.render.RunnerView
 
-class VideoGame3Controller(private val videoGame3Model: VideoGame3Model, private val runner: RunnerView): VideoGameController {
+class VideoGame3Controller(private val videoGame3Model: VideoGame3Model, private val runner: RunnerView):
+    VideoGameController {
 
     private val model = videoGame3Model
     private val levelRenderingInteractor = LevelRenderingInteractor(model.requirements, runner, model.background).also {

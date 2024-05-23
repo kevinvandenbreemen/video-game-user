@@ -1,4 +1,4 @@
-package com.vandenbreemen.com.vandenbreemen.videogameusr.controller
+package com.vandenbreemen.videogameusr.controller
 
 import com.vandenbreemen.viddisplayrast.data.DisplayRaster
 

@@ -22,8 +22,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.vandenbreemen.com.vandenbreemen.videogameusr.controller.VideoGameController
 import com.vandenbreemen.viddisplayrast.data.DisplayRaster
+import com.vandenbreemen.videogameusr.controller.VideoGameController
 import com.vandenbreemen.videogameusr.model.CoreDependenciesHelper
 import com.vandenbreemen.videogameusr.view.render.CanvasRasterRender
 import kotlinx.coroutines.Dispatchers

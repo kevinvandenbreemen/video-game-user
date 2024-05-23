@@ -1,8 +1,8 @@
 package com.vandenbreemen.com.vandenbreemen.videogameusr.game.videogame2
 
-import com.vandenbreemen.com.vandenbreemen.videogameusr.controller.VideoGameController
 import com.vandenbreemen.viddisplayrast.data.DisplayRaster
 import com.vandenbreemen.viddisplayrast.game.Runner
+import com.vandenbreemen.videogameusr.controller.VideoGameController
 
 class VideoGame2Controller(private val model: VideoGame2Model, private val runner: Runner): VideoGameController {
 

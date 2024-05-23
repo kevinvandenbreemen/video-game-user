@@ -1,7 +1,7 @@
 package com.vandenbreemen.videogameusr.game.vidgame4
 
-import com.vandenbreemen.com.vandenbreemen.videogameusr.controller.VideoGameController
 import com.vandenbreemen.viddisplayrast.data.DisplayRaster
+import com.vandenbreemen.videogameusr.controller.VideoGameController
 import com.vandenbreemen.videogameusr.view.render.LevelRenderingInteractor
 import com.vandenbreemen.videogameusr.view.render.RunnerView
 
