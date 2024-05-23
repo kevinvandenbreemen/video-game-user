@@ -12,6 +12,7 @@ fun main() {
 
     //model.edit()
 
-    ProgramEntryPoints.playGameInWindow(VideoGame4Controller(model, runnerView), 60, 800)
+    ProgramEntryPoints.playGameInWindow(VideoGame4Controller(model, runnerView), 60, 800,
+        (model.requirements.screenHeight.toFloat() / model.requirements.screenWidth.toFloat()))
 
 }

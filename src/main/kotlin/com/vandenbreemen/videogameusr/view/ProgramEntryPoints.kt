@@ -16,7 +16,7 @@ class ProgramEntryPoints {
 
     companion object {
 
-        fun playGameInWindow(controller: VideoGameController, framesPerSecond: Int = 60, maxWidth: Int = 800) = application {
+        fun playGameInWindow(controller: VideoGameController, framesPerSecond: Int = 60, maxWidth: Int = 800, aspectRatio:Float = .75f) = application {
 
             val maxFPS = 60
             val fpsToUse = if(framesPerSecond > maxFPS) {
@@ -25,7 +25,7 @@ class ProgramEntryPoints {
             } else framesPerSecond
 
             //  Step 1:  Work out the height as a ratio of the width
-            val height = (maxWidth * 0.75).toInt()
+            val height = (maxWidth * aspectRatio).toInt()
 
             Window(
                 onCloseRequest = {  },
