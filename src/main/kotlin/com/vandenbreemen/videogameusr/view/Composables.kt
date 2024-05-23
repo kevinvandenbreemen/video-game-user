@@ -19,17 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vandenbreemen.com.vandenbreemen.videogameusr.controller.VideoGameController
-import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
-import com.vandenbreemen.com.vandenbreemen.videogameusr.model.ColorInteractor
-import com.vandenbreemen.viddisplayrast.data.ByteColorDataInteractor
 import com.vandenbreemen.viddisplayrast.data.DisplayRaster
-import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
-import com.vandenbreemen.viddisplayrast.game.Runner
 import com.vandenbreemen.videogameusr.view.render.CanvasRasterRender
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -54,49 +48,6 @@ fun RasterDisplay(raster: DisplayRaster, canvasRasterRender: CanvasRasterRender)
         }
     }
 
-}
-
-//  Do a simple default implementation of VideoGameController that just shows toasts or something
-class DummyVideoGameController : VideoGameController {
-
-    private val colorInteractor = ColorInteractor(ByteColorDataInteractor())
-
-    override fun moveRight() {
-        klog("Move Right")
-    }
-
-    override fun moveLeft() {
-        klog("Move Left")
-    }
-
-    override fun moveUp() {
-        klog("Move Up")
-    }
-
-    override fun moveDown() {
-        klog("Move Down")
-    }
-
-    override fun pressA() {
-        klog("Press A")
-    }
-
-    override fun pressB() {
-        klog("Press B")
-    }
-
-    override fun playTurn() {
-        klog("Play Turn")
-    }
-
-    override fun drawFrame(): DisplayRaster {
-        klog("Draw Frame")
-        return DisplayRaster(16, 16)
-    }
-
-    override fun getComposeColor(value: Byte): Color {
-        return colorInteractor.getComposeColor(value)
-    }
 }
 
 @Composable
@@ -299,40 +250,6 @@ fun PreviewCircleButton() {
 
 
     }
-}
-
-@Composable
-@Preview
-fun PreviewGameConsole() {
-
-    val requirements = GameDataRequirements(100, 75, 8, 8, 1024)
-    requirements.setData(0, byteArrayOf(
-        0, 0, 100, 100, 100, 0, 0, 0,
-        0, 0, 100, 127, 100, 127, 0, 0,
-        0, 0, 100, 100, 100, 100, 0, 0,
-        0, 100, 80, 80, 80, 100, 100, 100,
-        0, 100, 100, 100, 80, 100, 0, 100,
-        100, 100, 100, 100, 100, 100, 0, 0,
-        100, 100, 100, 100, 100, 100, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0
-    ))
-
-    //  Draw pacman sprite
-    requirements.setData(1, byteArrayOf(
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 1, 1, 0, 0, 0, 0, 0,
-        120, 120, 120, 0, 0, 120, 120, 0,
-        0, 120, 120, 120, 120, 0, 0, 120,
-        1, 1, 120, 96, 120, 120, 120, 120,
-        0, 1, 120, 96, 120, 120, 0, 0,
-        1, 120, 120, 120, 120, 0, 0, 0,
-        120, 120, 120, 0, 0, 0, 0, 0
-    ))
-
-    val runner = Runner(requirements)
-    runner.drawSpriteAt(0, 50, 60)
-    //runner.drawSpriteAt(1, 100, 100)
-    GameConsole( 60, DummyVideoGameController())
 }
 
 @Composable
