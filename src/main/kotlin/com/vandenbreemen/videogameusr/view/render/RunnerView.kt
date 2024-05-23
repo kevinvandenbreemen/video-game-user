@@ -1,10 +1,10 @@
 package com.vandenbreemen.videogameusr.view.render
 
-import com.vandenbreemen.com.vandenbreemen.videogameusr.log.KlogLevel
-import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.viddisplayrast.data.DisplayRaster
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
+import com.vandenbreemen.videogameusr.log.KlogLevel
+import com.vandenbreemen.videogameusr.log.klog
 import java.util.concurrent.Semaphore
 
 /**

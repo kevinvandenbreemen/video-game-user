@@ -1,8 +1,8 @@
 package com.vandenbreemen.videogameusr.model.game.assetmgt
 
-import com.vandenbreemen.com.vandenbreemen.videogameusr.log.KlogLevel
-import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
+import com.vandenbreemen.videogameusr.log.KlogLevel
+import com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
 import java.io.File
 import java.io.PrintWriter

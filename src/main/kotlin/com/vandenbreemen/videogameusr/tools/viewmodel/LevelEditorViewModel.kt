@@ -2,7 +2,7 @@ package com.vandenbreemen.videogameusr.tools.viewmodel
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
+import com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.videogameusr.tools.model.GameDataEditorModel
 import com.vandenbreemen.videogameusr.tools.model.LevelEditorModel
 import kotlinx.coroutines.flow.MutableStateFlow

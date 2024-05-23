@@ -1,6 +1,6 @@
 package com.vandenbreemen.videogameusr.tools.model
 
-import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
+import com.vandenbreemen.videogameusr.log.klog
 import java.io.File
 
 class CodeGenerationModel {

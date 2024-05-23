@@ -31,10 +31,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
-import com.vandenbreemen.com.vandenbreemen.videogameusr.log.KlogLevel
-import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.ToolType
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
+import com.vandenbreemen.videogameusr.log.KlogLevel
+import com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
 import com.vandenbreemen.videogameusr.tools.composables.LevelDesigner
 import com.vandenbreemen.videogameusr.tools.composables.SpriteTileGrid

@@ -1,7 +1,7 @@
 package com.vandenbreemen.com.vandenbreemen.videogameusr.game.videogame2
 
-import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.com.vandenbreemen.videogameusr.model.ScreenInteractor
+import com.vandenbreemen.videogameusr.log.klog
 
 class VideoGame2Model(
     private val screenWidth: Int, private val screenHeight: Int, private val spriteWidth: Int, private val spriteHeight: Int,

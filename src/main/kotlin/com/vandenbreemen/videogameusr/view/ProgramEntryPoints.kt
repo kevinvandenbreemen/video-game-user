@@ -7,9 +7,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
-import com.vandenbreemen.com.vandenbreemen.videogameusr.log.KlogLevel
-import com.vandenbreemen.com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.videogameusr.controller.VideoGameController
+import com.vandenbreemen.videogameusr.log.KlogLevel
+import com.vandenbreemen.videogameusr.log.klog
 
 
 class ProgramEntryPoints {
