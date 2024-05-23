@@ -41,7 +41,7 @@ class VideoGame4Controller(private val model: VideoGame4Model,  private val runn
     }
 
     override fun playTurn() {
-        //  1:  Need to animate the glowing tile!
+        model.takeTurn()
     }
 
     override fun drawFrame(): DisplayRaster {
