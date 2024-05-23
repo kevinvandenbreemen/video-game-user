@@ -19,8 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.unit.dp
@@ -32,10 +30,10 @@ import com.vandenbreemen.viddisplayrast.data.ByteColorDataInteractor
 import com.vandenbreemen.viddisplayrast.data.DisplayRaster
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
+import com.vandenbreemen.videogameusr.view.render.CanvasRasterRender
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.math.ceil
 
 /**
  * [GameConsole] is a composable that will render a game console with a screen and controls
@@ -46,31 +44,13 @@ object MasterViewComposables {
 }
 
 @Composable
-fun RasterDisplay(raster: DisplayRaster, controller: VideoGameController) {
+fun RasterDisplay(raster: DisplayRaster, canvasRasterRender: CanvasRasterRender) {
 
 //  Render a white square
     Canvas(modifier=Modifier.fillMaxSize()) {
-
-        //  Display all the pixels:
-
-        val width = size.width
-        val height = size.height
-
-        val pixelWidthInCanvas = ceil((width / raster.xDim).toDouble()).toFloat()
-        val pixelHeightInCanvas = ceil((height / raster.yDim).toDouble()).toFloat()
-
-        for (y in 0 until raster.yDim) {
-            for (x in 0 until raster.xDim) {
-                val left = x * pixelWidthInCanvas
-                val top = y * pixelHeightInCanvas
-
-                val color = controller.getComposeColor(raster.getPixel(
-                    x,
-                    y
-                ))
-
-                drawRect(color, topLeft = Offset(left, top), size = Size(pixelWidthInCanvas, pixelHeightInCanvas))
-            }
+        canvasRasterRender.run {
+            setCurrentDrawScope(this@Canvas)
+            renderRaster(raster)
         }
     }
 
@@ -126,12 +106,14 @@ fun GameConsole(framesPerSecond: Int = 1, controller: VideoGameController) {
     val controlsModel = remember { ControlsModel() }
     val delayTime = 1000 / framesPerSecond.toLong()
 
+    val canvasRasterRender = CanvasRasterRender()
+
     Column(Modifier.fillMaxSize().background(MaterialTheme.colors.surface), horizontalAlignment = Alignment.CenterHorizontally) {
 
         //  The "screen"
         Card(modifier=Modifier.weight(0.8f).padding(Dimensions.padding), elevation = Dimensions.elevation) {
             Column(Modifier.fillMaxSize().clip(MaterialTheme.shapes.medium)) {
-                RasterDisplay(raster.value, controller)
+                RasterDisplay(raster.value, canvasRasterRender)
             }
         }
 
@@ -359,5 +341,5 @@ fun PreviewRasterDisplay() {
     val raster = DisplayRaster(16, 16)
     raster.setPixel(8, 8, 100)
     raster.setPixel(9, 8, 100)
-    RasterDisplay(raster, DummyVideoGameController())
+    RasterDisplay(raster, CanvasRasterRender())
 }
