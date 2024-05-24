@@ -491,21 +491,26 @@ fun gameEditor(requirements: GameDataRequirements,
 
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun GameToolDrawerContent(
     coroutineScope: CoroutineScope,
     scaffoldState: ScaffoldState,
     gameDataEditorModel: GameDataEditorViewModel
 ) {
+
+    val windowInsetsRight = 60.dp
+
     Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.background)) {
 
         //  Sprite editor
         Card(
             backgroundColor = MaterialTheme.colors.primaryVariant,
-            modifier = Modifier.padding(Dimensions.padding).wrapContentSize(), elevation = Dimensions.elevation){
-            Column {
+            modifier = Modifier.padding(Dimensions.padding).fillMaxWidth().windowInsetsPadding(WindowInsets(
+                right = windowInsetsRight
+            )), elevation = Dimensions.elevation){
+            Column(modifier = Modifier.padding(Dimensions.padding)) {
                 Text("Sprite Tools", style = MaterialTheme.typography.subtitle1.copy(color = MaterialTheme.colors.secondary))
+                Spacer(modifier = Modifier.height(Dimensions.padding))
                 Text("Sprite Editor", style = MaterialTheme.typography.subtitle1, modifier = Modifier.clickable {
                     coroutineScope.launch {
                         scaffoldState.drawerState.close()
@@ -519,19 +524,23 @@ private fun GameToolDrawerContent(
         //  Levels
         Card(
             backgroundColor = MaterialTheme.colors.primaryVariant,
-            modifier = Modifier.padding(Dimensions.padding).wrapContentSize(), elevation = Dimensions.elevation) {
+            modifier = Modifier.padding(Dimensions.padding).fillMaxWidth().windowInsetsPadding(WindowInsets(
+                right = windowInsetsRight
+            )), elevation = Dimensions.elevation) {
             Column(modifier = Modifier.padding(Dimensions.padding)) {
                 Text("Level Tools", style = MaterialTheme.typography.subtitle1.copy(color = MaterialTheme.colors.secondary))
+                Spacer(modifier = Modifier.height(Dimensions.padding))
                 InputtingButton( "New Level", "Enter level name", onInput = {
                     coroutineScope.launch {
                         gameDataEditorModel.addLevel(it)
                     }
                 })
-                Text("Existing Levels", style = MaterialTheme.typography.subtitle1)
                 Spacer(modifier = Modifier.height(Dimensions.padding))
+                Text("Existing Levels", style = MaterialTheme.typography.subtitle2.copy(color = MaterialTheme.colors.secondary))
+                Spacer(modifier = Modifier.height(Dimensions.borderPadding))
                 val availableLevelNames = gameDataEditorModel.levelNames.collectAsState()
                 for(levelName in availableLevelNames.value) {
-                    Text(levelName, style = MaterialTheme.typography.caption, modifier = Modifier.clickable {
+                    Text(levelName, style = MaterialTheme.typography.subtitle1, modifier = Modifier.clickable {
                         coroutineScope.launch {
                             scaffoldState.drawerState.close()
                             gameDataEditorModel.selectLevelForEdit(levelName)
@@ -545,9 +554,12 @@ private fun GameToolDrawerContent(
         //  Code Dumper
         Card(
             backgroundColor = MaterialTheme.colors.primaryVariant,
-            modifier = Modifier.padding(Dimensions.padding).wrapContentSize(), elevation = Dimensions.elevation) {
+            modifier = Modifier.padding(Dimensions.padding).fillMaxWidth().windowInsetsPadding(WindowInsets(
+                right = windowInsetsRight
+            )), elevation = Dimensions.elevation) {
             Column(modifier = Modifier.padding(Dimensions.padding)) {
                 Text("File Tools", style = MaterialTheme.typography.subtitle1.copy(color = MaterialTheme.colors.secondary))
+                Spacer(modifier = Modifier.height(Dimensions.padding))
                 Text(
                     "Dump Assets to File",
                     style = MaterialTheme.typography.subtitle1.copy(color = Color.Green),
