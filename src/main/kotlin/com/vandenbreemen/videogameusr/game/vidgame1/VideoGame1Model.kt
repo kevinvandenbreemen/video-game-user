@@ -1,8 +1,8 @@
 package com.vandenbreemen.com.vandenbreemen.videogameusr.game.vidgame1
 
-import com.vandenbreemen.com.vandenbreemen.videogameusr.model.DelayedSwitch
-import com.vandenbreemen.com.vandenbreemen.videogameusr.model.ScreenInteractor
 import com.vandenbreemen.videogameusr.log.klog
+import com.vandenbreemen.videogameusr.model.DelayedSwitch
+import com.vandenbreemen.videogameusr.model.ScreenInteractor
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 

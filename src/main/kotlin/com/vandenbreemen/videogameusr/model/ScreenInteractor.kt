@@ -1,4 +1,4 @@
-package com.vandenbreemen.com.vandenbreemen.videogameusr.model
+package com.vandenbreemen.videogameusr.model
 
 class ScreenInteractor(private val screenWidth: Int, private val screenHeight: Int, private val spriteWidth: Int, private val spriteHeight: Int) {
 

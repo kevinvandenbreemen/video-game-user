@@ -3,9 +3,9 @@ package com.vandenbreemen.videogameusr.view.render
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import com.vandenbreemen.com.vandenbreemen.videogameusr.model.ColorInteractor
 import com.vandenbreemen.viddisplayrast.data.DisplayRaster
 import com.vandenbreemen.viddisplayrast.view.RasterRender
+import com.vandenbreemen.videogameusr.model.ColorInteractor
 import kotlin.math.ceil
 
 class CanvasRasterRender(private val colorInteractor: ColorInteractor): RasterRender<DrawScope> {

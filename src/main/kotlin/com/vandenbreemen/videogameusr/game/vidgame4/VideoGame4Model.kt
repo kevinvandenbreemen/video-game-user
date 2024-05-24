@@ -1,7 +1,7 @@
 package com.vandenbreemen.videogameusr.game.vidgame4
 
-import com.vandenbreemen.com.vandenbreemen.videogameusr.model.DelayedSwitch
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
+import com.vandenbreemen.videogameusr.model.DelayedSwitch
 import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
 import com.vandenbreemen.videogameusr.model.game.assetmgt.GameAssetsInteractor
 import com.vandenbreemen.videogameusr.tools.gameEditor

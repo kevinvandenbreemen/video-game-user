@@ -1,4 +1,4 @@
-package com.vandenbreemen.com.vandenbreemen.videogameusr.model
+package com.vandenbreemen.videogameusr.model
 
 import androidx.compose.ui.graphics.Color
 import com.vandenbreemen.viddisplayrast.data.ByteColorDataInteractor

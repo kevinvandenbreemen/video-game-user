@@ -1,4 +1,4 @@
-package com.vandenbreemen.com.vandenbreemen.videogameusr.model
+package com.vandenbreemen.videogameusr.model
 
 import java.util.concurrent.atomic.AtomicLong
 

@@ -1,8 +1,8 @@
 package com.vandenbreemen.videogameusr.tools.model
 
 import androidx.compose.ui.graphics.Color
-import com.vandenbreemen.com.vandenbreemen.videogameusr.model.ColorInteractor
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
+import com.vandenbreemen.videogameusr.model.ColorInteractor
 import com.vandenbreemen.videogameusr.model.game.LevelModel
 import com.vandenbreemen.videogameusr.tools.interactor.CodeGenerationInteractor
 
@@ -10,8 +10,8 @@ class LevelEditorModel(private val requirements: GameDataRequirements,
                        private val levelModel: LevelModel,
                        private val gameDataEditorModel: GameDataEditorModel,
                        private val colorInteractor: ColorInteractor,
-                        private val codeGenerationInteractor: CodeGenerationInteractor,
-                     val levelName: String,
+                       private val codeGenerationInteractor: CodeGenerationInteractor,
+                       val levelName: String,
     ) {
 
     val spriteWidth = requirements.spriteWidth
