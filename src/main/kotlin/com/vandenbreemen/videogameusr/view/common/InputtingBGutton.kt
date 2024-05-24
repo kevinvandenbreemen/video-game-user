@@ -4,6 +4,7 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -22,7 +23,7 @@ import com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 @Composable
 fun InputtingButton(label: String, instruction: String, onInput: (String)->Unit) {
 
-    Card(modifier = Modifier.padding(Dimensions.padding), elevation = 7.dp,
+    Card(elevation = 7.dp,
         shape = MaterialTheme.shapes.medium, border = BorderStroke(1.dp, MaterialTheme.colors.primary)
         ) {
 
@@ -37,11 +38,9 @@ fun InputtingButton(label: String, instruction: String, onInput: (String)->Unit)
             val focusRequester = remember { FocusRequester() }
 
             if (!isShowing.value) {
-                Button(onClick = {
+                Text(label, style = MaterialTheme.typography.caption, modifier = Modifier.clickable {
                     isShowing.value = true
-                }) {
-                    Text(label, style = MaterialTheme.typography.caption)
-                }
+                })
             } else {
                 TextField(value = text.value, onValueChange = {
                     text.value = it
