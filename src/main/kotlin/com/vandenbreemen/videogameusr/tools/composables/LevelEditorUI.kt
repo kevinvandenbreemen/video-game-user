@@ -239,18 +239,12 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
         val spriteWidth = levelEditorViewModel.spriteWidth.toFloat()
         val spriteHeight = levelEditorViewModel.spriteHeight.toFloat()
 
-        val casnvasWidth = size.width
-        val canvasHeight = size.height
-
         val boxWidth = gridRenderinInfo.boxWidth
         val boxHeight = gridRenderinInfo.boxHeight
 
         val pixelWidth = gridRenderinInfo.pixelWidth
         val pixelHeight = gridRenderinInfo.pixelHeight
 
-
-
-        klog("canvas width=$casnvasWidth, Box width=$boxWidth, box height=$boxHeight")
 
         //  Draw the rows as boxes
         for (row in 0 until levelEditorViewModel.levelHeight) {
