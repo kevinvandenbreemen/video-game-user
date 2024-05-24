@@ -15,17 +15,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Outline
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
@@ -58,7 +53,7 @@ import kotlin.math.ceil
  * 2.  Level Editor [LevelDesigner]
  * 2.  Color Picker [ColorPickerUI]
  * 3.  Grid of other tiles [SpriteTileGrid]
- * 4.  Tool select drawer [GameToolDrawerContent]
+ * 4.  Tool select drawer/hamburger menu [GameToolDrawerContent]
  * 5.  Previewer of Compose Components [PreviewOfComponentYourWorkingOn]
  *
  * @param model Model for the sprite editor
@@ -450,15 +445,13 @@ fun gameEditor(requirements: GameDataRequirements,
                         }
                     })
                 },
-                drawerShape = object: Shape {
-                    override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline {
-                        return Outline.Rectangle(Rect(0f, 0f, (size.width * 0.6f), size.height))
-                    }
-                },
                 drawerContent = {
-                    GameToolDrawerContent(coroutineScope, scaffoldState,
-                        viewModel,
-                        )
+                    //  Get the width of the drawer
+                    Column(modifier=Modifier.fillMaxSize()) {
+                        GameToolDrawerContent(coroutineScope, scaffoldState,
+                            viewModel,
+                            )
+                    }
                 }
             ) {
                 Column(modifier = Modifier.fillMaxSize()) {
@@ -488,9 +481,6 @@ fun gameEditor(requirements: GameDataRequirements,
                             }
                         }
                     }
-
-
-
                 }
             }
 
@@ -501,60 +491,53 @@ fun gameEditor(requirements: GameDataRequirements,
 
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun GameToolDrawerContent(
     coroutineScope: CoroutineScope,
     scaffoldState: ScaffoldState,
     gameDataEditorModel: GameDataEditorViewModel
 ) {
-    Column(modifier = Modifier.background(MaterialTheme.colors.background).fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.background)) {
 
         //  Sprite editor
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("Sprite Editor", style = MaterialTheme.typography.subtitle1, modifier = Modifier.clickable {
-                coroutineScope.launch {
-                    scaffoldState.drawerState.close()
-                    gameDataEditorModel.editSprites()
-                }
-            })
-        }
-
-        //  Level Creator
-        Column(modifier = Modifier.border(1.dp, MaterialTheme.colors.onBackground,
-                shape = MaterialTheme.shapes.medium
-            ).padding(
-            Dimensions.borderPadding,
-            )) {
-
-            Text("Add Level", style = MaterialTheme.typography.subtitle1)
-            InputtingButton( "Add Level", "Enter level name", onInput = {
-                coroutineScope.launch {
-                    gameDataEditorModel.addLevel(it)
-                }
-            })
+        Card(modifier = Modifier.padding(Dimensions.padding).wrapContentSize(), elevation = Dimensions.elevation){
+            Column {
+                Text("Sprite Tools", style = MaterialTheme.typography.subtitle1)
+                Text("Sprite Editor", style = MaterialTheme.typography.subtitle1, modifier = Modifier.clickable {
+                    coroutineScope.launch {
+                        scaffoldState.drawerState.close()
+                        gameDataEditorModel.editSprites()
+                    }
+                })
+            }
 
         }
 
-        //  Level editor
-        Column {
-            Text("Level Editor", style = MaterialTheme.typography.subtitle1)
 
-            val availableLevelNames = gameDataEditorModel.levelNames.collectAsState()
 
-            //  Buttons for each of the levels
-            Column(modifier=Modifier.border(1.dp, Color.Black).padding(5.dp)) {
+        //  Levels
+        Card(modifier = Modifier.wrapContentSize(), elevation = Dimensions.elevation) {
+            Column(modifier = Modifier.padding(Dimensions.padding)) {
+                Text("Level Tools", style = MaterialTheme.typography.subtitle1)
+                InputtingButton( "New Level", "Enter level name", onInput = {
+                    coroutineScope.launch {
+                        gameDataEditorModel.addLevel(it)
+                    }
+                })
+                Text("Existing Levels", style = MaterialTheme.typography.subtitle1)
+                Spacer(modifier = Modifier.height(Dimensions.padding))
+                val availableLevelNames = gameDataEditorModel.levelNames.collectAsState()
                 for(levelName in availableLevelNames.value) {
-                    Button(onClick = {
+                    Text(levelName, style = MaterialTheme.typography.caption, modifier = Modifier.clickable {
                         coroutineScope.launch {
                             scaffoldState.drawerState.close()
                             gameDataEditorModel.selectLevelForEdit(levelName)
                         }
-                    }) {
-                        Text(levelName, style = MaterialTheme.typography.caption)
-                    }
+                    })
                 }
-            }
 
+            }
         }
 
         //  Code Dumper
