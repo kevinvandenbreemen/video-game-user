@@ -1,6 +1,6 @@
 package com.vandenbreemen.videogameusr.tools.viewmodel
 
-import com.vandenbreemen.com.vandenbreemen.videogameusr.tools.ToolType
+import com.vandenbreemen.videogameusr.tools.ToolType
 import com.vandenbreemen.videogameusr.tools.model.GameDataEditorModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
