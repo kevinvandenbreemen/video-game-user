@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import com.vandenbreemen.videogameusr.view.ButtonColors
 import com.vandenbreemen.videogameusr.view.Dimensions
 import com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 
@@ -58,7 +59,7 @@ fun ConfirmingButton(
                                 onConfirm()
                             }, modifier=Modifier.width((Dimensions.padding.value * 5).dp).height((Dimensions.padding.value*2.5).dp)
                         ) {
-                            Text("Yes", style = MaterialTheme.typography.button)
+                            Text("Yes", style = MaterialTheme.typography.button.copy(color = ButtonColors.irreversableChange))
                         }
                     }
                 }

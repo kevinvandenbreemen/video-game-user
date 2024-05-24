@@ -57,6 +57,11 @@ private val LightColorPalette = lightColors(
     onSurface = Color.Black,
 )
 
+object ButtonColors {
+    val persist = Color.Green
+    val irreversableChange = Color(0xFFFFAA00)
+}
+
 object Dimensions {
     val padding = 10.dp
     val borderPadding = 5.dp

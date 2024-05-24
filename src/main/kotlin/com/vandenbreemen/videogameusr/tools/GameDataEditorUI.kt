@@ -36,6 +36,7 @@ import com.vandenbreemen.videogameusr.tools.model.GameDataEditorModel
 import com.vandenbreemen.videogameusr.tools.viewmodel.GameDataEditorViewModel
 import com.vandenbreemen.videogameusr.tools.viewmodel.LevelEditorViewModel
 import com.vandenbreemen.videogameusr.tools.viewmodel.SpriteEditorViewModel
+import com.vandenbreemen.videogameusr.view.ButtonColors
 import com.vandenbreemen.videogameusr.view.Dimensions
 import com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 import com.vandenbreemen.videogameusr.view.common.ConfirmingButton
@@ -562,7 +563,7 @@ private fun GameToolDrawerContent(
                 Spacer(modifier = Modifier.height(Dimensions.padding))
                 Text(
                     "Dump Assets to File",
-                    style = MaterialTheme.typography.subtitle1.copy(color = Color.Green),
+                    style = MaterialTheme.typography.subtitle1.copy(color = ButtonColors.persist),
                     modifier = Modifier.clickable {
                         coroutineScope.launch {
                             scaffoldState.drawerState.close()
