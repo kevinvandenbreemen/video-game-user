@@ -1,4 +1,4 @@
-package com.vandenbreemen.com.vandenbreemen.videogameusr.game.videogame2
+package com.vandenbreemen.videogameusr.game.videogame2
 
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
@@ -29,7 +29,8 @@ fun main() {
     //  First sprite:  The player, standing still
     //  16x16 array of bytes
 
-    requirement.setData(VideoGame2SpriteAddresses.STANDING_STILL_LEFT, byteArrayOf(
+    requirement.setData(
+        VideoGame2SpriteAddresses.STANDING_STILL_LEFT, byteArrayOf(
         0, 0, 0, 0, 0, 0, 0, -75, -75, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 121, -75, -75, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 121, 121, -75, -75, 0, 0, 0, 0, 0, 0,
@@ -51,7 +52,8 @@ fun main() {
     //spriteEditor(requirement, 0, "requirement", 800)
 
     //  Character running frame 1
-    requirement.setData(VideoGame2SpriteAddresses.RUNNING_LEFT_FRAME_1, byteArrayOf(
+    requirement.setData(
+        VideoGame2SpriteAddresses.RUNNING_LEFT_FRAME_1, byteArrayOf(
         0, 0, 0, 0, 0, 0, 0, -75, -75, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 121, -75, -75, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 121, 121, -75, -75, 0, 0, 0, 0, 0, 0,
@@ -72,7 +74,8 @@ fun main() {
 
     //  Character running frame 2
 
-    requirement.setData(VideoGame2SpriteAddresses.RUNNING_LEFT_FRAME_2, byteArrayOf(
+    requirement.setData(
+        VideoGame2SpriteAddresses.RUNNING_LEFT_FRAME_2, byteArrayOf(
         0, 0, 0, 0, 0, 0, 0, -75, -75, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 121, -75, -75, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 121, 121, -75, -75, 0, 0, 0, 0, 0, 0,
@@ -93,7 +96,8 @@ fun main() {
 
     //  Set up the opposite direction movement
     //  Running frame 1:
-    requirement.setData(VideoGame2SpriteAddresses.RUNNING_RIGHT_FRAME_1, byteArrayOf(
+    requirement.setData(
+        VideoGame2SpriteAddresses.RUNNING_RIGHT_FRAME_1, byteArrayOf(
         0, 0, 0, 0, 0, 0, 0, -75, -75, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, -75, -75, 121, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, -75, -75, 121, 121, 0, 0, 0, 0, 0, 0,
@@ -113,7 +117,8 @@ fun main() {
     ))
 
     //  Frame 2
-    requirement.setData(VideoGame2SpriteAddresses.RUNNING_RIGHT_FRAME_2, byteArrayOf(
+    requirement.setData(
+        VideoGame2SpriteAddresses.RUNNING_RIGHT_FRAME_2, byteArrayOf(
         0, 0, 0, 0, 0, 0, 0, -75, -75, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, -75, -75, 121, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, -75, -75, 121, 121, 0, 0, 0, 0, 0, 0,
@@ -132,7 +137,8 @@ fun main() {
         0, 0, 0, 0, 0, 0, -107, -107, 0, -107, 0, 0, 0, 0, 0, 0
     ))
 
-    requirement.setData(VideoGame2SpriteAddresses.RUNNING_RIGHT_FRAME_3, byteArrayOf(
+    requirement.setData(
+        VideoGame2SpriteAddresses.RUNNING_RIGHT_FRAME_3, byteArrayOf(
         0, 0, 0, 0, 0, 0, 0, -75, -75, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, -75, -75, 121, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, -75, -75, 121, 121, 0, 0, 0, 0, 0, 0,
@@ -151,7 +157,8 @@ fun main() {
         0, 0, 0, 0, -107, -107, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
     ))
 
-    requirement.setData(VideoGame2SpriteAddresses.RUNNING_LEFT_FRAME_3, byteArrayOf(
+    requirement.setData(
+        VideoGame2SpriteAddresses.RUNNING_LEFT_FRAME_3, byteArrayOf(
         0, 0, 0, 0, 0, 0, 0, -75, -75, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 121, -75, -75, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 121, 121, -75, -75, 0, 0, 0, 0, 0, 0,
@@ -173,7 +180,8 @@ fun main() {
     //spriteEditor(requirement, VideoGame2SpriteAddresses.RUNNING_RIGHT_FRAME_3, "requirement", 800)
 
     //  Stationary
-    requirement.setData(VideoGame2SpriteAddresses.STANDING_STILL_RIGHT, byteArrayOf(
+    requirement.setData(
+        VideoGame2SpriteAddresses.STANDING_STILL_RIGHT, byteArrayOf(
         0, 0, 0, 0, 0, 0, 0, -75, -75, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, -75, -75, 121, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, -75, -75, 121, 121, 0, 0, 0, 0, 0, 0,
@@ -192,7 +200,8 @@ fun main() {
         0, 0, 0, 0, 63, 63, -65, 0, 0, 63, 63, 0, 0, 0, 0, 0
     ))
 
-    requirement.setData(VideoGame2SpriteAddresses.GROUND_SPRITE_1, byteArrayOf(
+    requirement.setData(
+        VideoGame2SpriteAddresses.GROUND_SPRITE_1, byteArrayOf(
         0, 0, 0, 0, 36, 0, 0, 0, 36, 0, 0, 36, 0, 0, 0, 0,
         -87, -91, -87, -91, -87, -91, -87, -91, -87, -91, -87, -91, -87, -91, -87, -91,
         21, 21, 21, 0, 21, 21, 101, 21, 21, 21, 21, 21, 21, 21, 21, 21,

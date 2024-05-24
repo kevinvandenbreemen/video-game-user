@@ -1,4 +1,4 @@
-package com.vandenbreemen.com.vandenbreemen.videogameusr.game.videogame2
+package com.vandenbreemen.videogameusr.game.videogame2
 
 import com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.videogameusr.model.ScreenInteractor

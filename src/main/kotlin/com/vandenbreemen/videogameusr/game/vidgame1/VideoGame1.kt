@@ -1,6 +1,5 @@
-package com.vandenbreemen.com.vandenbreemen.videogameusr.game.controller
+package com.vandenbreemen.videogameusr.game.vidgame1
 
-import com.vandenbreemen.com.vandenbreemen.videogameusr.game.vidgame1.VideoGame1Controller
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.viddisplayrast.game.Runner
 import com.vandenbreemen.videogameusr.view.ProgramEntryPoints

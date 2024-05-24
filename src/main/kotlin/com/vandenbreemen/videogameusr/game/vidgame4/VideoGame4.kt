@@ -10,7 +10,7 @@ fun main() {
 
     val runnerView = RunnerView(model.requirements)
 
-    //model.edit()
+    model.edit()
 
     ProgramEntryPoints.playGameInWindow(VideoGame4Controller(model, runnerView), 60, 800,
         (model.requirements.screenHeight.toFloat() / model.requirements.screenWidth.toFloat()))
