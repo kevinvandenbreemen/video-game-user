@@ -501,9 +501,11 @@ private fun GameToolDrawerContent(
     Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.background)) {
 
         //  Sprite editor
-        Card(modifier = Modifier.padding(Dimensions.padding).wrapContentSize(), elevation = Dimensions.elevation){
+        Card(
+            backgroundColor = MaterialTheme.colors.primaryVariant,
+            modifier = Modifier.padding(Dimensions.padding).wrapContentSize(), elevation = Dimensions.elevation){
             Column {
-                Text("Sprite Tools", style = MaterialTheme.typography.subtitle1)
+                Text("Sprite Tools", style = MaterialTheme.typography.subtitle1.copy(color = MaterialTheme.colors.secondary))
                 Text("Sprite Editor", style = MaterialTheme.typography.subtitle1, modifier = Modifier.clickable {
                     coroutineScope.launch {
                         scaffoldState.drawerState.close()
@@ -514,12 +516,12 @@ private fun GameToolDrawerContent(
 
         }
 
-
-
         //  Levels
-        Card(modifier = Modifier.wrapContentSize(), elevation = Dimensions.elevation) {
+        Card(
+            backgroundColor = MaterialTheme.colors.primaryVariant,
+            modifier = Modifier.padding(Dimensions.padding).wrapContentSize(), elevation = Dimensions.elevation) {
             Column(modifier = Modifier.padding(Dimensions.padding)) {
-                Text("Level Tools", style = MaterialTheme.typography.subtitle1)
+                Text("Level Tools", style = MaterialTheme.typography.subtitle1.copy(color = MaterialTheme.colors.secondary))
                 InputtingButton( "New Level", "Enter level name", onInput = {
                     coroutineScope.launch {
                         gameDataEditorModel.addLevel(it)
@@ -541,13 +543,21 @@ private fun GameToolDrawerContent(
         }
 
         //  Code Dumper
-        Row {
-            Text("Dump Assets to File", style = MaterialTheme.typography.subtitle1.copy(color = Color.Green), modifier = Modifier.clickable {
-                coroutineScope.launch {
-                    scaffoldState.drawerState.close()
-                    gameDataEditorModel.dumpAssetsToFile()
-                }
-            })
+        Card(
+            backgroundColor = MaterialTheme.colors.primaryVariant,
+            modifier = Modifier.padding(Dimensions.padding).wrapContentSize(), elevation = Dimensions.elevation) {
+            Column(modifier = Modifier.padding(Dimensions.padding)) {
+                Text("File Tools", style = MaterialTheme.typography.subtitle1.copy(color = MaterialTheme.colors.secondary))
+                Text(
+                    "Dump Assets to File",
+                    style = MaterialTheme.typography.subtitle1.copy(color = Color.Green),
+                    modifier = Modifier.clickable {
+                        coroutineScope.launch {
+                            scaffoldState.drawerState.close()
+                            gameDataEditorModel.dumpAssetsToFile()
+                        }
+                    })
+            }
         }
     }
 }
