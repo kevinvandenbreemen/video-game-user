@@ -4,9 +4,11 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
@@ -49,9 +51,32 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
                 Column {
 
                     //  Title and controls
-                    Row(modifier = Modifier.fillMaxWidth().padding(start = Dimensions.padding, end = Dimensions.padding, top = Dimensions.padding)) {
+                    Row(modifier = Modifier.fillMaxWidth().padding(start = Dimensions.padding, end = Dimensions.padding, top = Dimensions.padding)
+                        , verticalAlignment = Alignment.CenterVertically
+                    ) {
                         //  Title
                         Text("Level Editor", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold))
+                        Spacer(modifier = Modifier.weight(1f))
+                        //  Controls
+                        Row {
+
+                            val zoomControlSize = 25.dp
+
+                            //  Plus and minus buttons
+                            IconButton(onClick = {
+                                levelEditorViewModel.zoomIn()
+                            }, modifier = Modifier.size(zoomControlSize)) {
+                                Text("+")
+                            }
+
+                            Spacer(modifier = Modifier.width((Dimensions.padding.value * 2).dp))
+
+                            IconButton(onClick = {
+                                levelEditorViewModel.zoomOut()
+                            }, modifier = Modifier.size(zoomControlSize)) {
+                                Text("-")
+                            }
+                        }
                     }
 
                     Card(elevation = Dimensions.elevation, modifier = Modifier.padding(Dimensions.padding)) {
@@ -74,8 +99,9 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
 
     val selectedSpriteIndex by levelEditorViewModel.currentSelectedSpriteIndexStateFlow.collectAsState()
     val tileGrid = levelEditorViewModel.levelCoordinateToTileGrid.collectAsState()
+    val zoomLevel = levelEditorViewModel.scale.collectAsState()
 
-    val scaleDP = 50.dp
+    val scaleDP = (50 * zoomLevel.value).dp
 
     Column {
 
