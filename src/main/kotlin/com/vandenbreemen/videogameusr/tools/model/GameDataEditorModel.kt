@@ -43,9 +43,6 @@ class GameDataEditorModel(private val requirements: GameDataRequirements,
      */
     var paintColor: Byte = 0
 
-    val levelWidthInTiles = 100
-    val levelHeightInTiles = 100
-
 
     init {
 
@@ -161,23 +158,6 @@ class GameDataEditorModel(private val requirements: GameDataRequirements,
         return colorInteractor.getComposeColor(colorByte)
     }
 
-    /**
-     * Build the source code required to generate the sprite and assign it to the requirements
-     */
-    fun generateSpriteSourceCode(): String {
-
-        val codeBuilder = StringBuilder()
-        previouslySelectedSpriteIndices.sorted().forEach { index ->
-            codeBuilder.append(codeGenerationInteractor.generateCodeForSpriteIndex(index, requirementsVariableName))
-            codeBuilder.append("\n\n")
-        }
-
-        //  Kick off a full sprite write
-        codeGenerationInteractor.writeAllSpritesToFile()
-
-        return codeBuilder.toString()
-    }
-
     //  Sprite tile grid stuff
 
     /**
@@ -230,11 +210,6 @@ class GameDataEditorModel(private val requirements: GameDataRequirements,
         CoroutineScope(CoreDependenciesHelper.getIODispatcher()).launch {
             gameAssetsInteractor.writeAssetsToFile(assetsDataFilePath, requirements, tileBasedGameWorld)
         }
-
-        //  TODO    This needs to go assuming asset file format works out
-        codeGenerationInteractor.generateAssetSheet(
-            this.tileBasedGameWorld, this.requirementsVariableName, "gameWorld", levelWidthInTiles, levelHeightInTiles
-        )
 
         return assetsDataFilePath
     }
