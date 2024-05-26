@@ -2,6 +2,7 @@ package com.vandenbreemen.videogameusr.game.wgame.data
 
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
+import com.vandenbreemen.videogameusr.model.game.assetmgt.GameAssetsInteractor
 import com.vandenbreemen.videogameusr.tools.gameEditor
 
 class Cave() {
@@ -12,7 +13,7 @@ class Cave() {
     private val caveWorld = TileBasedGameWorld(requirements)
 
     fun load() {
-        TODO("Gotta load this from a file somewhere!")
+        GameAssetsInteractor().loadAssetsFromClasspath("/assets/games/wider/cave.dat", requirements, caveWorld)
     }
 
     fun edit() {
@@ -23,6 +24,6 @@ class Cave() {
 
 fun main() {
     val cave = Cave()
-    //cave.load()
+    cave.load()
     cave.edit()
 }
