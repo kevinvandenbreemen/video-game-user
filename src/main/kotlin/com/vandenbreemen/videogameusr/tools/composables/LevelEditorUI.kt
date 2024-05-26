@@ -31,6 +31,7 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
 
         val verticalScrollState = rememberScrollState()
         val horizontalScrollState = rememberScrollState()
+        val zoomLevel = levelEditorViewModel.scale.collectAsState()
 
         val selectedSpriteIndex = remember { mutableStateOf( levelEditorViewModel.currentSelectedSpriteIndex ) }
         LaunchedEffect(selectedSpriteIndex.value) {
@@ -58,9 +59,17 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
                         Text("Level Editor", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold))
                         Spacer(modifier = Modifier.weight(1f))
                         //  Controls
-                        Row {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
 
                             val zoomControlSize = 25.dp
+
+                            if(zoomLevel.value != 1f) {
+                                Text(
+                                    "${zoomLevel.value}x",
+                                    style = MaterialTheme.typography.subtitle1,
+                                    modifier = Modifier.padding(end = Dimensions.padding)
+                                )
+                            }
 
                             //  Plus and minus buttons
                             IconButton(onClick = {
