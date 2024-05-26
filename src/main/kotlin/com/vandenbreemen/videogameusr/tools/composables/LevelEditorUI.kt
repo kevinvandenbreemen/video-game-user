@@ -1,19 +1,19 @@
 package com.vandenbreemen.videogameusr.tools.composables
 
-import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.vandenbreemen.videogameusr.tools.viewmodel.LevelEditorViewModel
 import com.vandenbreemen.videogameusr.view.Dimensions
@@ -47,14 +47,23 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
             Card(modifier = Modifier.padding(Dimensions.padding).fillMaxSize(), elevation = Dimensions.elevation){
 
                 Column {
-                    //  Put this inside a viewport
-                    Box(modifier = Modifier.fillMaxWidth().fillMaxHeight().verticalScroll(verticalScrollState).horizontalScroll(horizontalScrollState)) {
-                        LevelEditorView(levelEditorViewModel)
+
+                    //  Title and controls
+                    Row(modifier = Modifier.fillMaxWidth().padding(start = Dimensions.padding, end = Dimensions.padding, top = Dimensions.padding)) {
+                        //  Title
+                        Text("Level Editor", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold))
+                    }
+
+                    Card(elevation = Dimensions.elevation, modifier = Modifier.padding(Dimensions.padding)) {
+                        //  Put this inside a viewport
+                        Box(
+                            modifier = Modifier.fillMaxWidth().fillMaxHeight().background(Color.Black).verticalScroll(verticalScrollState)
+                                .horizontalScroll(horizontalScrollState)
+                        ) {
+                            LevelEditorView(levelEditorViewModel)
+                        }
                     }
                 }
-
-
-
             }
         }
     }
