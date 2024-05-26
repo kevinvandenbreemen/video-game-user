@@ -523,9 +523,33 @@ private fun GameToolDrawerContent(
             Column(modifier = Modifier.padding(Dimensions.padding)) {
                 Text("Level Tools", style = MaterialTheme.typography.subtitle1.copy(color = MaterialTheme.colors.secondary))
                 Spacer(modifier = Modifier.height(Dimensions.padding))
-                InputtingButton( "New Level", "Enter level name", onInput = {
+                val levelWidthTiles = remember { mutableStateOf(100) }
+                val levelHeightTiles = remember { mutableStateOf(100) }
+                InputtingButton( "New Level", "Enter level name",
+                    detailsRowComposable = {
+                        TextField(value = levelWidthTiles.value.toString(),
+                            modifier = Modifier.width(150.dp),
+                            onValueChange = {
+                            it.toIntOrNull()?.let {
+                                levelWidthTiles.value = it
+                            }
+                        }, label = {
+                            Text("Width")
+                        })
+                        Spacer(modifier = Modifier.width(Dimensions.padding))
+                        TextField(value = levelHeightTiles.value.toString(),
+                            modifier = Modifier.width(150.dp),
+                            onValueChange = {
+                                it.toIntOrNull()?.let {
+                                    levelHeightTiles.value = it
+                                }
+                        }, label = {
+                            Text("Height")
+                        })
+                    },
+                    onInput = {
                     coroutineScope.launch {
-                        gameDataEditorModel.addLevel(it)
+                        gameDataEditorModel.addLevel(it, levelWidthTiles.value, levelHeightTiles.value)
                     }
                 })
                 Spacer(modifier = Modifier.height(Dimensions.padding))

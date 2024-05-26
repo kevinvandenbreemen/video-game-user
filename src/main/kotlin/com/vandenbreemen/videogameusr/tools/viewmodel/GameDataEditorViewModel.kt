@@ -38,12 +38,12 @@ class GameDataEditorViewModel(private val gameDataEditorModel: GameDataEditorMod
         _message.value = "Assets dumped to $path"
     }
 
-    fun addLevel(levelName: String) {
+    fun addLevel(levelName: String, widthTiles: Int, heightTiles: Int) {
         try {
             gameDataEditorModel.addLevel(
                 levelName,
-                gameDataEditorModel.levelWidthInTiles,
-                gameDataEditorModel.levelHeightInTiles
+                widthTiles,
+                heightTiles
             )
             _levelNames.value = gameDataEditorModel.getLevelNames()
         } catch (e: IllegalArgumentException) {
