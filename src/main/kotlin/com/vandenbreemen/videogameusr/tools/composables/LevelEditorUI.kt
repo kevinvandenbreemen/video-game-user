@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.vandenbreemen.videogameusr.tools.viewmodel.LevelEditorViewModel
@@ -30,9 +29,6 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
 
         val verticalScrollState = rememberScrollState()
         val horizontalScrollState = rememberScrollState()
-        val coroutineScope = rememberCoroutineScope()
-
-        val lastSelectedTileValue = levelEditorViewModel.lastSelectedTileStateFlow.collectAsState()
 
         val selectedSpriteIndex = remember { mutableStateOf( levelEditorViewModel.currentSelectedSpriteIndex ) }
         LaunchedEffect(selectedSpriteIndex.value) {
@@ -49,8 +45,6 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
         Column(modifier = Modifier.weight(.88f).clip(MaterialTheme.shapes.medium).fillMaxSize()) {
             //  The level editor
             Card(modifier = Modifier.padding(Dimensions.padding).fillMaxSize(), elevation = Dimensions.elevation){
-
-                val buttonSectionHeightWgt = 0.08f
 
                 Column {
                     //  Put this inside a viewport
@@ -79,18 +73,6 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
         for(y in 0 until levelEditorViewModel.levelHeight) {
             Row {
                 for(x in 0 until levelEditorViewModel.levelWidth) {
-                    val tileIndex = tileGrid.value[y][x]
-                    val color = if(tileIndex == -1) {
-                        Color.Black
-                    } else {
-                        val spritePixelColorGrid = levelEditorViewModel.getSpritePixelColorGridForSpriteIndex(tileIndex)
-                        if(spritePixelColorGrid == null) {
-                            Color.Black
-                        } else {
-                            spritePixelColorGrid[y % levelEditorViewModel.spriteHeight][x % levelEditorViewModel.spriteWidth]
-                        }
-                    }
-
                     Box(
                         modifier = Modifier.size(scaleDP, scaleDP).pointerInput(Unit) {
                             detectTapGestures(
@@ -101,6 +83,7 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
                             )
                         }
                     ) {
+                        val tileIndex = tileGrid.value[y][x]
                         Canvas(modifier = Modifier.fillMaxSize()) {
                             levelEditorViewModel.getSpritePixelColorGridForSpriteIndex(tileIndex)?.let { grid ->
                                 val scale = scaleDP.value / levelEditorViewModel.spriteWidth
