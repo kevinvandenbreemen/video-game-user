@@ -1,6 +1,6 @@
 package com.vandenbreemen.videogameusr.tools.composables
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
@@ -8,10 +8,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
@@ -91,7 +92,7 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
                     }
 
                     Box(
-                        modifier = Modifier.size(scaleDP, scaleDP).background(color).pointerInput(Unit) {
+                        modifier = Modifier.size(scaleDP, scaleDP).pointerInput(Unit) {
                             detectTapGestures(
                                 onTap = {
                                     levelEditorViewModel.setSpriteTileAt(x, y, selectedSpriteIndex)
@@ -100,8 +101,17 @@ fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
                             )
                         }
                     ) {
-                        //  Draw the sprite
-                        Text("0")
+                        Canvas(modifier = Modifier.fillMaxSize()) {
+                            levelEditorViewModel.getSpritePixelColorGridForSpriteIndex(tileIndex)?.let { grid ->
+                                val scale = scaleDP.value / levelEditorViewModel.spriteWidth
+                                val scaleY = scaleDP.value / levelEditorViewModel.spriteHeight
+                                grid.forEachIndexed { y, row ->
+                                    row.forEachIndexed { x, color ->
+                                        drawRect(color, topLeft = Offset(x * scale, y * scaleY), size = Size(scale, scaleY))
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
