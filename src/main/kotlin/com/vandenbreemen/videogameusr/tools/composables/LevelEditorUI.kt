@@ -12,15 +12,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.videogameusr.tools.viewmodel.LevelEditorViewModel
 import com.vandenbreemen.videogameusr.view.Dimensions
 import kotlinx.coroutines.launch
@@ -201,78 +198,43 @@ private fun getLevelGridRenderingInfo(size: Any, levelEditorViewModel: LevelEdit
 fun LevelEditorView(levelEditorViewModel: LevelEditorViewModel) {
 
     val selectedSpriteIndex by levelEditorViewModel.currentSelectedSpriteIndexStateFlow.collectAsState()
-    val tileIndexGridForLevel = levelEditorViewModel.levelCoordinateToTileGrid.collectAsState()
 
+    val scaleDP = 50.dp
 
-    //  Show a grid of squares corresponding to the zoom etc
-    Canvas(modifier = Modifier.width((levelEditorViewModel.levelWidth * levelEditorViewModel.spriteWidth).dp)
-        .height((levelEditorViewModel.levelHeight * levelEditorViewModel.spriteHeight).dp).pointerInput(Unit) {
+    Column {
 
-        //  Detect user tapping on a tile and set its sprite
-        detectTapGestures {
+        for(y in 0 until levelEditorViewModel.levelHeight) {
+            Row {
+                for(x in 0 until levelEditorViewModel.levelWidth) {
+                    val tileIndex = levelEditorViewModel.levelCoordinateToTileGrid.value[y][x]
+                    val color = if(tileIndex == -1) {
+                        Color.Black
+                    } else {
+                        val spritePixelColorGrid = levelEditorViewModel.getSpritePixelColorGridForSpriteIndex(tileIndex)
+                        if(spritePixelColorGrid == null) {
+                            Color.Black
+                        } else {
+                            spritePixelColorGrid[y % levelEditorViewModel.spriteHeight][x % levelEditorViewModel.spriteWidth]
+                        }
+                    }
 
-            val gridRenderinInfo = getLevelGridRenderingInfo(size, levelEditorViewModel)
+                    Box(
+                        modifier = Modifier.size(scaleDP, scaleDP).background(color).pointerInput(Unit) {
+                            detectTapGestures(
+                                onTap = {
+                                    levelEditorViewModel.setSpriteTileAt(x, y, selectedSpriteIndex)
+                                },
 
-            val x = it.x
-            val y = it.y
-
-            val casnvasWidth = size.width
-            val canvasHeight = size.height
-
-
-
-            val boxWidth = gridRenderinInfo.boxWidth
-            val boxHeight = gridRenderinInfo.boxHeight
-            val col = (x / boxWidth).toInt()
-            val row = (y / boxHeight).toInt()
-            klog("tapped ($x, $y), Canvas width, height=($casnvasWidth, $canvasHeight), Level Width, Height = (${levelEditorViewModel.levelWidth}, ${levelEditorViewModel.levelHeight}), Box width,height =($boxWidth, $boxHeight) --> Tap on row=$row, col=$col")
-
-            val index = selectedSpriteIndex
-            levelEditorViewModel.setSpriteTileAt(col, row, index)
-        }
-
-    }
-    ) {
-
-        val gridRenderinInfo = getLevelGridRenderingInfo(size, levelEditorViewModel)
-
-        val spriteWidth = levelEditorViewModel.spriteWidth.toFloat()
-        val spriteHeight = levelEditorViewModel.spriteHeight.toFloat()
-
-        val boxWidth = gridRenderinInfo.boxWidth
-        val boxHeight = gridRenderinInfo.boxHeight
-
-        val pixelWidth = gridRenderinInfo.pixelWidth
-        val pixelHeight = gridRenderinInfo.pixelHeight
-
-
-        //  Draw the rows as boxes
-        for (row in 0 until levelEditorViewModel.levelHeight) {
-            for (col in 0 until levelEditorViewModel.levelWidth) {
-                drawRect(
-                    color = Color.Black,
-                    topLeft = Offset(col * boxWidth, row * boxHeight),
-                    size = Size(boxWidth, boxHeight),
-                    style = Stroke(0.1f)
-                )
-
-                //  Now grab the sprite from the level and draw it
-                val index = tileIndexGridForLevel.value[row][col]
-                val spriteColorGrid = levelEditorViewModel.getSpritePixelColorGridForSpriteIndex(index)
-                if (spriteColorGrid != null) {
-                    for (y in 0 until spriteHeight.toInt()) {
-                        for (x in 0 until spriteWidth.toInt()) {
-                            drawRect(
-                                color = spriteColorGrid[y][x],
-                                topLeft = Offset((col * boxWidth) + (x*pixelWidth), (row * boxHeight) + (y*pixelHeight)),
-                                size = Size(pixelWidth, pixelHeight)
                             )
                         }
+                    ) {
+                        //  Draw the sprite
+                        Text("0")
                     }
                 }
             }
         }
-
     }
+
 
 }
