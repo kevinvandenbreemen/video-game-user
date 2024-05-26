@@ -24,6 +24,9 @@ class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel
     private val _spriteIndex: MutableStateFlow<Int> = MutableStateFlow(0)
     val spriteIndex = _spriteIndex.asStateFlow()
 
+    private val _isCopyingFromAnotherTile = MutableStateFlow(false)
+    val isCopyingFromAnotherTile = _isCopyingFromAnotherTile.asStateFlow()
+
     private val _spriteBytesHashString: MutableStateFlow<String> = MutableStateFlow("")
 
     /**
@@ -38,6 +41,10 @@ class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel
 
     fun toggleErasing() {
         _isErasing.value = !_isErasing.value
+    }
+
+    fun startCopyFromAnotherTile() {
+        _isCopyingFromAnotherTile.value = true
     }
 
     fun setErasing(isErasing: Boolean) {
@@ -56,6 +63,15 @@ class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel
         gameDataEditorModel.selectSpriteIndex(index)
         _spriteIndex.value = index
         _spriteArray.value = gameDataEditorModel.getSpriteByteArray()
+    }
+
+    fun tapSpriteIndex(index: Int) {
+        if(_isCopyingFromAnotherTile.value) {
+            copySprite(index)
+        }
+        else {
+            setSpriteIndex(index)
+        }
     }
 
     private fun updateSpriteBytes(byteArray: ByteArray) {
@@ -106,6 +122,7 @@ class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel
     fun copySprite(from: Int) {
         gameDataEditorModel.copySprite(from)
         updateSpriteBytes(gameDataEditorModel.getSpriteByteArray())
+        _isCopyingFromAnotherTile.value = false
     }
 
     fun fill() {

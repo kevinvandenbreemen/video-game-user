@@ -61,11 +61,11 @@ import kotlin.math.ceil
  */
 @Composable
 fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel) {
-    val isPickingSpriteToCopyFrom = remember { mutableStateOf(false) }
     val isEyeDropping = viewModel.isEyeDropping.collectAsState()
     val spriteHash = viewModel.spriteBytesHashString.collectAsState()
     val isErasing = viewModel.isErasing.collectAsState()
     val spriteIndex = viewModel.spriteIndex.collectAsState()
+    val isPickingSpriteToCopyFrom = viewModel.isCopyingFromAnotherTile.collectAsState()
 
     Row(modifier = Modifier.fillMaxSize()) {
         Column(Modifier.weight(0.12f)) {
@@ -73,14 +73,7 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
                 SpriteTileGrid(model,
                     title = if (isPickingSpriteToCopyFrom.value) "Select Tile" else "Tiles",
                     onSelectSpriteIndex = {
-                        klog(KlogLevel.DEBUG, "UI - Selected sprite index $it")
-                        if (isPickingSpriteToCopyFrom.value) {
-                            klog(KlogLevel.DEBUG, "UI - Copying sprite")
-                            viewModel.copySprite(it)
-                            isPickingSpriteToCopyFrom.value = false
-                            return@SpriteTileGrid
-                        }
-                        viewModel.setSpriteIndex(it)
+                        viewModel.tapSpriteIndex(it)
                     })
             }
         }
@@ -121,7 +114,7 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
             }
         }
         Column(modifier = Modifier.weight(0.28f).fillMaxSize()) {
-            SideToolPanel(spriteHash.value, viewModel, isErasing, isEyeDropping, isPickingSpriteToCopyFrom)
+            SideToolPanel(spriteHash.value, viewModel, isErasing, isEyeDropping)
         }
     }
 }
@@ -132,7 +125,6 @@ private fun SideToolPanel(
     viewModel: SpriteEditorViewModel,
     isErasing: State<Boolean>,
     isEyeDropping: State<Boolean>,
-    isPickingSpriteToCopyFrom: MutableState<Boolean>
 ) {
     Card(modifier = Modifier.padding(Dimensions.padding).fillMaxSize(), elevation = Dimensions.elevation) {
         Column(modifier = Modifier.padding(Dimensions.padding)) {
@@ -182,7 +174,7 @@ private fun SideToolPanel(
                 }, {})
                 Spacer(modifier = Modifier.width(Dimensions.padding))
                 ConfirmingButton("Copy to Current", "This will overwrite the current sprite", {
-                    isPickingSpriteToCopyFrom.value = true
+                    viewModel.startCopyFromAnotherTile()
                 }, {})
             }
 
