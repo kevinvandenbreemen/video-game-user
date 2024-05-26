@@ -37,11 +37,23 @@ class LevelEditorModel(private val requirements: GameDataRequirements,
         return gameDataEditorModel
     }
 
+    /**
+     * Zoom in to a max of 2x
+     */
     fun zoomIn(){
+        if (zoomLevel >= 2f){
+            return
+        }
         zoomLevel += 0.5f
     }
 
+    /**
+     * Zoom out to a maximum of 0.5x
+     */
     fun zoomOut(){
+        if(zoomLevel <= 0.5f){
+            return
+        }
         zoomLevel -= 0.5f
     }
 
