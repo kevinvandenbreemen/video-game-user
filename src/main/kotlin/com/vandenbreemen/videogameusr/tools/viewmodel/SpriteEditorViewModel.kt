@@ -62,7 +62,8 @@ class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel
     fun setSpriteIndex(index: Int) {
         gameDataEditorModel.selectSpriteIndex(index)
         _spriteIndex.value = index
-        _spriteArray.value = gameDataEditorModel.getSpriteByteArray()
+
+        updateSpriteBytes(gameDataEditorModel.getSpriteByteArray())
     }
 
     fun tapSpriteIndex(index: Int) {
