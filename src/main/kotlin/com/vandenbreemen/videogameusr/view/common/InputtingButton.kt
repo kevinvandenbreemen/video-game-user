@@ -20,8 +20,13 @@ import androidx.compose.ui.unit.dp
 import com.vandenbreemen.videogameusr.view.Dimensions
 import com.vandenbreemen.videogameusr.view.VideoGameUserTheme
 
+/**
+ * A button that allows for inputting a value as well as any additional details you might like
+ * @param label The label for the button
+ * @param detailsRowComposable Any additional details you'd like to show
+ */
 @Composable
-fun InputtingButton(label: String, instruction: String, onInput: (String)->Unit) {
+fun InputtingButton(label: String, instruction: String, detailsRowComposable: @Composable (()-> Unit)? = null,  onInput: (String)->Unit) {
 
     Card(elevation = 7.dp,
         shape = MaterialTheme.shapes.medium, border = BorderStroke(1.dp, MaterialTheme.colors.primary)
@@ -54,6 +59,13 @@ fun InputtingButton(label: String, instruction: String, onInput: (String)->Unit)
                 }
 
                 Spacer(modifier = Modifier.width(Dimensions.padding))
+
+                //  Additional details for customization here:
+                detailsRowComposable?.let { additionalDetails->
+                    additionalDetails()
+                    Spacer(modifier = Modifier.width(Dimensions.padding))
+                }
+
                 Button(
                     enabled = text.value.isNotBlank(),
                     onClick = {
@@ -83,7 +95,9 @@ fun InputtingButtonPreview() {
     VideoGameUserTheme {
         Column(modifier=Modifier.fillMaxSize().background(MaterialTheme.colors.background)) {
             Text("Inputting Button", style = MaterialTheme.typography.h6)
-            InputtingButton( "Edit", "Enter a new value", onInput = { println(it) })
+            InputtingButton( "Edit", "Enter a new value",
+                { TextField(value = "", onValueChange = { println(it) })},
+                onInput = { println(it) })
         }
 
     }
