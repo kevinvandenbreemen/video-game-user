@@ -18,6 +18,14 @@ class TileBasedGameWorld(val requirements: GameDataRequirements) {
             throw IllegalArgumentException("Level with name $name already exists")
         }
 
+        if(widthInTiles <= 0 || heightInTiles <= 0){
+            throw IllegalArgumentException("Width and height must be greater than 0")
+        }
+
+        if (name.isBlank()) {
+            throw IllegalArgumentException("Level name cannot be blank")
+        }
+
         val level = LevelModel(requirements, widthInTiles, heightInTiles)
         levels[name] = level
         return level

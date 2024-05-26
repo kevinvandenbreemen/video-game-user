@@ -20,4 +20,35 @@ class TileBasedGameWorldTest {
         }
     }
 
+    @Test
+    fun `should prevent adding levels with blank name`() {
+        val world = TileBasedGameWorld(requirements)
+
+        assertThrows(IllegalArgumentException::class.java) {
+            world.addLevel("", 10, 10)
+        }
+
+        assertThrows(IllegalArgumentException::class.java) {
+            world.addLevel("        ", 10, 10)
+        }
+    }
+
+    @Test
+    fun `should prevent adding levels with invalid width or height`() {
+        val world = TileBasedGameWorld(requirements)
+
+        assertThrows(IllegalArgumentException::class.java) {
+            world.addLevel("level1", 0, 10)
+        }
+        assertThrows(IllegalArgumentException::class.java) {
+            world.addLevel("level1", 10, 0)
+        }
+        assertThrows(IllegalArgumentException::class.java) {
+            world.addLevel("level1", -1, 10)
+        }
+        assertThrows(IllegalArgumentException::class.java) {
+            world.addLevel("level1", 10, -1)
+        }
+    }
+
 }
