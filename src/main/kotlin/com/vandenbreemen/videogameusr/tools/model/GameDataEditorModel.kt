@@ -111,38 +111,6 @@ class GameDataEditorModel(private val requirements: GameDataRequirements,
         return spriteByteArray
     }
 
-    fun setBrightness(colorByte: Byte, brightness: Int): Byte {
-        val red = byteColorDataInteractor.getRedChannel(colorByte)
-        val green = byteColorDataInteractor.getGreenChannel(colorByte)
-        val blue = byteColorDataInteractor.getBlueChannel(colorByte)
-        return byteColorDataInteractor.getColorByte(brightness, red, green, blue)
-    }
-
-    fun setRed(colorByte: Byte, red: Int): Byte {
-        val brightness = byteColorDataInteractor.getBrightness(colorByte)
-        val green = byteColorDataInteractor.getGreenChannel(colorByte)
-        val blue = byteColorDataInteractor.getBlueChannel(colorByte)
-        return  byteColorDataInteractor.getColorByte(brightness, red, green, blue)
-    }
-
-    fun setGreen(colorByte: Byte, green: Int): Byte {
-        val brightness = byteColorDataInteractor.getBrightness(colorByte)
-        val red = byteColorDataInteractor.getRedChannel(colorByte)
-        val blue = byteColorDataInteractor.getBlueChannel(colorByte)
-        return  byteColorDataInteractor.getColorByte(brightness, red, green, blue)
-    }
-
-    fun setBlue(colorByte: Byte, blue: Int): Byte {
-        val brightness = byteColorDataInteractor.getBrightness(colorByte)
-        val red = byteColorDataInteractor.getRedChannel(colorByte)
-        val green = byteColorDataInteractor.getGreenChannel(colorByte)
-        return  byteColorDataInteractor.getColorByte(brightness, red, green, blue)
-    }
-
-    fun getComposeColor(): Color {
-        return getComposeColor(paintColor)
-    }
-
     fun clearSprite(): ByteArray {
         spriteByteArray.forEachIndexed { index, byte ->
             spriteByteArray[index] = 0

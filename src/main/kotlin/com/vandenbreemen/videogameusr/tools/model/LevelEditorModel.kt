@@ -49,11 +49,6 @@ class LevelEditorModel(private val requirements: GameDataRequirements,
         panXY = Pair(panXY.first + x, panXY.second + y)
     }
 
-    fun getSpritePixelColorGrid(x: Int, y: Int): Array<Array<Color>>? {
-        val index = levelModel.getSpriteTileAt(x, y)
-        return getSpritePixelColorGridForTileIndex(index)
-    }
-
     fun getSpritePixelColorGridForTileIndex(tileIndex: Int): Array<Array<Color>>? {
 
         if(tileIndex == LevelModel.NO_SPRITE){
