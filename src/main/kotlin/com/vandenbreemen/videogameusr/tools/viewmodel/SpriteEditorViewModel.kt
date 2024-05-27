@@ -27,6 +27,8 @@ class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel
     private val _isCopyingFromAnotherTile = MutableStateFlow(false)
     val isCopyingFromAnotherTile = _isCopyingFromAnotherTile.asStateFlow()
 
+    val canRotateSpriteTiles get() = gameDataEditorModel.canRotateSpriteTiles
+
     private val _spriteBytesHashString: MutableStateFlow<String> = MutableStateFlow("")
 
     /**
@@ -128,6 +130,11 @@ class SpriteEditorViewModel(private val gameDataEditorModel: GameDataEditorModel
 
     fun fill() {
         gameDataEditorModel.fill(_paintColor.value)
+        updateSpriteBytes(gameDataEditorModel.getSpriteByteArray())
+    }
+
+    fun rotateClockwise() {
+        gameDataEditorModel.rotateClockwise()
         updateSpriteBytes(gameDataEditorModel.getSpriteByteArray())
     }
 

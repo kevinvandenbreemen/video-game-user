@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -164,6 +165,16 @@ private fun SideToolPanel(
                     viewModel.mirrorVertical()
                 }) {
                     Text("Flip Vert", style = MaterialTheme.typography.button)
+                }
+
+                //  Button for rotating clockwise.  Icon button
+                Spacer(modifier = Modifier.width(Dimensions.padding))
+                IconButton(
+                    enabled = viewModel.canRotateSpriteTiles,
+                    onClick = {
+                    viewModel.rotateClockwise()
+                }) {
+                    Icon(Icons.Filled.Refresh, contentDescription = "Rotate Clockwise")
                 }
 
             }

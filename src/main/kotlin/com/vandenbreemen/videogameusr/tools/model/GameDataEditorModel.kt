@@ -33,6 +33,12 @@ class GameDataEditorModel(private val requirements: GameDataRequirements,
     private val previouslySelectedSpriteIndices = mutableSetOf(spriteIndex)
 
     /**
+     * Only allow rotating sprite tiles if they are square, otherwise we lose fidelity to some kind of weird algorithm
+     */
+    val canRotateSpriteTiles: Boolean
+        get() = requirements.spriteWidth == requirements.spriteHeight
+
+    /**
      * Computation of color values etc
      */
     val byteColorDataInteractor = ByteColorDataInteractor()
@@ -205,6 +211,23 @@ class GameDataEditorModel(private val requirements: GameDataRequirements,
         spriteByteArray.forEachIndexed { index, byte ->
             spriteByteArray[index] = value
         }
+        requirements.setData(spriteIndex, spriteByteArray.clone())
+        refreshSprite()
+    }
+
+    fun rotateClockwise() {
+        val rotated = ByteArray(spriteByteArray.size)
+        for(y in 0 until spriteHeight){
+            for(x in 0 until spriteWidth){
+                rotated[x * spriteHeight + (spriteHeight - y - 1)] = spriteByteArray[y * spriteWidth + x]
+            }
+        }
+
+        //  Update the bytes in here
+        this.spriteByteArray.forEachIndexed { index, _ ->
+            this.spriteByteArray[index] = rotated[index]
+        }
+
         requirements.setData(spriteIndex, spriteByteArray.clone())
         refreshSprite()
     }
