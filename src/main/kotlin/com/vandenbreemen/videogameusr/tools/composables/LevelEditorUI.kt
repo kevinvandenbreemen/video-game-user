@@ -56,7 +56,8 @@ fun LevelDesigner(levelEditorViewModel: LevelEditorViewModel) {
                         , verticalAlignment = Alignment.CenterVertically
                     ) {
                         //  Title
-                        Text("Level Editor", style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold))
+                        Text("Level Editor: ${levelEditorViewModel.levelName} (${levelEditorViewModel.levelWidth} x ${levelEditorViewModel.levelHeight})",
+                            style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold))
                         Spacer(modifier = Modifier.weight(1f))
                         //  Controls
                         Row(verticalAlignment = Alignment.CenterVertically) {

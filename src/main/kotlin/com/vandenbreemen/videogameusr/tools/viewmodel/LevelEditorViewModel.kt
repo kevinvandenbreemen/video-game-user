@@ -29,6 +29,8 @@ class LevelEditorViewModel(private val levelEditorModel: LevelEditorModel) {
     val spriteWidth: Int get() = levelEditorModel.spriteWidth
     val spriteHeight: Int get() = levelEditorModel.spriteHeight
 
+    val levelName: String get() = levelEditorModel.levelName
+
     private val lastSelectedTile = MutableStateFlow(Pair(-1, -1))
     val lastSelectedTileStateFlow = lastSelectedTile.asStateFlow()
 
