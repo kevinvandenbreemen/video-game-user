@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
  */
 object CoreDependenciesHelper {
 
-    val byteDataInteractor = ByteColorDataInteractor()
+    private val byteDataInteractor = ByteColorDataInteractor()
     fun getColorInteractor(): ColorInteractor {
         return ColorInteractor(byteDataInteractor)
     }
