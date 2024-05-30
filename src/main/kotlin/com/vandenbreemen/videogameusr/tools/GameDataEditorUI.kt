@@ -75,7 +75,9 @@ fun SpriteEditorUI(model: GameDataEditorModel, viewModel: SpriteEditorViewModel)
                     title = if (isPickingSpriteToCopyFrom.value) "Select Tile" else "Tiles",
                     onSelectSpriteIndex = {
                         viewModel.tapSpriteIndex(it)
-                    })
+                    },
+                    highlightSelected = true
+                    )
             }
         }
         Column(
