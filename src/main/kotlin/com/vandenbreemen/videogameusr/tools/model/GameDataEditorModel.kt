@@ -9,7 +9,6 @@ import com.vandenbreemen.videogameusr.model.ColorInteractor
 import com.vandenbreemen.videogameusr.model.CoreDependenciesHelper
 import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
 import com.vandenbreemen.videogameusr.model.game.assetmgt.GameAssetsInteractor
-import com.vandenbreemen.videogameusr.tools.interactor.CodeGenerationInteractor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -19,7 +18,6 @@ class GameDataEditorModel(private val requirements: GameDataRequirements,
                           private  val assetsDataFilePath: String = "generated/game.dat"
     ) {
 
-    private val codeGenerationInteractor = CodeGenerationInteractor(requirements)
     private val gameAssetsInteractor = GameAssetsInteractor()
 
     private val runner = Runner(requirements)
@@ -144,7 +142,7 @@ class GameDataEditorModel(private val requirements: GameDataRequirements,
     val tilesPerRowOnSpriteTileGrid = 4
 
     fun getSpriteTileGridArray(index: Int): ByteArray {
-        return codeGenerationInteractor.getSpriteTileGridArray(index)
+        return requirements.getSpriteData(index)
     }
 
     fun selectSpriteIndex(index: Int) {
