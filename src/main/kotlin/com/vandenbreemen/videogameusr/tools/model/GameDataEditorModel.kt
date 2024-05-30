@@ -159,7 +159,7 @@ class GameDataEditorModel(private val requirements: GameDataRequirements,
      * Get a model suitable for editing a level
      */
     fun editLevel(name: String): LevelEditorModel {
-        return LevelEditorModel(requirements, tileBasedGameWorld.getLevel(name), this, colorInteractor, codeGenerationInteractor, name)
+        return LevelEditorModel(requirements, tileBasedGameWorld.getLevel(name), this, colorInteractor, name)
     }
 
     fun getLevelNames(): List<String> {

@@ -73,7 +73,6 @@ class LevelEditorViewModel(private val levelEditorModel: LevelEditorModel) {
         }
         lastSelectedTile.value = Pair(x, y)
         levelEditorModel.setSpriteTileAt(x, y, spriteIndex)
-        levelEditorModel.writeCodeToFile()
         updateLevelCoordinateToTileGrid()
     }
 
