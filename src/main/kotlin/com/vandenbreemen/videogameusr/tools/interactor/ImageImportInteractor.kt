@@ -1,5 +1,6 @@
 package com.vandenbreemen.videogameusr.tools.interactor
 
+import com.vandenbreemen.viddisplayrast.data.ByteColorDataInteractor
 import com.vandenbreemen.viddisplayrast.data.DisplayRaster
 import com.vandenbreemen.videogameusr.log.KlogLevel
 import com.vandenbreemen.videogameusr.log.klog
@@ -11,6 +12,7 @@ import javax.imageio.ImageIO
 class ImageImportInteractor() {
 
     private val ioDispatcher = CoreDependenciesHelper.getIODispatcher()
+    private val byteColorDataInteractor = ByteColorDataInteractor()
 
     suspend fun importImageAsRaster(imagePath: String): DisplayRaster = withContext(ioDispatcher) {
 
@@ -26,18 +28,16 @@ class ImageImportInteractor() {
         for (y in 0 until bufferedImage.height) {
             for (x in 0 until bufferedImage.width) {
                 val pixel = pixels[y * bufferedImage.width + x]
-                val red = (pixel shr 16) and 0xFF
-                val green = (pixel shr 8) and 0xFF
-                val blue = pixel and 0xFF
-                val alpha = (pixel shr 24) and 0xFF
 
-                val color = (alpha shl 24) or (red shl 16) or (green shl 8) or blue
+                val colByte = byteColorDataInteractor.convertIntColorToByte(pixel)
 
+                val red = byteColorDataInteractor.getRed(colByte)
+                val green = byteColorDataInteractor.getGreen(colByte)
+                val blue = byteColorDataInteractor.getBlue(colByte)
 
-                val byte = color.toByte()
-                klog(KlogLevel.DEBUG, "r=$red, g=$green, b=$blue, a=$alpha, byte=$byte")
+                klog(KlogLevel.DEBUG, "Pixel at $x, $y is $red, $green, $blue")
 
-                raster.setPixel(x, y, color.toByte())
+                raster.setPixel(x, y, colByte)
             }
         }
 
