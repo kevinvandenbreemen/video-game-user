@@ -88,3 +88,5 @@ Because I'm having a hard time staying on top of documenting things, I'm going t
 ## How Can I place the Screen View to a specific location in a TileBasedGameWorld / Level?
 You can use the LevelRenderingInteractor.  Call ```moveCameraTo(10, 233)``` for example on it
 
+## I want to make a screen similar to the SNES.  How many tiles should I do?  What about raw pixels?
+The SNES had a resolution of 256x224.  If you want to make a screen that is 256x224 pixels, you can use a tile size of 8x8.  This means you will have 32x28 tiles on the screen.
