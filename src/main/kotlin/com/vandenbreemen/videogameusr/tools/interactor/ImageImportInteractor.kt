@@ -2,8 +2,6 @@ package com.vandenbreemen.videogameusr.tools.interactor
 
 import com.vandenbreemen.viddisplayrast.data.ByteColorDataInteractor
 import com.vandenbreemen.viddisplayrast.data.DisplayRaster
-import com.vandenbreemen.videogameusr.log.KlogLevel
-import com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.videogameusr.model.CoreDependenciesHelper
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -29,15 +27,14 @@ class ImageImportInteractor() {
             for (x in 0 until bufferedImage.width) {
                 val pixel = pixels[y * bufferedImage.width + x]
 
-                val colByte = byteColorDataInteractor.convertIntColorToByte(pixel)
+                val alpha = (pixel shr 24) and 0xFF
+                if(alpha != 0xFF) {
+                    raster.setPixel(x, y, 0x00)
+                } else {
+                    val colByte = byteColorDataInteractor.convertIntColorToByte(pixel)
 
-                val red = byteColorDataInteractor.getRed(colByte)
-                val green = byteColorDataInteractor.getGreen(colByte)
-                val blue = byteColorDataInteractor.getBlue(colByte)
-
-                klog(KlogLevel.DEBUG, "Pixel at $x, $y is $red, $green, $blue")
-
-                raster.setPixel(x, y, colByte)
+                    raster.setPixel(x, y, colByte)
+                }
             }
         }
 

@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
@@ -52,6 +53,9 @@ fun RasterDisplay(raster: DisplayRaster) {
 
             val width = size.width
             val height = size.height
+
+            //  Black background
+            drawRect(Color.Black, topLeft = Offset(0f, 0f), size = Size(width, height))
 
             val pixelWidthInCanvas = width / raster.xDim
             val pixelHeightInCanvas = height / raster.yDim
