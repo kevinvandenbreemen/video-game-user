@@ -26,15 +26,7 @@ class ImageImportInteractor() {
         for (y in 0 until bufferedImage.height) {
             for (x in 0 until bufferedImage.width) {
                 val pixel = pixels[y * bufferedImage.width + x]
-
-                val alpha = (pixel shr 24) and 0xFF
-                if(alpha != 0xFF) {
-                    raster.setPixel(x, y, 0x00)
-                } else {
-                    val colByte = byteColorDataInteractor.convertIntColorToByte(pixel)
-
-                    raster.setPixel(x, y, colByte)
-                }
+                raster.setPixel(x, y, byteColorDataInteractor.convertIntColorToByte(pixel))
             }
         }
 
