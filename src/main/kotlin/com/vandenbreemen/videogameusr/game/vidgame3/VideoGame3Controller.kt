@@ -9,7 +9,7 @@ class VideoGame3Controller(private val videoGame3Model: VideoGame3Model, private
     VideoGameController {
 
     private val model = videoGame3Model
-    private val levelRenderingInteractor = LevelRenderingInteractor(model.requirements, runner, model.background).also {
+    private val levelRenderingInteractor = LevelRenderingInteractor(model.requirements, runner, model.background.widthInTiles, model.background.heightInTiles).also {
         it.moveCameraTo(15, 20)
     }
 

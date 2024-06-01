@@ -6,16 +6,14 @@ import com.vandenbreemen.videogameusr.model.game.LevelModel
 class LevelRenderingInteractor(
     private val requirements: GameDataRequirements,
     private val runner: RunnerView,
-
-    //  TODO    This is silly.
-    private val typicalLevelModel: LevelModel) {
+    private val widthInTiles: Int, private val heightInTiles: Int) {
 
     private var cameraLocationToNearestTile = Pair(0, 0)
     private val cameraWidthHeight = Pair(requirements.screenWidth, requirements.screenHeight)
 
     fun moveCameraRight(){
 
-        if(cameraLocationToNearestTile.first + cameraWidthHeight.first / requirements.spriteWidth >= typicalLevelModel.widthInTiles){
+        if(cameraLocationToNearestTile.first + cameraWidthHeight.first / requirements.spriteWidth >= widthInTiles){
             return
         }
 
@@ -54,7 +52,7 @@ class LevelRenderingInteractor(
 
     fun moveCameraDown(){
 
-        if(cameraLocationToNearestTile.second + cameraWidthHeight.second / requirements.spriteHeight >= typicalLevelModel.heightInTiles){
+        if(cameraLocationToNearestTile.second + cameraWidthHeight.second / requirements.spriteHeight >= heightInTiles){
             return
         }
 

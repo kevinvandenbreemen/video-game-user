@@ -11,7 +11,7 @@ class VideoGame4Controller(private val model: VideoGame4Model,  private val runn
         runner.setCameraIncrement(model.cameraIncrementInGame)
     }
 
-    private val renderingInteractor = LevelRenderingInteractor(model.requirements, runner, model.level).also {
+    private val renderingInteractor = LevelRenderingInteractor(model.requirements, runner, model.level.widthInTiles, model.level.heightInTiles).also {
         //  Set the initial location in the game
         it.moveCameraTo(20, 20)
     }
