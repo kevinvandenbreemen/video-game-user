@@ -24,7 +24,7 @@ class ExampleWiderGameModel {
 
     fun init() {
         cave.load()
-        runnerView = RunnerView(cave.requirements)
+        runnerView = RunnerView(cave.requirements)  //  TODO    Is there a way to make the Cave object handle making this?  Same for the rendering interactor below.....
         levelRenderingInteractor = LevelRenderingInteractor(cave.requirements, runnerView, cave.widthInTiles, cave.heightInTiles)
 
         levelRenderingInteractor.moveCameraTo(20, 20)
@@ -35,11 +35,7 @@ class ExampleWiderGameModel {
     }
 
     fun drawFrame(): DisplayRaster {
-
-        val level = cave.caveWorld.getLevel("Cave")
-
-        levelRenderingInteractor.drawCameraView(level)
-
+        cave.render(levelRenderingInteractor)
         return runnerView.newFrame()
     }
 
