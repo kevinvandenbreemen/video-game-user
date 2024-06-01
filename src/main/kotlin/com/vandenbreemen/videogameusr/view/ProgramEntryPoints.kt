@@ -41,6 +41,13 @@ class ProgramEntryPoints {
                 }
             }
         }
+
+        fun playGameInWindowSNES(controller: VideoGameController, framesPerSecond: Int, maxWidth: Int = 800) {
+            val snesWidth = 256
+            val snesHeight = 224
+            val aspectRatio = snesHeight.toFloat() / snesWidth.toFloat()
+            playGameInWindow(controller, framesPerSecond, maxWidth, aspectRatio)
+        }
     }
 
 }

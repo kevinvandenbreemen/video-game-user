@@ -8,9 +8,12 @@ import com.vandenbreemen.videogameusr.tools.gameEditor
 class Cave() {
 
     //  TODO    Create some kind of factory that makes these with the same dimensions and stuff
-    private val requirements = CoreDependenciesHelper.createSNESRequirements(100)
+    val requirements = CoreDependenciesHelper.createSNESRequirements(100)
 
     val caveWorld = TileBasedGameWorld(requirements)
+
+    val widthInTiles: Int get() = caveWorld.getLevel(caveWorld.getLevelNames()[0]).widthInTiles
+    val heightInTiles: Int get() = caveWorld.getLevel(caveWorld.getLevelNames()[0]).heightInTiles
 
     fun load() {
         GameAssetsInteractor().loadAssetsFromClasspath("/assets/games/wider/cave.dat", requirements, caveWorld)
