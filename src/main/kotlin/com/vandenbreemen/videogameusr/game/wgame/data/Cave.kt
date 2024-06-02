@@ -1,10 +1,15 @@
 package com.vandenbreemen.videogameusr.game.wgame.data
 
+import com.vandenbreemen.viddisplayrast.data.DisplayRaster
+import com.vandenbreemen.videogameusr.log.KlogLevel
+import com.vandenbreemen.videogameusr.log.klog
 import com.vandenbreemen.videogameusr.model.CoreDependenciesHelper
 import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
 import com.vandenbreemen.videogameusr.model.game.assetmgt.GameAssetsInteractor
 import com.vandenbreemen.videogameusr.tools.gameEditor
-import com.vandenbreemen.videogameusr.view.render.LevelRenderingInteractor
+import com.vandenbreemen.videogameusr.view.render.LevelPrerenderInteractor
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 class Cave() {
 
@@ -16,8 +21,23 @@ class Cave() {
     val widthInTiles: Int get() = caveWorld.getLevel(caveWorld.getLevelNames()[0]).widthInTiles
     val heightInTiles: Int get() = caveWorld.getLevel(caveWorld.getLevelNames()[0]).heightInTiles
 
+    val levelPrerenderInteractor: LevelPrerenderInteractor by lazy {
+        LevelPrerenderInteractor(requirements, widthInTiles * requirements.spriteWidth, heightInTiles * requirements.spriteHeight)
+    }
+
+
     fun load() {
         GameAssetsInteractor().loadAssetsFromClasspath("/assets/games/wider/cave.dat", requirements, caveWorld)
+        CoroutineScope(CoreDependenciesHelper.getIODispatcher()).launch {
+            CoreDependenciesHelper.getImageImportInteractor().importImageAsRasterFromClasspath("/assets/games/wider/cave_bg.png").let {
+
+                klog(KlogLevel.DEBUG,"Loaded background raster:  ${it.xDim} x ${it.yDim}")
+
+                levelPrerenderInteractor.renderRaster(it)
+
+                levelPrerenderInteractor.renderLevel(caveWorld.getLevel(caveWorld.getLevelNames()[0]))
+            }
+        }
     }
 
     fun edit() {
@@ -27,9 +47,8 @@ class Cave() {
     /**
      * Render this place given the rendering interactor
      */
-    fun render(renderingInteractor: LevelRenderingInteractor) {
-        val level = caveWorld.getLevel("Cave")
-        renderingInteractor.drawCameraView(level)
+    fun render(): DisplayRaster {
+        return levelPrerenderInteractor.renderCameraView()
     }
 
 }

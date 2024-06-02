@@ -4,7 +4,6 @@ import com.vandenbreemen.viddisplayrast.data.DisplayRaster
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
 import com.vandenbreemen.videogameusr.game.wgame.data.Cave
 import com.vandenbreemen.videogameusr.model.game.TileBasedGameWorld
-import com.vandenbreemen.videogameusr.view.render.LevelRenderingInteractor
 import com.vandenbreemen.videogameusr.view.render.RunnerView
 
 class ExampleWiderGameModel {
@@ -20,14 +19,12 @@ class ExampleWiderGameModel {
      * This will change dependeing on where the player is
      */
     private lateinit var runnerView: RunnerView
-    private lateinit var levelRenderingInteractor: LevelRenderingInteractor
 
     fun init() {
         cave.load()
         runnerView = RunnerView(cave.requirements)  //  TODO    Is there a way to make the Cave object handle making this?  Same for the rendering interactor below.....
-        levelRenderingInteractor = LevelRenderingInteractor(cave.requirements, runnerView, cave.widthInTiles, cave.heightInTiles)
 
-        levelRenderingInteractor.moveCameraTo(20, 20)
+
     }
 
     fun takeTurn() {
@@ -35,23 +32,22 @@ class ExampleWiderGameModel {
     }
 
     fun drawFrame(): DisplayRaster {
-        cave.render(levelRenderingInteractor)
-        return runnerView.newFrame()
+        return cave.render()
     }
 
     fun moveRight() {
-        levelRenderingInteractor.moveCameraRight()
+        cave.levelPrerenderInteractor.moveCameraRight()
     }
 
     fun moveLeft() {
-        levelRenderingInteractor.moveCameraLeft()
+        cave.levelPrerenderInteractor.moveCameraLeft()
     }
 
     fun moveUp() {
-        levelRenderingInteractor.moveCameraUp()
+        cave.levelPrerenderInteractor.moveCameraUp()
     }
 
     fun moveDown() {
-        levelRenderingInteractor.moveCameraDown()
+        cave.levelPrerenderInteractor.moveCameraDown()
     }
 }
