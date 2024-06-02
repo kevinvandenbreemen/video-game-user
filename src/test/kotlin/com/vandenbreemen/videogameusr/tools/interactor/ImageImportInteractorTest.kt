@@ -24,4 +24,14 @@ class ImageImportInteractorTest {
         }
     }
 
+    @Test
+    fun `should import png from classpath`() {
+        runBlocking {
+            val interactor = ImageImportInteractor()
+            val pixels = interactor.importImageAsRasterFromClasspath("/assets/test_image.png")
+
+            //ComposeRasterRender.showTestRenderWindow(pixels)
+        }
+    }
+
 }
