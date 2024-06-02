@@ -2,6 +2,7 @@ package com.vandenbreemen.videogameusr.model
 
 import com.vandenbreemen.viddisplayrast.data.ByteColorDataInteractor
 import com.vandenbreemen.viddisplayrast.data.GameDataRequirements
+import com.vandenbreemen.videogameusr.tools.interactor.ImageImportInteractor
 import com.vandenbreemen.videogameusr.view.render.CanvasRasterRender
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +23,10 @@ object CoreDependenciesHelper {
 
     fun getCanvasRasterRender(): CanvasRasterRender {
         return CanvasRasterRender(getColorInteractor())
+    }
+
+    fun getImageImportInteractor(): ImageImportInteractor {
+        return ImageImportInteractor()
     }
 
     /**
