@@ -21,6 +21,9 @@ class LevelModel(private val requirements: GameDataRequirements, val widthInTile
         }
     }
 
+    val spriteWidth: Int get() = requirements.spriteWidth
+    val spriteHeight: Int get() = requirements.spriteHeight
+
     /**
      * Specify sprite to go at the given tile
      */
