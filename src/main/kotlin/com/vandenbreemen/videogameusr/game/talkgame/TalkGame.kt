@@ -3,6 +3,7 @@ package com.vandenbreemen.videogameusr.game.talkgame
 fun main() {
     val model = TalkGameModel()
 
+    //  Future project:  Game with some dialog in it to get used to building dialog boxes
 //    val runnerView = RunnerView(model.requirements)
 
     model.edit()
